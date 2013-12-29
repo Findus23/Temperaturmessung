@@ -1,5 +1,5 @@
 #!/bin/bash
-#(c) http://www.cs.waikato.ac.nz/~fracpete/programming/csv2gnuplot/
+#(c) Peter Reutemann: http://www.cs.waikato.ac.nz/~fracpete/programming/csv2gnuplot/
 echo "Zeit LOAD Temperatur" > temp
 cat daten_gnuplot.txt >> temp
 cat temp | exec awk '
