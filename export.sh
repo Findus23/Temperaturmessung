@@ -5,6 +5,7 @@ Anzahl=0
 Summe=0
 min=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) # Sowohl Minimum als auch Maximum auf die aktuelle Temperatur setzen
 max=$min
+r=998
 if [ $1 ]
 then
 	case "$1" in
@@ -79,4 +80,11 @@ do
 	sudo cp daten_transformiert.txt ${PFAD}daten_transformiert.txt # ... und die Tabelle für Highchart in den Webordner kopieren
 	sudo cp dygraph.csv ${PFAD}dygraph.csv
 	sleep 8 # kurz warten
+	r=$(($r +1))
+	echo "$r"
+	if [ "$r" == "1000" ]
+	then
+		cp rohdaten.csv dygraph.csv daten_gnuplot.txt text.txt backup/
+		echo "Backup"
+	fi
 done
