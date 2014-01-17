@@ -1,6 +1,6 @@
 #!/bin/bash
-PFAD="/var/www/"
 a=0
+PFAD="/var/www/"
 Anzahl=0
 Summe=0
 min=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) # Sowohl Minimum als auch Maximum auf die aktuelle Temperatur setzen
@@ -26,12 +26,17 @@ do
 	##a=a+[Zufallszahl von 0-32767] modulo 10 (um eine Zahl von 0-10 zu bekommen) -5 (-> -5 bis 5)
 	#wert2=$a
 	#wert2=$(cut -c 1,2,3,4 /proc/loadavg) # Load messen
-	#wert=$(/opt/vc/bin/vcgencmd measure_temp | cut -c 6,7,8,9) #Betriebstemberatur messen
+	rasp=$(/opt/vc/bin/vcgencmd measure_temp | cut -c 6,7,8,9) #Betriebstemberatur messen
 	#wert2=$(sensors |grep Core\ 0 |cut -c 18,19,20,21) #CPU-Temperatur, lm-sensors muss installiert sein, bei jedem PC anders
 	wert1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
 	wert2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
 	wert3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
-	luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 4 |grep Hum )
+	luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 17 |grep Hum )	
+	while [ -z "$luft_roh" ] 
+	do
+		luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 17 |grep Hum )
+		echo "----$luft_roh"
+	done
 	luft_temp=$(echo $luft_roh | cut -c 8,9,10,11)
 	luft_feucht=$(echo $luft_roh | cut -c 23,24,25,26)
 	uhrzeit=$(date +%H:%M:%S) 
@@ -63,23 +68,25 @@ do
 	
 #Mathematische Auswertung Ende
 	ausgabe=${uhrzeit}\,${wert1}\,${wert2}
-	ausgabe_dy=${uhrzeit_dy}\,${wert1}\,${wert2}\,${wert3}\,${luft_temp}\,${luft_feucht}
+	ausgabe_dy=${uhrzeit_dy}\,${wert1}\,${wert2}\,${wert3}\,${luft_temp}\,${luft_feucht},${rasp}
 	echo $ausgabe >>rohdaten.csv
 	echo $ausgabe_dy >>dygraph.csv
-	echo "$uhrzeit_dy				$wert1	" #Ausgabe des aktuellen Wertes im Terminal
+	echo "$uhrzeit_dy	,${wert1},${wert2},${wert3},${luft_temp},${luft_feucht},${rasp}	" #Ausgabe des aktuellen Wertes im Terminal
 	sed "s/,/ /g" rohdaten.csv >daten_gnuplot.txt #für Gnuplot die Beistriche durch Leerzeichen ersetzen 
 	echo "Uhrzeit:" >text.txt #Anzeige für Display
 	echo "$uhrzeit" >>text.txt #Anzeige für Display
-	echo "Temperatur 1" >>text.txt #Anzeige für Display
+	echo "Geraetetemp 1" >>text.txt #Anzeige für Display
 	echo "$wert1" >>text.txt #Anzeige für Display
-	echo "Temperatur 2" >>text.txt #Anzeige für Display
+	echo "Geraetetemp 2" >>text.txt #Anzeige für Display
 	echo "$wert2" >>text.txt #Anzeige für Display
 	echo "Aussentemperatur" >>text.txt #Anzeige für Display
 	echo "$wert3" >>text.txt #Anzeige für Display
-	echo "Temperatur (Luft)" >>text.txt #Anzeige für Display
+	echo "Temperatur/Luft" >>text.txt #Anzeige für Display
 	echo "$luft_temp" >>text.txt #Anzeige für Display
-	echo "Luftfuchtigkeit" >>text.txt #Anzeige für Display
+	echo "Luftfeuchtigkeit" >>text.txt #Anzeige für Display
 	echo "$luft_feucht" >>text.txt #Anzeige für Display
+	echo "Prozessor" >>text.txt #Anzeige für Display
+	echo "$rasp" >>text.txt #Anzeige für Display
 #	./transpose.sh #anderes Skript starten, welches die Daten für Highchart vorbereitet
 #	gnuplot Einstellungen # Gnuplot starten
 #	sudo cp gnuplot.svg ${PFAD}gnuplot.svg # das generierte Bild ...

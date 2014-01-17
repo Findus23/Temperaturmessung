@@ -16,25 +16,24 @@
 <body>
 <div id="graphdiv"></div>
   <div id="Legende"></div>
-  
 <script type="text/javascript">
-  g2 = new Dygraph(
+  g = new Dygraph(
     document.getElementById("graphdiv"),
     "dygraph.csv", // path to CSV file
     { showRoller: true, //Möglichkeit zum Runden anzeigen
     	animatedZooms: true,
     //	 dateWindow: [ Date.parse("2012/09/29 12:00:00"),Date.parse("2013/11/10 12:00:00") ], //Start- und Endzeitraum
-    	labels:  ["Zeit", "Innentemperatur 1", "Innentemperatur 2", "Außentemperatur", "Temperatur Luft", "Luftfeuchtigkeit"],
+    	labels:  ["Zeit", "Innentemperatur 1", "Innentemperatur 2", "Außentemperatur", "Temperatur Luft", "Luftfeuchtigkeit", "Prozessor"],
     	labelsDiv: document.getElementById("Legende"), //Legende in einem bestimmten DIV anzeigen
-   //	errorBars: true //Standardabweichung (funktioniert nicht))
 		'Luftfeuchtigkeit': { //eigene y-Achse für Luftfeuchtigkeit
-              axis: {
+              axis: {	valueRange: [1, 99],
+	                independentTicks: true
               }
             },
 		ylabel: 'Temperatur (°C)',
-		y2label: 'Luftfeuchtigkeit',
-	//	showRangeSelector: true, //Auswahlzeile anzeigen
-	//	rangeSelectorHeight: 80
+		y2label: 'relative Luftfeuchtigkeit (%)',
+//		showRangeSelector: true, //Auswahlzeile anzeigen
+//		rangeSelectorHeight: 80
           
 
 
@@ -42,6 +41,5 @@
     }          // options
   );
 </script>
-
-
-</body></html>
+</body>
+</html>
