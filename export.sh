@@ -5,7 +5,7 @@ Anzahl=0
 Summe=0
 min=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) # Sowohl Minimum als auch Maximum auf die aktuelle Temperatur setzen
 max=$min
-r=0
+r=0 # Backup-Zahl auf Null setzen
 if [ $1 ]
 then
 	case "$1" in
@@ -31,6 +31,9 @@ do
 	wert1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
 	wert2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
 	wert3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 4 |grep Hum )
+	luft_temp=$(echo $luft_roh | cut -c 8,9,10,11)
+	luft_feucht=$(echo $luft_roh | cut -c 23,24,25,26)
 	uhrzeit=$(date +%H:%M:%S) 
 	uhrzeit_dy=$(date +%Y/%m/%d\ %H:%M:%S)
 	if [ "$wert1" == "-1.250" ] # manchmal gibt der Sensor "-1.250" als Wert zurück -> diese sollen gelöscht werden 
@@ -58,13 +61,12 @@ do
 			max=$wert1
 	fi
 	
-
 #Mathematische Auswertung Ende
 	ausgabe=${uhrzeit}\,${wert1}\,${wert2}
-	ausgabe_dy=${uhrzeit_dy}\,${wert1}\,${wert2}\,${wert3}
+	ausgabe_dy=${uhrzeit_dy}\,${wert1}\,${wert2}\,${wert3}\,${luft_temp}\,${luft_feucht}
 	echo $ausgabe >>rohdaten.csv
 	echo $ausgabe_dy >>dygraph.csv
-	echo "$uhrzeit_dy				$wert1		$MW	$min	$max" #Ausgabe des aktuellen Wertes im Terminal
+	echo "$uhrzeit_dy				$wert1	" #Ausgabe des aktuellen Wertes im Terminal
 	sed "s/,/ /g" rohdaten.csv >daten_gnuplot.txt #für Gnuplot die Beistriche durch Leerzeichen ersetzen 
 	echo "Uhrzeit:" >text.txt #Anzeige für Display
 	echo "$uhrzeit" >>text.txt #Anzeige für Display
@@ -74,6 +76,10 @@ do
 	echo "$wert2" >>text.txt #Anzeige für Display
 	echo "Aussentemperatur" >>text.txt #Anzeige für Display
 	echo "$wert3" >>text.txt #Anzeige für Display
+	echo "Temperatur (Luft)" >>text.txt #Anzeige für Display
+	echo "$luft_temp" >>text.txt #Anzeige für Display
+	echo "Luftfuchtigkeit" >>text.txt #Anzeige für Display
+	echo "$luft_feucht" >>text.txt #Anzeige für Display
 #	./transpose.sh #anderes Skript starten, welches die Daten für Highchart vorbereitet
 #	gnuplot Einstellungen # Gnuplot starten
 #	sudo cp gnuplot.svg ${PFAD}gnuplot.svg # das generierte Bild ...
