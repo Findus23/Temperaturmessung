@@ -1,5 +1,5 @@
 #!/bin/bash
-a=0
+zufall=0
 PFAD="/var/www/"
 Anzahl=0
 Summe=0
@@ -12,7 +12,7 @@ then
 		"-d") echo "" > rohdaten.csv
 			rm dygraph.csv
 			;;
-		"-h") echo -e "-d 	csv-Datei leeren \nfür weitere Informationen siehe http://lukaswiki.onpw.de/rasp"
+		"-h") echo -e "-d 	csv-Datei leeren \nfür weitere Informationen siehe http://lukaswiki.onpw.de/rasp oder https://github.com/Findus23/Temperaturmessung"
 			exit 1
 			;;
 		*) echo "unbekannter Parameter - Für Hilfe -h"
@@ -22,15 +22,15 @@ then
 fi
 while true
 do
-	#a=$(($a + $((RANDOM % 10)) - 5)) # a um eine zufällige Zahl zwischen -5 und 5 ändern
+	#zufall=$(($zufall + $((RANDOM % 10)) - 5)) # a um eine zufällige Zahl zwischen -5 und 5 ändern
 	##a=a+[Zufallszahl von 0-32767] modulo 10 (um eine Zahl von 0-10 zu bekommen) -5 (-> -5 bis 5)
-	#wert2=$a
-	#wert2=$(cut -c 1,2,3,4 /proc/loadavg) # Load messen
+	#zufall=$a
+	#load=$(cut -c 1,2,3,4 /proc/loadavg) # Load messen
 	rasp=$(/opt/vc/bin/vcgencmd measure_temp | cut -c 6,7,8,9) #Betriebstemberatur messen
-	#wert2=$(sensors |grep Core\ 0 |cut -c 18,19,20,21) #CPU-Temperatur, lm-sensors muss installiert sein, bei jedem PC anders
-	wert1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
-	wert2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
-	wert3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	#cpu=$(sensors |grep Core\ 0 |cut -c 18,19,20,21) #CPU-Temperatur, lm-sensors muss installiert sein, bei jedem PC anders
+	temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	temp2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	temp3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
 	luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 17 |grep Hum )	
 	while [ -z "$luft_roh" ] 
 	do
@@ -41,46 +41,46 @@ do
 	luft_feucht=$(echo $luft_roh | cut -c 23,24,25,26)
 	uhrzeit=$(date +%H:%M:%S) 
 	uhrzeit_dy=$(date +%Y/%m/%d\ %H:%M:%S)
-	if [ "$wert1" == "-1.250" ] # manchmal gibt der Sensor "-1.250" als Wert zurück -> diese sollen gelöscht werden 
+	if [ "$temp1" == "-1.250" ] # manchmal gibt der Sensor "-1.250" als Wert zurück -> diese sollen gelöscht werden 
 		then
-			wert1=""
+			temp1=""
 	fi
-	if [ "$wert2" == "-1.250" ]
+	if [ "$temp2" == "-1.250" ]
 		then
-			wert2=""
+			temp2=""
 	fi
-	if [ "$wert3" == "-1.250" ]
+	if [ "$temp3" == "-1.250" ]
 		then
-			wert3=""
+			temp3=""
 	fi
 #Mathematische Auswertung Anfang
-	Summe=$(echo "$Summe + $wert1" | bc -l) # mithilfe von bc den aktuellen Wert zur Summe aller Werten dazuzählen ...
+	Summe=$(echo "$Summe + $temp1" | bc -l) # mithilfe von bc den aktuellen Wert zur Summe aller Werten dazuzählen ...
 	Anzahl=$(($Anzahl +1)) # ... die Anzahl um 1 erhöhen ...
 	MW=$(echo "scale=3;$Summe / $Anzahl" | bc -l) # ... und den Mittelwert berechnen
-	if [ "$(echo "$wert1 < $min" | bc -l)" = "1" ] # Falls der aktuelle Wert kleiner als das Minimum ist ...
+	if [ "$(echo "$temp1 < $min" | bc -l)" = "1" ] # Falls der aktuelle Wert kleiner als das Minimum ist ...
 		then
-			min=$wert1								#  ... soll er zum neuen Minimum werden
+			min=$temp1								#  ... soll er zum neuen Minimum werden
 	fi
-	if [ "$(echo "$wert1 > $max" | bc -l)" = "1" ] # Wie Minimum
+	if [ "$(echo "$temp1 > $max" | bc -l)" = "1" ] # Wie Minimum
 		then
-			max=$wert1
+			max=$temp1
 	fi
 	
 #Mathematische Auswertung Ende
-	ausgabe=${uhrzeit}\,${wert1}\,${wert2}
-	ausgabe_dy=${uhrzeit_dy}\,${wert1}\,${wert2}\,${wert3}\,${luft_temp}\,${luft_feucht},${rasp}
+	ausgabe=${uhrzeit}\,${temp1}\,${temp2}
+	ausgabe_dy=${uhrzeit_dy}\,${temp1}\,${temp2}\,${temp3}\,${luft_temp}\,${luft_feucht},${rasp}
 	echo $ausgabe >>rohdaten.csv
 	echo $ausgabe_dy >>dygraph.csv
-	echo "$uhrzeit_dy	,${wert1},${wert2},${wert3},${luft_temp},${luft_feucht},${rasp}	" #Ausgabe des aktuellen Wertes im Terminal
+	echo "$uhrzeit_dy	,${temp1},${temp2},${temp3},${luft_temp},${luft_feucht},${rasp}	" #Ausgabe des aktuellen Wertes im Terminal
 	sed "s/,/ /g" rohdaten.csv >daten_gnuplot.txt #für Gnuplot die Beistriche durch Leerzeichen ersetzen 
 	echo "Uhrzeit:" >text.txt #Anzeige für Display
 	echo "$uhrzeit" >>text.txt #Anzeige für Display
 	echo "Geraetetemp 1" >>text.txt #Anzeige für Display
-	echo "$wert1" >>text.txt #Anzeige für Display
+	echo "$temp1" >>text.txt #Anzeige für Display
 	echo "Geraetetemp 2" >>text.txt #Anzeige für Display
-	echo "$wert2" >>text.txt #Anzeige für Display
+	echo "$temp2" >>text.txt #Anzeige für Display
 	echo "Aussentemperatur" >>text.txt #Anzeige für Display
-	echo "$wert3" >>text.txt #Anzeige für Display
+	echo "$temp3" >>text.txt #Anzeige für Display
 	echo "Temperatur/Luft" >>text.txt #Anzeige für Display
 	echo "$luft_temp" >>text.txt #Anzeige für Display
 	echo "Luftfeuchtigkeit" >>text.txt #Anzeige für Display
