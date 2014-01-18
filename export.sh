@@ -29,30 +29,34 @@ do
 	rasp=$(/opt/vc/bin/vcgencmd measure_temp | cut -c 6,7,8,9) #Betriebstemberatur messen
 	#cpu=$(sensors |grep Core\ 0 |cut -c 18,19,20,21) #CPU-Temperatur, lm-sensors muss installiert sein, bei jedem PC anders
 	temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	while [ "$temp1" == "-1.250" ]
+	do
+		echo "----Temp1: $temp1"
+		temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	done
 	temp2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	while [ "$temp2" == "-1.250" ]
+	do
+		echo "----Temp2: $temp2"
+		temp2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	done
 	temp3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	while [ "$temp3" == "-1.250" ]
+	do
+		echo "----Temp3: $temp3"
+		temp3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+	done
 	luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 17 |grep Hum )	
 	while [ -z "$luft_roh" ] 
 	do
+		echo "----Luft: $luft_roh"
 		luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 17 |grep Hum )
-		echo "----$luft_roh"
 	done
 	luft_temp=$(echo $luft_roh | cut -c 8,9,10,11)
 	luft_feucht=$(echo $luft_roh | cut -c 23,24,25,26)
 	uhrzeit=$(date +%H:%M:%S) 
 	uhrzeit_dy=$(date +%Y/%m/%d\ %H:%M:%S)
-	if [ "$temp1" == "-1.250" ] # manchmal gibt der Sensor "-1.250" als Wert zurück -> diese sollen gelöscht werden 
-		then
-			temp1=""
-	fi
-	if [ "$temp2" == "-1.250" ]
-		then
-			temp2=""
-	fi
-	if [ "$temp3" == "-1.250" ]
-		then
-			temp3=""
-	fi
+
 #Mathematische Auswertung Anfang
 	Summe=$(echo "$Summe + $temp1" | bc -l) # mithilfe von bc den aktuellen Wert zur Summe aller Werten dazuzählen ...
 	Anzahl=$(($Anzahl +1)) # ... die Anzahl um 1 erhöhen ...
