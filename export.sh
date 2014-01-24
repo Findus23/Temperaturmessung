@@ -6,6 +6,7 @@ Summe=0
 min=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) # Sowohl Minimum als auch Maximum auf die aktuelle Temperatur setzen
 max=$min
 r=0 # Backup-Zahl auf Null setzen
+IFS="; " #Spezial-Variable, enthält Trennzeichen zum Trennen von Luftdruck und -temperatur
 if [ $1 ]
 then
 	case "$1" in
@@ -54,6 +55,10 @@ do
 	done
 	luft_temp=$(echo $luft_roh | cut -c 8,9,10,11)
 	luft_feucht=$(echo $luft_roh | cut -c 23,24,25,26)
+	druck_roh=$(sudo python Fremddateien/Adafruit_BMP085_auswertung.py)
+	set -- $druck_roh #Zerlegen mithilfe von IFS (siehe ganz oben)
+	temp_druck=$1
+	druck=$2
 	uhrzeit=$(date +%H:%M:%S) 
 	uhrzeit_dy=$(date +%Y/%m/%d\ %H:%M:%S)
 
@@ -72,27 +77,29 @@ do
 	
 #Mathematische Auswertung Ende
 	ausgabe=${uhrzeit}\,${temp1}\,${temp2}
-	ausgabe_dy=${uhrzeit_dy}\,${temp1}\,${temp2}\,${temp3}\,${luft_temp}\,${luft_feucht},${rasp}
+	ausgabe_dy=${uhrzeit_dy}\,${temp1}\,${temp2}\,${temp3}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp}
 	echo $ausgabe >>rohdaten.csv
 	echo $ausgabe_dy >>dygraph.csv
-	echo "$uhrzeit_dy	,${temp1},${temp2},${temp3},${luft_temp},${luft_feucht},${rasp}	" #Ausgabe des aktuellen Wertes im Terminal
-	sed "s/,/ /g" rohdaten.csv >daten_gnuplot.txt #für Gnuplot die Beistriche durch Leerzeichen ersetzen 
-	echo "Uhrzeit:" >text.txt #Anzeige für Display
-	echo "$uhrzeit" >>text.txt #Anzeige für Display
-	echo "Geraetetemp 1" >>text.txt #Anzeige für Display
-	echo "$temp1" >>text.txt #Anzeige für Display
-	echo "Geraetetemp 2" >>text.txt #Anzeige für Display
-	echo "$temp2" >>text.txt #Anzeige für Display
-	echo "Aussentemperatur" >>text.txt #Anzeige für Display
-	echo "$temp3" >>text.txt #Anzeige für Display
-	echo "Temperatur/Luft" >>text.txt #Anzeige für Display
-	echo "$luft_temp" >>text.txt #Anzeige für Display
-	echo "Luftfeuchtigkeit" >>text.txt #Anzeige für Display
-	echo "$luft_feucht" >>text.txt #Anzeige für Display
-	echo "Prozessor" >>text.txt #Anzeige für Display
-	echo "$rasp" >>text.txt #Anzeige für Display
+	echo "$uhrzeit_dy	${temp1},${temp2},${temp3},${luft_temp},${luft_feucht},${druck},${temp_druck},${rasp}" #Ausgabe des aktuellen Wertes im Terminal
+#	sed "s/,/ /g" dygraph.csv >daten_gnuplot.txt #für Gnuplot die Beistriche durch Leerzeichen ersetzen 
+	echo "Uhrzeit:" >text.txt #Anzeigen für Display 
+	echo "$uhrzeit" >>text.txt
+	echo "Geraetetemp 1" >>text.txt
+	echo "$temp1" >>text.txt
+	echo "Geraetetemp 2" >>text.txt
+	echo "$temp2" >>text.txt
+	echo "Aussentemperatur" >>text.txt
+	echo "$temp3" >>text.txt
+	echo "Temperatur/Luft" >>text.txt
+	echo "$luft_temp" >>text.txt
+	echo "Temp./Druck" >>text.txt
+	echo "$luft_feucht" >>text.txt
+	echo "Luftdruck" >>text.txt
+	echo "$luft_feucht" >>text.txt
+	echo "Prozessor" >>text.txt
+	echo "$rasp" >>text.txt
 #	./transpose.sh #anderes Skript starten, welches die Daten für Highchart vorbereitet
-#	gnuplot Einstellungen # Gnuplot starten
+#	gnuplot Einstellungen.plt # Gnuplot starten
 #	sudo cp gnuplot.svg ${PFAD}gnuplot.svg # das generierte Bild ...
 #	sudo cp daten_transformiert.txt ${PFAD}daten_transformiert.txt # ... und die Tabelle für Highchart in den Webordner kopieren
 	sudo cp dygraph.csv ${PFAD}dygraph.csv
