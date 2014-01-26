@@ -29,7 +29,7 @@ do
 	#load=$(cut -c 1,2,3,4 /proc/loadavg) # Load messen
 	rasp=$(/opt/vc/bin/vcgencmd measure_temp | cut -c 6,7,8,9) #Betriebstemberatur messen
 	#cpu=$(sensors |grep Core\ 0 |cut -c 18,19,20,21) #CPU-Temperatur, lm-sensors muss installiert sein, bei jedem PC anders
-	temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Temperatursensor auf Steckbrett
+	temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b53835/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Temperatursensor auf Steckbrett
 	while [ "$temp1" == "-1.250" ]
 	do
 		echo "----Temp1: $temp1"
@@ -75,7 +75,7 @@ do
 #	fi
 #	
 #Mathematische Auswertung Ende
-	ausgabe=${uhrzeit_dy}\,${temp1}\,${temp2}\,${temp3}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp}
+	ausgabe=${uhrzeit}\,${temp1}\,${temp2}\,${temp3}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp}
 	echo $ausgabe >>dygraph.csv
 	echo "$uhrzeit	${temp1},${temp2},${temp3},${luft_temp},${luft_feucht},${druck},${temp_druck},${rasp}" #Ausgabe des aktuellen Wertes im Terminal
 	echo "Uhrzeit:" >text.txt #Anzeigen für Display 
