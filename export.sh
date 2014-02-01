@@ -47,6 +47,12 @@ do
 		echo "----Temp3: $temp3"
 		temp3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
 	done
+	temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Außensensor
+	while [ "$temp3" == "-1.250" ]
+	do
+		echo "----Temp4: $temp4"
+		temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
+	done
 	luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 17 |grep Hum )	# Rohdaten des Luftfeuchtigkeits-Sensors
 	while [ -z "$luft_roh" ] 
 	do
@@ -75,23 +81,27 @@ do
 #	fi
 #	
 #Mathematische Auswertung Ende
-	ausgabe=${uhrzeit}\,${temp1}\,${temp2}\,${temp3}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp}
+	ausgabe=${uhrzeit}\,${temp1}\,${temp2}\,${temp3}\,${temp4}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp}
 	echo $ausgabe >>dygraph.csv
-	echo "$uhrzeit	${temp1},${temp2},${temp3},${luft_temp},${luft_feucht},${druck},${temp_druck},${rasp}" #Ausgabe des aktuellen Wertes im Terminal
+	echo "$uhrzeit	${temp1},${temp2},${temp3},${temp4},${luft_temp},${luft_feucht},${druck},${temp_druck},${rasp}" #Ausgabe des aktuellen Wertes im Terminal
 	echo "Uhrzeit:" >text.txt #Anzeigen für Display 
 	echo "$uhrzeit" >>text.txt
-	echo "Geraetetemp 1" >>text.txt
+	echo "Innentemperatur" >>text.txt
 	echo "$temp1" >>text.txt
-	echo "Geraetetemp 2" >>text.txt
+	echo "Geraetetemp 1" >>text.txt
 	echo "$temp2" >>text.txt
 	echo "Aussentemperatur" >>text.txt
 	echo "$temp3" >>text.txt
+	echo "Geraetetemp 2" >>text.txt
+	echo "$temp4" >>text.txt
 	echo "Temperatur/Luft" >>text.txt
 	echo "$luft_temp" >>text.txt
+	echo "Luftfeuchte" >>text.txt
+	echo "$luft_feucht" >>text.txt
 	echo "Temp./Druck" >>text.txt
-	echo "$luft_feucht" >>text.txt
+	echo "$temp_druck" >>text.txt
 	echo "Luftdruck" >>text.txt
-	echo "$luft_feucht" >>text.txt
+	echo "$druck" >>text.txt
 	echo "Prozessor" >>text.txt
 	echo "$rasp" >>text.txt
 	sudo cp dygraph.csv ${PFAD}dygraph.csv
@@ -99,7 +109,7 @@ do
 	r=$(($r +1)) # Anzahl der Durchläufe zählen
 	if [ "$r" == "1000" ] # und alle 1000 Durchgänge Sicherung anfertigen
 	then
-		cp dygraph.csv text.txt backup/
+		cp dygraph.csv dygraph.csv.bak
 		echo "Backup"
 		r=0
 	fi
