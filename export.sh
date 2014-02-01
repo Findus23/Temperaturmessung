@@ -10,8 +10,7 @@ IFS="; " #Spezial-Variable, enthält Trennzeichen zum Trennen von Luftdruck und 
 if [ $1 ] # if- und case- Abfrage für Startparameter
 then
 	case "$1" in
-		"-d") echo "" > rohdaten.csv
-			rm dygraph.csv
+		"-d") rm dygraph.csv
 			;;
 		"-h") echo -e "-d 	csv-Datei leeren \nfür weitere Informationen siehe http://lukaswiki.onpw.de/rasp oder https://github.com/Findus23/Temperaturmessung"
 			exit 1
