@@ -107,7 +107,7 @@ try:
 		while Seite <= Seiten: # so lange durchlaufen bis man bei der letzten Seite angekommen ist -> dann von vorne beginnen
 			zeile1 = (Seite * 2) - 2 # Die obere Zeile ist das Doppelte der Seiten anzahl - 2 (!!! Array fängt bei 0 zu zählen an !!!)
 			zeile2 = (Seite * 2) - 1 # Die untere Zeile ist das Doppelte der Seiten anzahl - 1 (!!! Array fängt bei 0 zu zählen an !!!)
-			datei = open("text.txt", "r") # Datei text.txt zum Lesen oeffnen
+			datei = open("/home/pi/Temperaturmessung/text.txt", "r") # Datei text.txt zum Lesen oeffnen
 			inhalt = datei.readlines() # alle Zeile lesen und in Array "inhalt" speichern
 			datei.close() # Datei schliessen
 			oben = inhalt[zeile1] # die Richtigen Zeilen aus dem Array speichern

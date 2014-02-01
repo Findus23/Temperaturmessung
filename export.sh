@@ -10,7 +10,7 @@ IFS="; " #Spezial-Variable, enthält Trennzeichen zum Trennen von Luftdruck und 
 if [ $1 ] # if- und case- Abfrage für Startparameter
 then
 	case "$1" in
-		"-d") rm dygraph.csv
+		"-d")rm /home/pi/Temperaturmessung/dygraph.csv
 			;;
 		"-h") echo -e "-d 	csv-Datei leeren \nfür weitere Informationen siehe http://lukaswiki.onpw.de/rasp oder https://github.com/Findus23/Temperaturmessung"
 			exit 1
@@ -52,15 +52,15 @@ do
 		echo "----Temp4: $temp4"
 		temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
 	done
-	luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 17 |grep Hum )	# Rohdaten des Luftfeuchtigkeits-Sensors
+	luft_roh=$(sudo /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT 2302 17 |grep Hum )	# Rohdaten des Luftfeuchtigkeits-Sensors
 	while [ -z "$luft_roh" ] 
 	do
 		echo "----Luft: $luft_roh"
-		luft_roh=$(sudo ./Fremddateien/Adafruit_DHT 2302 17 |grep Hum )
+		luft_roh=$(sudo /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT 2302 17 |grep Hum )
 	done
 	luft_temp=$(echo $luft_roh | cut -c 8,9,10,11) # Luftfeuchtigkeit-Sensor auftrennen
 	luft_feucht=$(echo $luft_roh | cut -c 23,24,25,26)
-	druck_roh=$(sudo python Fremddateien/Adafruit_BMP085_auswertung.py) # Rohdaten des Luftdruck-Sensors
+	druck_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_BMP085_auswertung.py) # Rohdaten des Luftdruck-Sensors
 	set -- $druck_roh #Zerlegen mithilfe von IFS (siehe ganz oben)
 	temp_druck=$1
 	druck=$2
@@ -81,34 +81,34 @@ do
 #	
 #Mathematische Auswertung Ende
 	ausgabe=${uhrzeit}\,${temp1}\,${temp2}\,${temp3}\,${temp4}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp}
-	echo $ausgabe >>dygraph.csv
+	echo $ausgabe >>/home/pi/Temperaturmessung/dygraph.csv
 	echo "$uhrzeit	${temp1},${temp2},${temp3},${temp4},${luft_temp},${luft_feucht},${druck},${temp_druck},${rasp}" #Ausgabe des aktuellen Wertes im Terminal
-	echo "Uhrzeit:" >text.txt #Anzeigen für Display 
-	echo "$uhrzeit" >>text.txt
-	echo "Innentemperatur" >>text.txt
-	echo "$temp1" >>text.txt
-	echo "Geraetetemp 1" >>text.txt
-	echo "$temp2" >>text.txt
-	echo "Aussentemperatur" >>text.txt
-	echo "$temp3" >>text.txt
-	echo "Geraetetemp 2" >>text.txt
-	echo "$temp4" >>text.txt
-	echo "Temperatur/Luft" >>text.txt
-	echo "$luft_temp" >>text.txt
-	echo "Luftfeuchte" >>text.txt
-	echo "$luft_feucht" >>text.txt
-	echo "Temp./Druck" >>text.txt
-	echo "$temp_druck" >>text.txt
-	echo "Luftdruck" >>text.txt
-	echo "$druck" >>text.txt
-	echo "Prozessor" >>text.txt
-	echo "$rasp" >>text.txt
-	sudo cp dygraph.csv ${PFAD}dygraph.csv
+	echo "Uhrzeit:" >/home/pi/Temperaturmessung/text.txt #Anzeigen für Display 
+	echo "$uhrzeit" >>/home/pi/Temperaturmessung/text.txt
+	echo "Innentemperatur" >>/home/pi/Temperaturmessung/text.txt
+	echo "$temp1" >>/home/pi/Temperaturmessung/text.txt
+	echo "Geraetetemp 1" >>/home/pi/Temperaturmessung/text.txt
+	echo "$temp2" >>/home/pi/Temperaturmessung/text.txt
+	echo "Aussentemperatur" >>/home/pi/Temperaturmessung/text.txt
+	echo "$temp3" >>/home/pi/Temperaturmessung/text.txt
+	echo "Geraetetemp 2" >>/home/pi/Temperaturmessung/text.txt
+	echo "$temp4" >>/home/pi/Temperaturmessung/text.txt
+	echo "Temperatur/Luft" >>/home/pi/Temperaturmessung/text.txt
+	echo "$luft_temp" >>/home/pi/Temperaturmessung/text.txt
+	echo "Luftfeuchte" >>/home/pi/Temperaturmessung/text.txt
+	echo "$luft_feucht" >>/home/pi/Temperaturmessung/text.txt
+	echo "Temp./Druck" >>/home/pi/Temperaturmessung/text.txt
+	echo "$temp_druck" >>/home/pi/Temperaturmessung/text.txt
+	echo "Luftdruck" >>/home/pi/Temperaturmessung/text.txt
+	echo "$druck" >>/home/pi/Temperaturmessung/text.txt
+	echo "Prozessor" >>/home/pi/Temperaturmessung/text.txt
+	echo "$rasp" >>/home/pi/Temperaturmessung/text.txt
+	sudo cp /home/pi/Temperaturmessung/dygraph.csv ${PFAD}dygraph.csv
 	sleep 8 # kurz warten
 	r=$(($r +1)) # Anzahl der Durchläufe zählen
 	if [ "$r" == "1000" ] # und alle 1000 Durchgänge Sicherung anfertigen
 	then
-		cp dygraph.csv dygraph.csv.bak
+		cp /home/pi/Temperaturmessung/dygraph.csv /home/pi/Temperaturmessung/dygraph.csv.bak
 		echo "Backup"
 		r=0
 	fi
