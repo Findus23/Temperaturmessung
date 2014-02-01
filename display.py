@@ -3,6 +3,7 @@
 # Originales Programm von http://www.schnatterente.net/technik/raspberry-pi-32-zeichen-hitachi-hd44780-display
 # von mir modifiziert (Anzeige ausgelagert, ergänzt, um Text aus einer Datei anzuzeigen)
 import time
+import sys
 import RPi.GPIO as GPIO
 
 # Zuordnung der GPIO Pins (ggf. anpassen)
@@ -98,20 +99,29 @@ def lcd_byte(bits, mode):
 	time.sleep(E_DELAY)   
 
 #Beginn der Ergaenzung
-main() # Initialisierung
-Seiten = 9 # hier kann man die Anzahl der Seiten ändern
-while True: # endlos wiederholen
-	Seite = 1 # von Vorne zu zählen beginnen
-	while Seite <= Seiten: # so lange durchlaufen bis man bei der letzten Seite angekommen ist -> dann von vorne beginnen
-		zeile1 = (Seite * 2) - 2 # Die obere Zeile ist das Doppelte der Seiten anzahl - 2 (!!! Array fängt bei 0 zu zählen an !!!)
-		zeile2 = (Seite * 2) - 1 # Die untere Zeile ist das Doppelte der Seiten anzahl - 1 (!!! Array fängt bei 0 zu zählen an !!!)
-		datei = open("text.txt", "r") # Datei text.txt zum Lesen oeffnen
-		inhalt = datei.readlines() # alle Zeile lesen und in Array "inhalt" speichern
-		datei.close() # Datei schliessen
-		oben = inhalt[zeile1] # die Richtigen Zeilen aus dem Array speichern
-		unten = inhalt[zeile2] # die Richtigen Zeilen aus dem Array speichern
-		oben = oben[:-1] # Steuerzeichen am Ende loeschen (erzeugt ein komisches Symbol (|n) am Display)
-		unten = unten[:-1] # Steuerzeichen am Ende loeschen
-		anzeige() # oben und unten anzeigen
-		time.sleep(2) # 2 Sekunden warten
-		Seite += 1 # Seite um 1 erhöhen
+try: 
+	main() # Initialisierung
+	Seiten = 10  # hier kann man die Anzahl der Seiten ändern
+	while True: # endlos wiederholen
+		Seite = 1 # von Vorne zu zählen beginnen
+		while Seite <= Seiten: # so lange durchlaufen bis man bei der letzten Seite angekommen ist -> dann von vorne beginnen
+			zeile1 = (Seite * 2) - 2 # Die obere Zeile ist das Doppelte der Seiten anzahl - 2 (!!! Array fängt bei 0 zu zählen an !!!)
+			zeile2 = (Seite * 2) - 1 # Die untere Zeile ist das Doppelte der Seiten anzahl - 1 (!!! Array fängt bei 0 zu zählen an !!!)
+			datei = open("text.txt", "r") # Datei text.txt zum Lesen oeffnen
+			inhalt = datei.readlines() # alle Zeile lesen und in Array "inhalt" speichern
+			datei.close() # Datei schliessen
+			oben = inhalt[zeile1] # die Richtigen Zeilen aus dem Array speichern
+			unten = inhalt[zeile2] # die Richtigen Zeilen aus dem Array speichern
+			oben = oben[:-1] # Steuerzeichen am Ende loeschen (erzeugt ein komisches Symbol (|n) am Display)
+			unten = unten[:-1] # Steuerzeichen am Ende loeschen
+			anzeige() # oben und unten anzeigen
+			time.sleep(2) # 2 Sekunden warten
+			Seite += 1 # Seite um 1 erhöhen
+except KeyboardInterrupt: 
+	oben = ""
+	unten = ""
+	anzeige()
+	GPIO.cleanup()
+	print "Programm beendet"
+	sys.exit() 
+
