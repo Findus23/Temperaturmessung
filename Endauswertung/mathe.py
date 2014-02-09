@@ -28,22 +28,51 @@ def minmax(spalte):
 
 offnen("vorbereitet.csv")
 print "------Mittelwerte------"
-print "Innentemperatur:\t%0.2f" % mittelwert(temp1)
-print "Gerätetemperatur 1:\t%0.2f" % mittelwert(temp2)
-print "Außentemperatur:\t%0.2f" % mittelwert(temp3)
-print "Gerätetemperatur 2:\t%0.2f" % mittelwert(temp4)
-print "Temperatur (Luft):\t%0.2f" % mittelwert(luft_temp)
-print "Luftfeuchtigkeit:\t%0.2f" % mittelwert(luft_feucht)
-print "Luftdruck:\t\t%0.2f" % mittelwert(druck)
-print "Temperatur (Druck):\t%0.2f" % mittelwert(temp_druck)
-print "Prozessor:\t\t%0.2f" % mittelwert(rasp)
+mw_temp1 = mittelwert(temp1)
+mw_temp2 = mittelwert(temp2)
+mw_temp3 = mittelwert(temp3)
+mw_temp4 = mittelwert(temp4)
+mw_luft_temp = mittelwert(luft_temp)
+mw_luft_feucht = mittelwert(luft_feucht)
+mw_druck = mittelwert(druck)
+mw_temp_druck = mittelwert(temp_druck)
+mw_rasp = mittelwert(rasp)
+
+print "Innentemperatur:\t%0.2f" % mw_temp1
+print "Gerätetemperatur 1:\t%0.2f" % mw_temp2
+print "Außentemperatur:\t%0.2f" % mw_temp3
+print "Gerätetemperatur 2:\t%0.2f" % mw_temp4
+print "Temperatur (Luft):\t%0.2f" % mw_luft_temp
+print "Luftfeuchtigkeit:\t%0.2f" % mw_luft_feucht
+print "Luftdruck:\t\t%0.2f" % mw_druck
+print "Temperatur (Druck):\t%0.2f" % mw_temp_druck
+print "Prozessor:\t\t%0.2f" % mw_rasp
 print "------Minimum-Maximum------"
-print "Innentemperatur:\t" + str(minmax(temp1)[0]) + "\t" + str(minmax(temp1)[1])
-print "Gerätetemperatur 1:\t" + str(minmax(temp2)[0]) + "\t" + str(minmax(temp2)[1])
-print "Außentemperatur:\t" + str(minmax(temp3)[0]) + "\t" + str(minmax(temp3)[1])
-print "Gerätetemperatur 2:\t" + str(minmax(temp4)[0]) + "\t" + str(minmax(temp4)[1])
-print "Temperatur (Luft):\t" + str(minmax(luft_temp)[0]) + "\t" + str(minmax(luft_temp)[1])
-print "Luftfeuchtigkeit:\t" + str(minmax(luft_feucht)[0]) + "\t" + str(minmax(luft_feucht)[1])
-print "Luftdruck:\t\t" + str(minmax(druck)[0]) + "\t" + str(minmax(druck)[1])
-print "Temperatur (Druck):\t" + str(minmax(temp_druck)[0]) + "\t" + str(minmax(temp_druck)[1])
-print "Prozessor:\t\t" + str(minmax(rasp)[0]) + "\t" + str(minmax(rasp)[1])
+min_temp1 = minmax(temp1)[0]
+max_temp1 = minmax(temp1)[1]
+min_temp2 = minmax(temp2)[0]
+max_temp2 = minmax(temp2)[1]
+min_temp3 = minmax(temp3)[0]
+max_temp3 = minmax(temp3)[1]
+min_temp4 = minmax(temp4)[0]
+max_temp4 = minmax(temp4)[1]
+min_luft_temp = minmax(luft_temp)[0]
+max_luft_temp = minmax(luft_temp)[1]
+min_luft_feucht = minmax(luft_feucht)[0]
+max_luft_feucht = minmax(luft_feucht)[1]
+min_druck = minmax(druck)[0]
+max_druck = minmax(druck)[1]
+min_temp_druck = minmax(temp_druck)[0]
+max_temp_druck = minmax(temp_druck)[1]
+min_rasp = minmax(rasp)[0]
+max_rasp = minmax(rasp)[0]
+
+print "Innentemperatur:\t" + str(min_temp1) + "\t" + str(max_temp1)
+print "Gerätetemperatur 1:\t" + str(min_temp2) + "\t" + str(max_temp2)
+print "Außentemperatur:\t" + str(min_temp3) + "\t" + str(max_temp3)
+print "Gerätetemperatur 2:\t" + str(min_temp4) + "\t" + str(max_temp4)
+print "Temperatur (Luft):\t" + str(min_luft_temp) + "\t" + str(max_luft_temp)
+print "Luftfeuchtigkeit:\t" + str(min_luft_feucht) + "\t" + str(max_luft_feucht)
+print "Luftdruck:\t\t" + str(min_druck) + "\t" + str(max_druck)
+print "Temperatur (Druck):\t" + str(min_temp_druck) + "\t" + str(max_temp_druck)
+print "Prozessor:\t\t" + str(min_rasp) + "\t" + str(max_rasp)
