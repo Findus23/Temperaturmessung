@@ -1,0 +1,21 @@
+------Mittelwerte------
+Innentemperatur:	22.47
+Gerätetemperatur 1:	22.50
+Außentemperatur:	22.23
+Gerätetemperatur 2:	22.46
+Temperatur (Luft):	22.64
+Luftfeuchtigkeit:	29.91
+Luftdruck:		984.94
+Temperatur (Druck):	22.60
+Prozessor:		45.86
+------Minimum-Maximum------
+Innentemperatur:	19.0	22.687
+Gerätetemperatur 1:	16.25	23.062
+Außentemperatur:	16.5	22.875
+Gerätetemperatur 2:	16.312	23.125
+Temperatur (Luft):	18.7	23.1
+Luftfeuchtigkeit:	23.9	28.9
+Luftdruck:		986.6	985.2
+Temperatur (Druck):	18.7	23.1
+Prozessor:		30.4	30.4
+2.46540968762
