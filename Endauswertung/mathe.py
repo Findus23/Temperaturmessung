@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 import csv
+import math
 def offnen(datei):
 	with open(datei) as filein:
 		reader =csv.reader(filein, quoting=csv.QUOTE_NONNUMERIC)
 		global temp1,temp2,temp3,temp4,luft_temp,luft_feucht,druck,temp_druck,rasp
-		temp1,temp2,temp3,temp4,luft_temp,luft_feucht,druck,temp_druck,rasp = zip(*reader)
+		temp1,temp2,temp3,temp4,luft_temp,luft_feucht,druck,temp_druck,rasp = list(zip(*reader))
 
 def mittelwert(spalte):
 	summe = 0
@@ -25,9 +26,8 @@ def minmax(spalte):
 			mini = wert
 	return (mini,maxi)
 
-
 offnen("vorbereitet.csv")
-print "------Mittelwerte------"
+print("------Mittelwerte------")
 mw_temp1 = mittelwert(temp1)
 mw_temp2 = mittelwert(temp2)
 mw_temp3 = mittelwert(temp3)
@@ -38,16 +38,16 @@ mw_druck = mittelwert(druck)
 mw_temp_druck = mittelwert(temp_druck)
 mw_rasp = mittelwert(rasp)
 
-print "Innentemperatur:\t%0.2f" % mw_temp1
-print "Gerätetemperatur 1:\t%0.2f" % mw_temp2
-print "Außentemperatur:\t%0.2f" % mw_temp3
-print "Gerätetemperatur 2:\t%0.2f" % mw_temp4
-print "Temperatur (Luft):\t%0.2f" % mw_luft_temp
-print "Luftfeuchtigkeit:\t%0.2f" % mw_luft_feucht
-print "Luftdruck:\t\t%0.2f" % mw_druck
-print "Temperatur (Druck):\t%0.2f" % mw_temp_druck
-print "Prozessor:\t\t%0.2f" % mw_rasp
-print "------Minimum-Maximum------"
+print("Innentemperatur:\t%0.2f" % mw_temp1)
+print("Gerätetemperatur 1:\t%0.2f" % mw_temp2)
+print("Außentemperatur:\t%0.2f" % mw_temp3)
+print("Gerätetemperatur 2:\t%0.2f" % mw_temp4)
+print("Temperatur (Luft):\t%0.2f" % mw_luft_temp)
+print("Luftfeuchtigkeit:\t%0.2f" % mw_luft_feucht)
+print("Luftdruck:\t\t%0.2f" % mw_druck)
+print("Temperatur (Druck):\t%0.2f" % mw_temp_druck)
+print("Prozessor:\t\t%0.2f" % mw_rasp)
+print("------Minimum-Maximum------")
 min_temp1 = minmax(temp1)[0]
 max_temp1 = minmax(temp1)[1]
 min_temp2 = minmax(temp2)[0]
@@ -67,12 +67,23 @@ max_temp_druck = minmax(temp_druck)[1]
 min_rasp = minmax(rasp)[0]
 max_rasp = minmax(rasp)[0]
 
-print "Innentemperatur:\t" + str(min_temp1) + "\t" + str(max_temp1)
-print "Gerätetemperatur 1:\t" + str(min_temp2) + "\t" + str(max_temp2)
-print "Außentemperatur:\t" + str(min_temp3) + "\t" + str(max_temp3)
-print "Gerätetemperatur 2:\t" + str(min_temp4) + "\t" + str(max_temp4)
-print "Temperatur (Luft):\t" + str(min_luft_temp) + "\t" + str(max_luft_temp)
-print "Luftfeuchtigkeit:\t" + str(min_luft_feucht) + "\t" + str(max_luft_feucht)
-print "Luftdruck:\t\t" + str(min_druck) + "\t" + str(max_druck)
-print "Temperatur (Druck):\t" + str(min_temp_druck) + "\t" + str(max_temp_druck)
-print "Prozessor:\t\t" + str(min_rasp) + "\t" + str(max_rasp)
+print("Innentemperatur:\t" + str(min_temp1) + "\t" + str(max_temp1))
+print("Gerätetemperatur 1:\t" + str(min_temp2) + "\t" + str(max_temp2))
+print("Außentemperatur:\t" + str(min_temp3) + "\t" + str(max_temp3))
+print("Gerätetemperatur 2:\t" + str(min_temp4) + "\t" + str(max_temp4))
+print("Temperatur (Luft):\t" + str(min_luft_temp) + "\t" + str(max_luft_temp))
+print("Luftfeuchtigkeit:\t" + str(min_luft_feucht) + "\t" + str(max_luft_feucht))
+print("Luftdruck:\t\t" + str(min_druck) + "\t" + str(max_druck))
+print("Temperatur (Druck):\t" + str(min_temp_druck) + "\t" + str(max_temp_druck))
+print("Prozessor:\t\t" + str(min_rasp) + "\t" + str(max_rasp))
+
+n = 0
+summe = 0
+for wert in temp1:
+	zwischen = wert - mw_temp1
+	z_quadrat = zwischen * zwischen
+	summe = summe + z_quadrat
+	n += 1
+emp_roh = summe / n
+emp = math.sqrt(emp_roh)
+print(emp)
