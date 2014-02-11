@@ -3,22 +3,22 @@ import csv
 import math
 
 def offnen(datei):
-	with open(datei) as filein:
+	with open(datei) as filein: 
 		reader =csv.reader(filein, quoting=csv.QUOTE_NONNUMERIC)
-		global temp1,temp2,temp3,temp4,luft_temp,luft_feucht,druck,temp_druck,rasp
-		temp1,temp2,temp3,temp4,luft_temp,luft_feucht,druck,temp_druck,rasp = list(zip(*reader))
+		global liste # Liste außerhalb von Funtion nutzen
+		liste = list(zip(*reader)) # = [temp1,temp2,temp3,temp4,luft_temp,luft_feucht,druck,temp_druck,rasp]
 
 def mittelwert(spalte):
-	summe = 0
-	anzahl = 0
+	summe = 0 
+	anzahl = 0 # Anzahl der Messwerte
 	for wert in spalte:
-		summe = summe + wert
-		anzahl += 1
+		summe = summe + wert # zur bisherigen Summe addieren
+		anzahl += 1 
 	mittelwert = summe / anzahl
 	return mittelwert
 
 def minmax(spalte):
-	mini = spalte[0]
+	mini = spalte[0] #Minimum auf ersten Wert setzen
 	maxi = spalte[0]
 	for wert in spalte:
 		if wert < mini:
@@ -38,16 +38,15 @@ def standardabweichung(spalte,mw):
 	return stab
 	
 offnen("vorbereitet.csv")
-liste = [temp1,temp2,temp3,temp4,luft_temp,luft_feucht,druck,temp_druck,rasp]
 namen = ["Innentemperatur", "Gerätetemperatur 1", "Außentemperatur", "Gerätetemperatur 2", "Temperatur (Luft)", "Luftfeuchtigkeit", "Luftdruck", "Temperatur (Druck)", "Prozessor"]
 print("------Mittelwerte------")
-mittelwerte = []
+mittelwerte = [] # leere Liste erstellen
 for spalte in liste:
-	mw = mittelwert(spalte)
-	mittelwerte.append(mw)
-mittelausgabe = zip(namen,mittelwerte)
+	mw = mittelwert(spalte) #jeden MW ausrechnen ...
+	mittelwerte.append(mw) # ... und an die Liste anhängen
+mittelausgabe = zip(namen,mittelwerte) # in Tupel umwandeln [(Innentemperatur, 25), (Außentemperatur,8)]
 for name,mittelwert in mittelausgabe:
-	print(name + ":\t%0.2f" % mittelwert)
+	print(name + ":\t%0.2f" % mittelwert) # jedes Tupel ausgeben
 
 print("------Minimum-Maximum------")
 minima = []
@@ -64,7 +63,7 @@ for name,minimum,maximum in minmaxausgabe:
 print("------Standardabweichung------")
 standardabweichungen=[]
 for spalte in liste:
-	abweichung = standardabweichung(spalte,mittelwerte[liste.index(spalte)])
+	abweichung = standardabweichung(spalte,mittelwerte[liste.index(spalte)]) #Mittelwert über Stelle in Liste herausfinden
 	standardabweichungen.append(abweichung)
 stabausgabe = zip(namen,standardabweichungen)
 for name,abweichung in stabausgabe:
