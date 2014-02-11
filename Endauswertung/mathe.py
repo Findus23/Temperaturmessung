@@ -3,17 +3,17 @@ import csv
 import math
 
 def offnen(datei):
-	with open(datei) as filein: 
+	with open(datei) as filein:
 		reader =csv.reader(filein, quoting=csv.QUOTE_NONNUMERIC)
 		global liste # Liste außerhalb von Funtion nutzen
 		liste = list(zip(*reader)) # = [temp1,temp2,temp3,temp4,luft_temp,luft_feucht,druck,temp_druck,rasp]
 
 def mittelwert(spalte):
-	summe = 0 
+	summe = 0
 	anzahl = 0 # Anzahl der Messwerte
 	for wert in spalte:
 		summe = summe + wert # zur bisherigen Summe addieren
-		anzahl += 1 
+		anzahl += 1
 	mittelwert = summe / anzahl
 	return mittelwert
 
@@ -36,7 +36,7 @@ def standardabweichung(spalte,mw):
 		n += 1
 	stab = math.sqrt(summe / n)
 	return stab
-	
+
 offnen("vorbereitet.csv")
 namen = ["Innentemperatur", "Gerätetemperatur 1", "Außentemperatur", "Gerätetemperatur 2", "Temperatur (Luft)", "Luftfeuchtigkeit", "Luftdruck", "Temperatur (Druck)", "Prozessor"]
 print("------Mittelwerte------")
@@ -58,7 +58,7 @@ for spalte in liste:
 	minima.append(mini)
 	maxima.append(maxi)
 minmaxausgabe = zip(namen,minima,maxima)
-for name,minimum,maximum in minmaxausgabe:
+for name,minimum,maximum in minmaxausgabe: 
 	print(name + ":\t" + str(minimum) + "\t" + str(maximum))
 print("------Standardabweichung------")
 standardabweichungen=[]
