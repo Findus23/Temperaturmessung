@@ -17,5 +17,14 @@ Temperatur (Luft):	18.7	23.1
 Luftfeuchtigkeit:	23.9	28.9
 Luftdruck:		986.6	985.2
 Temperatur (Druck):	18.7	23.1
-Prozessor:		30.4	30.4
-2.46540968762
+Prozessor:		30.4	48.2
+------Standardabweichung------
+Innentemperatur:	2.47
+Gerätetemperatur 1:	2.33
+Außentemperatur:	1.51
+Gerätetemperatur 2:	1.65
+Temperatur (Luft):	0.90
+Luftfeuchtigkeit:	1.74
+Luftdruck:		0.48
+Temperatur (Druck):	0.90
+Prozessor:		2.13
