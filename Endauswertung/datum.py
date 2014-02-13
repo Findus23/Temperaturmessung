@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime # aus dem Modul datetime Datentyp datetime (Datum und Zeit) importieren
 
-format = "%Y/%m/%d %H:%M:%S"
-
 von_roh = "2014/02/01 18:12:42"
 von = datetime.strptime(von_roh, format)
 bis_roh = "2014/02/01 22:1:00"
