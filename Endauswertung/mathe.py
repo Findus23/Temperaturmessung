@@ -4,8 +4,9 @@ import math
 from datetime import datetime # aus dem Modul datetime Datentyp datetime (Datum und Zeit) importieren
 bis_roh = "2014/02/01 22:1:00"
 
-namen = ["Innentemperatur", "Gerätetemperatur 1", "Außentemperatur", "Gerätetemperatur 2", "Temperatur (Luft)", "Luftfeuchtigkeit", "Luftdruck", "Temperatur (Druck)", "Prozessor"]
+namen = ["Innentemperatur", "Gerätetemperatur 1", "Außentemperatur", "Gerätetemperatur 2", "Temperatur (Luft)", "Luftfeuchtigkeit", "Luftdruck\t", "Temperatur (Druck)", "Prozessor\t"]
 format = "%Y/%m/%d %H:%M:%S"
+eingabeformat = "%d.%m.%y %H:%M:%S"
 von_roh = "2014/02/01 18:12:42"
 
 
@@ -44,12 +45,13 @@ def standardabweichung(spalte,mw):
 	stab = math.sqrt(summe / n)
 	return stab
 
-def datumsauswahl(von_roh,bis_roh):
-	von = datetime.strptime(von_roh, format)
-	bis = datetime.strptime(bis_roh, format)
+def datum_offnen():
 	datei = open("datum.csv", "r")
+	global inhalt
 	inhalt = datei.readlines()
 	datei.close()
+def datumsauswahl(von,bis):
+
 	start_gefunden = False
 	stop_gefunden = False
 	for datum in inhalt:
@@ -63,8 +65,24 @@ def datumsauswahl(von_roh,bis_roh):
 			break
 	print("Der Messwert geht von Zeile " + str(start) + " bis Zeile " + str(stop) + " und über folgenden Zeitraum: " + str(bis - von))
 	return start,stop
+
+def datumsfrage(frage):
+	while True:
+		eingabe_roh = raw_input(frage)
+		try:
+			eingabe = datetime.strptime(eingabe_roh, eingabeformat)
+		except ValueError:
+			print("Bitte Datum im Format 'DD.MM.YY HH:MM:SS' eingeben")
+		else:
+			return eingabe
+
 offnen("vorbereitet.csv")
-startstop = datumsauswahl(von_roh,bis_roh)
+datum_offnen()
+print("Bitte Datum im Format 'DD.MM.YY HH:MM:SS' eingeben")
+print("Es sollte zwischen " + inhalt[1].rstrip() + " und " + inhalt[-1].rstrip() + " liegen")
+von = datumsfrage("von: ")
+bis = datumsfrage("bis: ")
+startstop = datumsauswahl(von,bis)
 von = startstop[0]
 bis = startstop[1]
 liste_auswahl = []
@@ -91,7 +109,7 @@ for spalte in liste:
 	minima.append(mini)
 	maxima.append(maxi)
 minmaxausgabe = zip(namen,minima,maxima)
-for name,minimum,maximum in minmaxausgabe: 
+for name,minimum,maximum in minmaxausgabe:
 	print(name + ":\t" + str(minimum) + "\t" + str(maximum))
 print("------Standardabweichung------")
 standardabweichungen=[]
