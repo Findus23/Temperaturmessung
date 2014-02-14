@@ -1,0 +1,20 @@
+#! /bin/sh
+# /etc/init.d/display
+
+case "$1" in
+start)
+echo "Display wird gestartet"
+python /home/pi/Temperaturmessung/display.py > /home/pi/log/display 2>&1 &
+;;
+stop)
+echo "Display wird beendet"
+killall python
+;;
+*)
+echo "Verwendung: /etc/init.d/display {start|stop}"
+exit 1
+;;
+esac
+exit 0
+
+

@@ -1,0 +1,20 @@
+#! /bin/sh
+# /etc/init.d/aufzeichnung
+
+case "$1" in
+start)
+echo "Aufzeichnung wird gestartet"
+/home/pi/Temperaturmessung/export.sh > /dev/null &
+;;
+stop)
+echo "Aufzeichnung wird beendet"
+killall /bin/bash
+;;
+*)
+echo "Verwendung: /etc/init.d/aufzeichnung {start|stop}"
+exit 1
+;;
+esac
+exit 0
+
+
