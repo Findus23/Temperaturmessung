@@ -8,6 +8,9 @@ Temperaturmessung mit dem Raspberry Pi
 
 * ~~regelmäßiges Backup~~
 * automatische E-Mail
-* wiederholtes Messen bei Fehlschlag
-    * bei Luftfeuchtigkeit erledigt
-    * bei Temperatur teilweise
+* ~~wiederholtes Messen bei Fehlschlag~~
+    * fertig
+* Endauswertung verbessern
+    * benutzerfreundlicher
+    * mehr Berechnungen
+* LED-Signallampen
