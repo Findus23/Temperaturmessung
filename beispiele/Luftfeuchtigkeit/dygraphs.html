@@ -1,0 +1,52 @@
+ <!DOCTYPE html>
+  <!-- saved from url=(0053)http://lukaswiki.onpw.de/rasp/webseiten/dygraphs.html -->
+  <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <script type="text/javascript" src="../../javascript/dygraph-combined.js"></script><style type="text/css"></style>
+     <style type="text/css">
+      #graphdiv {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        top: 50px;
+        bottom: 10px;
+      }
+      </style>
+  </head>
+  <body>
+  <div id="graphdiv"></div>
+    <div id="Legende"></div>
+  <script type="text/javascript">
+    g = new Dygraph(
+      document.getElementById("graphdiv"),
+      "dygraph.csv", // path to CSV file
+      { showRoller: true, //Möglichkeit zum Runden anzeigen
+      	animatedZooms: true,
+      //	 dateWindow: [ Date.parse("2012/09/29 12:00:00"),Date.parse("2013/11/10 12:00:00") ], //Start- und Endzeitraum
+
+     	labels:  ["Zeit", "Innentemperatur", "Gerätetemperatur 1", "Außentemperatur", "Gerätetemperatur 2", "Temperatur (Luft)", "Luftfeuchtigkeit", "Luftdruck", "Temperatur (Druck)", "Prozessor"],
+      	labelsDiv: document.getElementById("Legende"), //Legende in einem bestimmten DIV anzeigen
+  //		'Luftfeuchtigkeit': { //eigene y-Achse für Luftfeuchtigkeit
+  //              axis: {	valueRange: [1, 99],
+  //	                independentTicks: true
+  //              }
+  //            },
+  		'Luftdruck': { //eigene y-Achse für Luftfeuchtigkeit
+                axis: { independentTicks: true
+                }
+              },
+  		ylabel: 'Temperatur (°C)',
+
+ 		y2label: 'Luftdruck (hPa)',
+  //		showRangeSelector: true, //Auswahlzeile anzeigen
+  //		rangeSelectorHeight: 80
+            
+  
+  
+      
+      }          // options
+    );
+  </script>
+  </body>
+  </html>
+  
