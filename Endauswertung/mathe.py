@@ -68,7 +68,7 @@ def datumsauswahl(von,bis):
 
 def datumsfrage(frage):
 	while True:
-		eingabe_roh = raw_input(frage)
+		eingabe_roh = input(frage)
 		try:
 			eingabe = datetime.strptime(eingabe_roh, eingabeformat)
 		except ValueError:
