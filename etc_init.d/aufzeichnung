@@ -3,12 +3,19 @@
 
 case "$1" in
 	start)
+		if [ -f /home/pi/aufzeichnung.lock ]
+		then
+			echo "Die Aufzeichnung läuft bereits.\nWenn nicht, lösche aufzeichnung.lock im Home-Verzeichnis"
+			exit 1
+		fi
 		echo "Aufzeichnung wird gestartet"
-		/home/pi/Temperaturmessung/export.sh > /home/pi/log/aufzeichnung.txt
+		touch /home/pi/aufzeichnung.lock
+		/home/pi/Temperaturmessung/export.sh > /dev/null 2>> /home/pi/log/aufzeichnung.txt &
 		;;
 	stop)
 		echo "Aufzeichnung wird beendet"
-		killall /bin/bash
+		killall export.sh
+		rm /home/pi/aufzeichnung.lock
 		;;
 	*)
 		echo "Verwendung: /etc/init.d/aufzeichnung {start|stop}"
