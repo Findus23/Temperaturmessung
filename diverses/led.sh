@@ -24,12 +24,12 @@ do
 	gpio write 3 1
 	sleep 0.5
 	gpio write 3 0
-	gpio write 12 1
-	sleep 2
-	gpio write 12 0
 	gpio write 13 1
-	sleep 8
+	sleep 2
+	gpio write 13 0
 	gpio write 12 1
+	sleep 8
+	gpio write 13 1
 	sleep 2 
 	gpio write 12 0
 	gpio write 13 0
