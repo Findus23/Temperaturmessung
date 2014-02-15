@@ -83,26 +83,27 @@ do
 	ausgabe=${uhrzeit}\,${temp1}\,${temp2}\,${temp3}\,${temp4}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp}
 	echo $ausgabe >>/home/pi/Temperaturmessung/dygraph.csv
 	echo "$uhrzeit	${temp1},${temp2},${temp3},${temp4},${luft_temp},${luft_feucht},${druck},${temp_druck},${rasp}" #Ausgabe des aktuellen Wertes im Terminal
-	echo "Uhrzeit:" >/home/pi/Temperaturmessung/text.txt #Anzeigen für Display 
-	echo "$uhrzeit" >>/home/pi/Temperaturmessung/text.txt
-	echo "Innentemperatur" >>/home/pi/Temperaturmessung/text.txt
-	echo "$temp1" >>/home/pi/Temperaturmessung/text.txt
-	echo "Geraetetemp 1" >>/home/pi/Temperaturmessung/text.txt
-	echo "$temp2" >>/home/pi/Temperaturmessung/text.txt
-	echo "Aussentemperatur" >>/home/pi/Temperaturmessung/text.txt
-	echo "$temp3" >>/home/pi/Temperaturmessung/text.txt
-	echo "Geraetetemp 2" >>/home/pi/Temperaturmessung/text.txt
-	echo "$temp4" >>/home/pi/Temperaturmessung/text.txt
-	echo "Temperatur/Luft" >>/home/pi/Temperaturmessung/text.txt
-	echo "$luft_temp" >>/home/pi/Temperaturmessung/text.txt
-	echo "Luftfeuchte" >>/home/pi/Temperaturmessung/text.txt
-	echo "$luft_feucht" >>/home/pi/Temperaturmessung/text.txt
-	echo "Temp./Druck" >>/home/pi/Temperaturmessung/text.txt
-	echo "$temp_druck" >>/home/pi/Temperaturmessung/text.txt
-	echo "Luftdruck" >>/home/pi/Temperaturmessung/text.txt
-	echo "$druck" >>/home/pi/Temperaturmessung/text.txt
-	echo "Prozessor" >>/home/pi/Temperaturmessung/text.txt
-	echo "$rasp" >>/home/pi/Temperaturmessung/text.txt
+	echo "Uhrzeit:" >/home/pi/Temperaturmessung/text.txt.temp #Anzeigen für Display 
+	echo "$uhrzeit" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "Innentemperatur" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$temp1" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "Geraetetemp 1" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$temp2" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "Aussentemperatur" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$temp3" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "Geraetetemp 2" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$temp4" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "Temperatur/Luft" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$luft_temp" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "Luftfeuchte" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$luft_feucht" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "Temp./Druck" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$temp_druck" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "Luftdruck" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$druck" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "Prozessor" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$rasp" >>/home/pi/Temperaturmessung/text.txt.temp
+	mv /home/pi/Temperaturmessung/text.txt.temp /home/pi/Temperaturmessung/text.txt
 	sudo cp /home/pi/Temperaturmessung/dygraph.csv ${PFAD}dygraph.csv
 	sleep 8 # kurz warten
 	r=$(($r +1)) # Anzahl der Durchläufe zählen
