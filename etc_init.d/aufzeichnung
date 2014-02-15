@@ -8,6 +8,11 @@ case "$1" in
 			echo "Die Aufzeichnung läuft bereits.\nWenn nicht, lösche aufzeichnung.lock im Home-Verzeichnis"
 			exit 1
 		fi
+		if sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_BMP085_auswertung.py |grep -q I2C 
+		then 
+			echo "Der Luftdruck-Sensor wurde nicht gefunden\nDas Programm wurde daher nicht gestartet"
+			exit 1
+		fi
 		echo "Aufzeichnung wird gestartet"
 		touch /home/pi/aufzeichnung.lock
 		/home/pi/Temperaturmessung/export.sh > /dev/null 2>> /home/pi/log/aufzeichnung.txt &
