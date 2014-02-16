@@ -49,7 +49,7 @@ do
 		temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
 	done
 	luft_roh=$(sudo /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT 2302 17 |grep Hum )	# Rohdaten des Luftfeuchtigkeits-Sensors
-	while [ -z "$luft_roh" || "$luft_roh" == "51.0"] 
+	while [ -z "$luft_roh" ] || [ "$luft_roh" == "51.0"] 
 	do
 		echo "----Luft: $luft_roh"
 		luft_roh=$(sudo /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT 2302 17 |grep Hum )
