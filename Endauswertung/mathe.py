@@ -20,8 +20,9 @@ def mittelwert(spalte):
 	summe = 0
 	anzahl = 0 # Anzahl der Messwerte
 	for wert in spalte:
-		summe = summe + wert # zur bisherigen Summe addieren
-		anzahl += 1
+		if wert != "":
+			summe = summe + wert # zur bisherigen Summe addieren
+			anzahl += 1
 	mittelwert = summe / anzahl
 	return mittelwert
 
@@ -29,19 +30,21 @@ def minmax(spalte):
 	mini = spalte[0] #Minimum auf ersten Wert setzen
 	maxi = spalte[0]
 	for wert in spalte:
-		if wert < mini:
-			mini = wert
-		if wert > maxi:
-			maxi = wert
+		if wert != "":
+			if wert < mini:
+				mini = wert
+			if wert > maxi:
+				maxi = wert
 	return (mini,maxi)
 
 def standardabweichung(spalte,mw):
 	n = 0
 	summe = 0
 	for wert in spalte:
-		term = wert - mw
-		summe = summe + (term * term)
-		n += 1
+		if wert != "":
+			term = wert - mw
+			summe = summe + (term * term)
+			n += 1
 	stab = math.sqrt(summe / n)
 	return stab
 
