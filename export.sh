@@ -25,25 +25,25 @@ do
 	rasp=$(/opt/vc/bin/vcgencmd measure_temp | cut -c 6,7,8,9) #Betriebstemberatur messen
 	#cpu=$(sensors |grep Core\ 0 |cut -c 18,19,20,21) #CPU-Temperatur, lm-sensors muss installiert sein, bei jedem PC anders
 	temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b53835/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Innentemperatur
-	while [ "$temp1" == "-1.250" || "$temp1" == "85.000" || "$temp1" == "85.000" ]
+	while [ "$temp1" == "-1.250" ] || [ "$temp1" == "85.000" ] || [ "$temp1" == "85.000" ]
 	do
 		echo "----Temp1: $temp1"
 		temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
 	done
 	temp2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Gerätesensor 1
-	while [ "$temp2" == "-1.250" || "$temp2" == "85.000" || "$temp2" == "85.000" ]
+	while [ "$temp2" == "-1.250" ] || [ "$temp2" == "85.000" ] || [ "$temp2" == "85.000" ]
 	do
 		echo "----Temp2: $temp2"
 		temp2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
 	done
 	temp3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Außensensor
-	while [ "$temp3" == "-1.250" || "$temp3" == "85.000" || "$temp3" == "85.000" ]
+	while [ "$temp3" == "-1.250" ] || [ "$temp3" == "85.000" ] || [ "$temp3" == "85.000" ]
 	do
 		echo "----Temp3: $temp3"
 		temp3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
 	done
 	temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Gerätesensor 2
-	while [ "$temp3" == "-1.250" || "$temp4" == "85.000" || "$temp4" == "85.000" ]
+	while [ "$temp3" == "-1.250" ] || [ "$temp4" == "85.000" ] || [ "$temp4" == "85.000" ]
 	do
 		echo "----Temp4: $temp4"
 		temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
