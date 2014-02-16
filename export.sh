@@ -1,7 +1,7 @@
 #!/bin/bash
 zufall=0
 PFAD="/var/www/" #Pfad zum Web-Verzeichnis
-r=998 # Backup-Zahl auf Null setzen
+r=0 # Backup-Zahl auf Null setzen
 IFS="; " #Spezial-Variable, enthält Trennzeichen zum Trennen von Luftdruck und -temperatur
 if [ $1 ] # if- und case- Abfrage für Startparameter
 then
@@ -49,7 +49,7 @@ do
 		temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
 	done
 	luft_roh=$(sudo /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT 2302 17 |grep Hum )	# Rohdaten des Luftfeuchtigkeits-Sensors
-	while [ -z "$luft_roh" ] || [ "$luft_roh" == "51.0"] 
+	while [ -z "$luft_roh" ] || [ "$luft_roh" == "51.0" ] 
 	do
 		echo "----Luft: $luft_roh"
 		luft_roh=$(sudo /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT 2302 17 |grep Hum )
@@ -91,7 +91,7 @@ do
 	if [ "$r" == "1000" ] # und alle 1000 Durchgänge Sicherung anfertigen
 	then
 		cp /home/pi/Temperaturmessung/dygraph.csv /home/pi/Temperaturmessung/dygraph.csv.bak
-		python send.py "l.winkler23@me.com" "Backup" "" "dygraph.csv"
+		python /home/pi/Temperaturmessung/Fremddateien/send.py "l.winkler23@me.com" "Backup" "" "/home/pi/Temperaturmessung/dygraph.csv" &
 		echo "Backup"
 		r=0
 	fi

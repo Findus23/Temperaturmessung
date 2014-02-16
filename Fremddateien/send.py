@@ -60,7 +60,6 @@ def main():
     session.sendmail(sender, recipient, qwertyuiop)
     
     session.quit()
-    os.system('notify-send "Email sent"')
  
 if __name__ == '__main__':
     main()
