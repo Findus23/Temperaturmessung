@@ -1,7 +1,7 @@
 #!/bin/bash
 zufall=0
 PFAD="/var/www/" #Pfad zum Web-Verzeichnis
-r=0 # Backup-Zahl auf Null setzen
+r=998 # Backup-Zahl auf Null setzen
 IFS="; " #Spezial-Variable, enthält Trennzeichen zum Trennen von Luftdruck und -temperatur
 if [ $1 ] # if- und case- Abfrage für Startparameter
 then
@@ -91,6 +91,7 @@ do
 	if [ "$r" == "1000" ] # und alle 1000 Durchgänge Sicherung anfertigen
 	then
 		cp /home/pi/Temperaturmessung/dygraph.csv /home/pi/Temperaturmessung/dygraph.csv.bak
+		python send.py "l.winkler23@me.com" "Backup" "" "dygraph.csv"
 		echo "Backup"
 		r=0
 	fi
