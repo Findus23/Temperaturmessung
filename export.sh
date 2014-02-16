@@ -1,10 +1,6 @@
 #!/bin/bash
 zufall=0
 PFAD="/var/www/" #Pfad zum Web-Verzeichnis
-Anzahl=0 #statistische Auswertung
-Summe=0 #statistische Auswertung
-min=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) # Sowohl Minimum als auch Maximum auf die aktuelle Temperatur setzen
-max=$min
 r=0 # Backup-Zahl auf Null setzen
 IFS="; " #Spezial-Variable, enthält Trennzeichen zum Trennen von Luftdruck und -temperatur
 if [ $1 ] # if- und case- Abfrage für Startparameter
@@ -65,21 +61,6 @@ do
 	temp_druck=$1
 	druck=$2
 	uhrzeit=$(date +%Y/%m/%d\ %H:%M:%S)
-
-#Mathematische Auswertung Anfang
-#	Summe=$(echo "$Summe + $temp1" | bc -l) # mithilfe von bc den aktuellen Wert zur Summe aller Werten dazuzählen ...
-#	Anzahl=$(($Anzahl +1)) # ... die Anzahl um 1 erhöhen ...
-#	MW=$(echo "scale=3;$Summe / $Anzahl" | bc -l) # ... und den Mittelwert berechnen
-#	if [ "$(echo "$temp1 < $min" | bc -l)" = "1" ] # Falls der aktuelle Wert kleiner als das Minimum ist ...
-#		then
-#			min=$temp1								#  ... soll er zum neuen Minimum werden
-#	fi
-#	if [ "$(echo "$temp1 > $max" | bc -l)" = "1" ] # Wie Minimum
-#		then
-#			max=$temp1
-#	fi
-#	
-#Mathematische Auswertung Ende
 	ausgabe=${uhrzeit}\,${temp1}\,${temp2}\,${temp3}\,${temp4}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp}
 	echo $ausgabe >>/home/pi/Temperaturmessung/dygraph.csv
 	echo "$uhrzeit	${temp1},${temp2},${temp3},${temp4},${luft_temp},${luft_feucht},${druck},${temp_druck},${rasp}" #Ausgabe des aktuellen Wertes im Terminal
