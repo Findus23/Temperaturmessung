@@ -115,7 +115,7 @@ try:
 			oben = oben[:-1] # Steuerzeichen am Ende loeschen (erzeugt ein komisches Symbol (|n) am Display)
 			unten = unten[:-1] # Steuerzeichen am Ende loeschen
 			anzeige() # oben und unten anzeigen
-			time.sleep(2) # 2 Sekunden warten
+			time.sleep(3) # 2 Sekunden warten
 			Seite += 1 # Seite um 1 erhöhen
 except KeyboardInterrupt: 
 	oben = ""

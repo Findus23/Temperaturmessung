@@ -3,6 +3,11 @@
 
 case "$1" in
 	start)
+		gpio mode 13 out # gelb
+		gpio mode 12 out # rot
+		gpio mode 3 out #grün
+		echo "Warte 5 Sekunden"
+		sleep 5
 		if [ -f /home/pi/aufzeichnung.lock ]
 		then
 			echo "Die Aufzeichnung läuft bereits.\nWenn nicht, lösche aufzeichnung.lock im Home-Verzeichnis"
