@@ -1,7 +1,7 @@
-Temperaturmessung
+Umweltdatenmessung
 =================
 
-Temperaturmessung mit dem Raspberry Pi
+Umweltdatenmessung mit dem Raspberry Pi
 
 
 #noch zu tun#
@@ -11,6 +11,8 @@ Temperaturmessung mit dem Raspberry Pi
 * ~~wiederholtes Messen bei Fehlschlag~~
     * fertig
 * Endauswertung verbessern
+    * Ausreißererkenung
+        * teilweise erledigt
     * benutzerfreundlicher
     * mehr Berechnungen
-* LED-Signallampen
+* ~~LED-Signallampen~~ss
