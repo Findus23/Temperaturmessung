@@ -81,6 +81,19 @@ def datumsfrage(frage):
 
 offnen("vorbereitet.csv")
 datum_offnen()
+
+for spalte in liste:
+	i = 0
+	while i < 500:
+		if (spalte[i] != "") and (spalte[i+1] != "") and (spalte[i-1] != ""):
+			diff1 = spalte[i]-spalte[i+1]
+			diff2 = spalte[i]-spalte[i-1]
+			if ((diff1 < -10) or (diff1 > 10)) and ((diff2 < -10) or (diff2 > 10)):
+				print("in Spalte " + str(liste.index(spalte)+1) + " Zeile " + str(i+1) + " ist ein Ausreisser")
+	#		else:
+	#			print("Passt:" + str(i),str(diff1),str(diff2))
+		i+= 1
+
 print("Bitte Datum im Format 'DD.MM.YY HH:MM:SS' eingeben")
 print("Es sollte zwischen " + inhalt[1].rstrip() + " und " + inhalt[-1].rstrip() + " liegen")
 von = datumsfrage("von: ")
