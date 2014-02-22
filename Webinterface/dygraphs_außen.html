@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://lukaswiki.onpw.de/rasp/webseiten/dygraphs.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<script type="text/javascript" src="./dygraph-combined.js"></script><style type="text/css"></style>
+   <style type="text/css">
+    #graphdiv {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      top: 50px;
+      bottom: 50px;
+    }
+	#auswahl {
+		position: absolute;
+		bottom: 10px;
+	}
+	#link {
+		position: absolute;
+		bottom: 10px;
+		right: 80px;
+	}
+    </style>
+</head>
+<body>
+<div id="graphdiv"></div>
+  <div id="Legende"></div>
+<span id="auswahl">
+	<input type=checkbox id="7" checked onClick="change(this)">
+	<label for="7" style="color: #00A6A6;font-weight:bold">Außentemperatur</label>
+	<input type=checkbox id="6" checked onClick="change(this)">
+	<label for="6" style="color: black;font-weight:bold">Luftdruck</label>
+	<input type=checkbox id="5" checked onClick="change(this)">
+	<label for="5" style="color: #00FF00;font-weight:bold">Luftfeuchtigkeit</label>
+	<input type=checkbox id="4" onClick="change(this)">
+	<label for="4" style="color: #00A6A6;font-weight:bold">Temperatur (Feuchtesensor)</label>
+	<input type=checkbox id="2" checked onClick="change(this)">
+	<label for="2" style="color: #0000FF;font-weight:bold">Bodentemperatur</label>
+	<input type=checkbox id="0" onClick="change(this)">
+	<label for="0" style="color: #D4AE0B;font-weight:bold">Innentemperatur</label>
+	<input type=checkbox id="9" onClick="change(this)">
+	<label for="9" style="color: #6E3C0B;font-weight:bold">Luftqualität</label>
+	<input type=checkbox id="8" onClick="change(this)">
+	<label for="8" style="color: orange;font-weight:bold">Prozessor</label>
+	<input type=checkbox id="1" onClick="change(this)">
+	<label for="1" style="color: red;font-weight:bold">Gerätetemperatur 1</label>
+	<input type=checkbox id="3" onClick="change(this)">
+	<label for="3" style="color: red;font-weight:bold">Gerätetemperatur 2</label>
+</span>
+<span id="link"><a href="./dygraphs_innen.html">Innensensor</a></span>
+<script type="text/javascript">
+  g = new Dygraph(
+    document.getElementById("graphdiv"),
+    "dygraph.csv", // path to CSV file
+    { showRoller: true, //Möglichkeit zum Runden anzeigen
+    	animatedZooms: true,
+    //	 dateWindow: [ Date.parse("2012/09/29 12:00:00"),Date.parse("2013/11/10 12:00:00") ], //Start- und Endzeitraum
+    	labels:  ["Zeit", "Innentemperatur", "Gerätetemperatur 1", "Bodentemperatur", "Gerätetemperatur 2", "Temperatur (Feuchtesensor)", "Luftfeuchtigkeit", "Luftdruck", "Außentemperatur", "Prozessor", "Luftqualität"],
+    	labelsDiv: document.getElementById("Legende"), //Legende in einem bestimmten DIV anzeigen
+//		'Luftfeuchtigkeit': { //eigene y-Achse für Luftfeuchtigkeit
+//              axis: {	valueRange: [1, 99],
+//	                independentTicks: true
+//              }
+//            },
+		'Luftqualität': { //eigene y-Achse für Luftdruck
+              axis: { independentTicks: true
+              }
+            },
+		'Luftdruck': {
+			axis: 'Luftqualität'
+			},
+		ylabel: 'Temperatur (°C), Luftfeuchtigkeit (%)',
+
+		y2label: 'Luftqualität, Luftdruck (hPa)',
+		colors: [ "#D4AE0B", "red", "#0000FF", "red", "#00A6A6", "#00FF00", "black", "#00A6A6", "orange", "#6E3C0B" ],
+		strokeWidth: 3, // Liniendicke
+		rollPeriod: 10,  // Runden standardmäßig auf 10 setzen
+		visibility: [false, false, true, false, false, true, true, true, false, false]
+//        highlightSeriesOpts: {
+//          strokeWidth: 5,
+//          strokeBorderWidth: 1,
+//		}
+//		showRangeSelector: true, //Auswahlzeile anzeigen
+//		rangeSelectorHeight: 80
+          
+
+
+    
+    }          // options
+  );
+	 function change(el) {
+        g.setVisibility(el.id, el.checked);
+
+      }
+</script>
+</body>
+</html>
