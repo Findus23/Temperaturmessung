@@ -101,7 +101,7 @@ def lcd_byte(bits, mode):
 #Beginn der Ergaenzung
 try: 
 	main() # Initialisierung
-	Seiten = 10  # hier kann man die Anzahl der Seiten ändern
+	Seiten = 11  # hier kann man die Anzahl der Seiten ändern
 	while True: # endlos wiederholen
 		Seite = 1 # von Vorne zu zählen beginnen
 		while Seite <= Seiten: # so lange durchlaufen bis man bei der letzten Seite angekommen ist -> dann von vorne beginnen

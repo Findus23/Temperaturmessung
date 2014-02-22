@@ -39,6 +39,8 @@
 	<label for="7" style="color: #00A6A6;font-weight:bold">Temperatur (Druck)</label>
 	<input type=checkbox id="8" onClick="change(this)">
 	<label for="8" style="color: orange;font-weight:bold">Prozessor</label>
+	<input type=checkbox id="9" onClick="change(this)">
+	<label for="9" style="color: #6E3C0B;font-weight:bold">Qualität</label>
 </span>
 <script type="text/javascript">
   g = new Dygraph(
@@ -47,23 +49,27 @@
     { showRoller: true, //Möglichkeit zum Runden anzeigen
     	animatedZooms: true,
     //	 dateWindow: [ Date.parse("2012/09/29 12:00:00"),Date.parse("2013/11/10 12:00:00") ], //Start- und Endzeitraum
-    	labels:  ["Zeit", "Innentemperatur", "Gerätetemperatur 1", "Außentemperatur", "Gerätetemperatur 2", "Temperatur (Luft)", "Luftfeuchtigkeit", "Luftdruck", "Temperatur (Druck)", "Prozessor"],
+    	labels:  ["Zeit", "Innentemperatur", "Gerätetemperatur 1", "Außentemperatur", "Gerätetemperatur 2", "Temperatur (Luft)", "Luftfeuchtigkeit", "Luftdruck", "Temperatur (Druck)", "Prozessor", "Qualität"],
     	labelsDiv: document.getElementById("Legende"), //Legende in einem bestimmten DIV anzeigen
 //		'Luftfeuchtigkeit': { //eigene y-Achse für Luftfeuchtigkeit
 //              axis: {	valueRange: [1, 99],
 //	                independentTicks: true
 //              }
 //            },
-		'Luftdruck': { //eigene y-Achse für Luftfeuchtigkeit
+		'Luftdruck': { //eigene y-Achse für Luftdruck
               axis: { independentTicks: true
               }
             },
+		'Qualität': {
+			axis: 'Luftdruck'
+			},
 		ylabel: 'Temperatur (°C)',
+
 		y2label: 'Luftdruck (hPa)',
-		colors: [ "#D4AE0B", "red", "#0000FF", "red", "#00A6A6", "#00FF00", "black", "#00A6A6", "orange" ],
+		colors: [ "#D4AE0B", "red", "#0000FF", "red", "#00A6A6", "#00FF00", "black", "#00A6A6", "orange", "#6E3C0B" ],
 		strokeWidth: 3, // Liniendicke
 		rollPeriod: 10,  // Runden standardmäßig auf 10 setzen
-		visibility: [true, true, true, false, false, true, true, true, false]
+		visibility: [true, true, true, false, false, true, true, true, false, false]
 //        highlightSeriesOpts: {
 //          strokeWidth: 5,
 //          strokeBorderWidth: 1,
