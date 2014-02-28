@@ -1,3 +1,4 @@
+Für alle Dateien von Adafruit
 ============
 Copyright (c) 2012-2013 Limor Fried, Kevin Townsend and Mikey Sklar for Adafruit Industries.
 All rights reserved.
@@ -23,3 +24,15 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
 ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Für airsensor/airsensor.c
+============
+https://code.google.com/p/usb-sensors-linux/
+
+Für send.py
+============
+(c) hakermania http://ubuntuforums.org/showthread.php?t=1472520&p=12104667#post12104667
+
+Für transpose.py
+===========
+(c) Peter Reutemann: http://www.cs.waikato.ac.nz/~fracpete/programming/csv2gnuplot/

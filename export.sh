@@ -57,15 +57,17 @@ do
 		temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
 	done
 
-	luft_roh=$(sudo /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT 2302 17 |grep Hum )	# Rohdaten des Luftfeuchtigkeits-Sensors
-	luft_temp=$(echo $luft_roh | cut -c 8,9,10,11) # Luftfeuchtigkeit-Sensor auftrennen
-	luft_feucht=$(echo $luft_roh | cut -c 23,24,25,26)
+	luft_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT.py 2302 17)	# Rohdaten des Luftfeuchtigkeits-Sensors
+	set -- $luft_roh
+	luft_temp=$1
+	luft_feucht=$2
 	while [ -z "$luft_roh" ] || [ "$(echo $luft_temp '>' 40 | bc -l)" -eq 1 ] || [ "$(echo $luft_temp '<' -20 | bc -l)" -eq 1 ]
 	do
 		echo "----Luft: $luft_roh"
-		luft_roh=$(sudo /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT 2302 17 |grep Hum )
-		luft_temp=$(echo $luft_roh | cut -c 8,9,10,11) # Luftfeuchtigkeit-Sensor auftrennen
-		luft_feucht=$(echo $luft_roh | cut -c 23,24,25,26)
+		luft_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT.py 2302 17)	# Rohdaten des Luftfeuchtigkeits-Sensors
+		set -- $luft_roh
+		luft_temp=$1
+		luft_feucht=$2
 	done
 	druck_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_BMP085_auswertung.py) # Rohdaten des Luftdruck-Sensors
 	set -- $druck_roh #Zerlegen mithilfe von IFS (siehe ganz oben)
