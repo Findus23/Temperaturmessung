@@ -246,7 +246,7 @@ int main(int argc, char *argv[])
  		// According to AppliedSensor specifications the output range is between 450 and 2000
  		// So only printout values between this range
  		
-		if ( voc >= 450 && voc <= 2001) {
+		if ( voc >= 450 && voc <= 6001) {
 			if (print_voc_only == 1) {
 				printf("%d\n", voc);
 			} else {

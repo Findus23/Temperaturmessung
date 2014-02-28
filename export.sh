@@ -73,6 +73,10 @@ do
 	druck=$2
 			gpio write 12 1
 	qualitat=$(sudo /home/pi/Temperaturmessung/Fremddateien/airsensor -v -o)
+	if [ "$qualitat" = "0" ]
+	then
+		qualitat=""
+	fi
 			gpio write 12 0
 			gpio write 3 0
 			gpio write 13 1
