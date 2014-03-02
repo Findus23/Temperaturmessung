@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de">
+ 
+<head>
+  <meta charset="utf-8" />
+  <title>Aktuelles Wetter</title>
+</head>
+ 
+<body>
+<h1>Aktuell</h1>
+<p><button onclick="laden()">Neuladen</button></p>
+<table border="2px" style="border-collapse:collapse;">
+	<tr>
+		<td>Uhrzeit:</td>
+		<td id="uhrzeit"></td>
+	</tr>
+	<tr>
+		<td>Innentemperatur:</td>
+		<td id="innen"></td>
+	</tr>	<tr>
+		<td>Gerätetemperatur 1:</td>
+		<td id="ger1"></td>
+	</tr>
+	<tr>
+		<td>Bodentemperatur:</td>
+		<td id="boden"></td>
+	</tr>
+	<tr>
+		<td>Gerätetemperatur 2:</td>
+		<td id="ger2"></td>
+	</tr>
+	<tr>
+		<td>Temperatur (Luftfeuchtesensor):</td>
+		<td id="temp_luft"></td>
+	</tr>
+	<tr>
+		<td>Luftfeuchte:</td>
+		<td id="feuchte"></td>
+	</tr>
+	<tr>
+		<td>Außentemperatur:</td>
+		<td id="aussen"></td>
+	</tr>
+	<tr>
+		<td>Luftdruck:</td>
+		<td id="druck"></td>
+	</tr>
+	<tr>
+		<td>Prozessor:</td>
+		<td id="prozessor"></td>
+	</tr>
+	<tr>
+		<td>Luftqualität:</td>
+		<td id="qualität"></td>
+	</tr>
+</table>
+<script type="text/javascript" >
+function laden() {
+if (window.XMLHttpRequest)
+{// code for IE7+, Firefox, Chrome, Opera, Safari
+   xmlhttp=new XMLHttpRequest();
+}
+else
+{// code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.open("GET","text_ws.txt",false);
+xmlhttp.send();
+inhalt=xmlhttp.responseText;
+werte=inhalt.split(',');
+document.getElementById('uhrzeit').innerHTML = werte[0]
+document.getElementById('innen').innerHTML = werte[1]
+document.getElementById('ger1').innerHTML = werte[2]
+document.getElementById('boden').innerHTML = werte[3]
+document.getElementById('ger2').innerHTML = werte[4]
+document.getElementById('temp_luft').innerHTML = werte[5]
+document.getElementById('feuchte').innerHTML = werte[6]
+document.getElementById('aussen').innerHTML = werte[7]
+document.getElementById('druck').innerHTML = werte[8]
+document.getElementById('prozessor').innerHTML = werte[9]
+document.getElementById('qualität').innerHTML = werte[10]
+}
+laden();
+window.setInterval(function(){
+  laden();
+}, 5000);
+</script>
+</body>
+</html>

@@ -27,6 +27,7 @@ do
 			gpio write 3 1
 	uhrzeit=$(date +%Y/%m/%d\ %H:%M:%S)
 	uhrzeit_display=$(date +%d.%m\ %H:%M:%S)
+	uhrzeit_lang=$(date +%d.%m.%y\ %H:%M:%S)
 	#zufall=$(($zufall + $((RANDOM % 10)) - 5)) # a um eine zufällige Zahl zwischen -5 und 5 ändern
 	##a=a+[Zufallszahl von 0-32767] modulo 10 (um eine Zahl von 0-10 zu bekommen) -5 (-> -5 bis 5)
 	#zufall=$a
@@ -116,6 +117,8 @@ do
 	echo "$rasp (C)" >>/home/pi/Temperaturmessung/text.txt.temp
 	echo "Luftqualitat" >>/home/pi/Temperaturmessung/text.txt.temp
 	echo "$qualitat" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$uhrzeit_lang,${temp1_r},${temp2_r},${temp3_r},${temp4_r},${luft_temp_r},${luft_feucht_r},${temp_druck_r},${druck_r},${rasp},${qualitat}" >/home/pi/Temperaturmessung/text_ws.txt # Daten für Webseite
+	sudo cp /home/pi/Temperaturmessung/text_ws.txt ${PFAD}text_ws.txt
 	mv /home/pi/Temperaturmessung/text.txt.temp /home/pi/Temperaturmessung/text.txt
 	sudo cp /home/pi/Temperaturmessung/dygraph.csv ${PFAD}dygraph.csv
 			gpio write 13 0
