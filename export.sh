@@ -87,36 +87,26 @@ do
 	ausgabe=${uhrzeit}\,${temp1}\,${temp2}\,${temp3}\,${temp4}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp},${qualitat}
 	echo $ausgabe >>/home/pi/Temperaturmessung/dygraph.csv
 	echo "$uhrzeit	${temp1},${temp2},${temp3},${temp4},${luft_temp},${luft_feucht},${druck},${temp_druck},${rasp},${qualitat}" #Ausgabe des aktuellen Wertes im Terminal
-	echo "Uhrzeit:" >/home/pi/Temperaturmessung/text.txt.temp #Anzeigen für Display 
-	echo "$uhrzeit_display" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Innentemperatur" >>/home/pi/Temperaturmessung/text.txt.temp
 	temp1_r=$(echo $temp1 |rev | cut -c 3- |rev)
-	echo "$temp1_r (C)" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Geraetetemp 1" >>/home/pi/Temperaturmessung/text.txt.temp
 	temp2_r=$(echo $temp2 |rev | cut -c 3- |rev)
-	echo "$temp2_r (C)" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Bodentemperatur" >>/home/pi/Temperaturmessung/text.txt.temp
 	temp3_r=$(echo $temp3 |rev | cut -c 3- |rev)
-	echo "$temp3_r (C)" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Geraetetemp 2" >>/home/pi/Temperaturmessung/text.txt.temp
 	temp4_r=$(echo $temp4 |rev | cut -c 3- |rev)
-	echo "$temp4_r (C)" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Temperatur/Luft" >>/home/pi/Temperaturmessung/text.txt.temp
 	luft_temp_r=$(echo $luft_temp |rev | cut -c 3- |rev)
-	echo "$luft_temp_r (C)" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Luftfeuchte" >>/home/pi/Temperaturmessung/text.txt.temp
 	luft_feucht_r=$(echo $luft_feucht |rev | cut -c 3- |rev)
-	echo "$luft_feucht_r % rF" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Aussentemperatur" >>/home/pi/Temperaturmessung/text.txt.temp
 	temp_druck_r=$(echo $temp_druck |rev | cut -c 2- |rev)
-	echo "$temp_druck_r (C)" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Luftdruck" >>/home/pi/Temperaturmessung/text.txt.temp
 	druck_r=$(echo $druck |rev | cut -c 2- |rev)
-	echo "$druck_r (hPa)" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Prozessor" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "$rasp (C)" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "Luftqualitat" >>/home/pi/Temperaturmessung/text.txt.temp
-	echo "$qualitat" >>/home/pi/Temperaturmessung/text.txt.temp
+	echo "$uhrzeit_display
+$temp1_r
+$temp2_r
+$temp3_r
+$temp4_r
+$luft_temp_r
+$luft_feucht_r
+$temp_druck_r
+$druck_r
+$rasp
+$qualitat" >/home/pi/Temperaturmessung/text.txt.temp
+
 	echo "$uhrzeit_lang,${temp1_r},${temp2_r},${temp3_r},${temp4_r},${luft_temp_r},${luft_feucht_r},${temp_druck_r},${druck_r},${rasp},${qualitat}" >/home/pi/Temperaturmessung/text_ws.txt # Daten für Webseite
 	sudo cp /home/pi/Temperaturmessung/text_ws.txt ${PFAD}text_ws.txt
 	mv /home/pi/Temperaturmessung/text.txt.temp /home/pi/Temperaturmessung/text.txt
