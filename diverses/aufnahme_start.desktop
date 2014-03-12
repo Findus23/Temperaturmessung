@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Aufnahme starten
+Name[de]=Aufnahme starten
+Name[en]=start record
+Comment=Klimamessung
+Comment[de]=Klimamessung
+Exec=service aufzeichnung start
+Terminal=true
+Type=Application
+StartupNotify=false
+Categories=Utility,System,Setting
