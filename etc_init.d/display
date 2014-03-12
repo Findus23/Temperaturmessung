@@ -1,6 +1,17 @@
 #! /bin/sh
 # /etc/init.d/display
 
+### BEGIN INIT INFO
+# Provides:          display
+# Required-Start:    $all
+# Required-Stop:     $all
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# X-Interactive:     true
+# Short-Description: Display
+# Description:       Pythonskript, welches das Display steuert
+### END INIT INFO
+
 case "$1" in
 	start)
 		echo "Display wird gestartet"
