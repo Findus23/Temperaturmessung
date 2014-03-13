@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<!-- saved from url=(0053)http://lukaswiki.onpw.de/rasp/webseiten/dygraphs.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<script type="text/javascript" src="./dygraph-combined.js"></script><style type="text/css"></style>
-   <style type="text/css">
-    #graphdiv {
-      position: absolute;
-      left: 10px;
-      right: 10px;
-      top: 50px;
-      bottom: 50px;
-    }
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="mobile-web-app-capable" content="yes">
+	<title>Innensensoren</title>
+	<script type="text/javascript" src="./dygraph-combined.js"></script>
+	<style type="text/css">
+	#graphdiv {
+		position: absolute;
+		left: 10px;
+		right: 10px;
+		top: 50px;
+	bottom: 50px;
+	}
 	#auswahl {
 		position: absolute;
 		bottom: 10px;
@@ -20,11 +25,11 @@
 		bottom: 10px;
 		right: 80px;
 	}
-    </style>
+	</style>
 </head>
 <body>
 <div id="graphdiv"></div>
-  <div id="Legende"></div>
+<div id="Legende"></div>
 <span id="auswahl">
 	<input type=checkbox id="7" onClick="change(this)">
 	<label for="7" style="color: #00A6A6;font-weight:bold">Außentemperatur</label>
