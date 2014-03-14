@@ -4,6 +4,20 @@
 	<meta charset="utf-8" />
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<link rel="apple-touch-icon" sizes="152x152" href="logo.png">
+	<meta name="apple-mobile-web-app-title" content="Temperatur">
+	<!-- "Zum Homebildschirm hinzufügen" Benachrichtigung  -->
+	<link rel="stylesheet" href="./Fremddateien/add2home.css">
+	<script type="application/javascript" src="./Fremddateien/add2home.js"></script>
+	<script type="text/javascript">
+
+var addToHomeConfig = {
+	touchIcon: true,
+	returningVisitor: true,
+};
+
+	</script>
+
 	<title>Aktuelles Wetter</title>
 	<style>
 	div.wert {
@@ -26,10 +40,9 @@
 	</style>
 </head>
  
-<body onresize="bar()">
+<body onresize="bar()" id="viewport">
 <h1>Aktuell</h1>
 <p><button onclick="laden()">Neuladen</button></p>
-
 <div class="wert">
 	<div>Datum/Uhrzeit:</div>
 	<div><span id="uhrzeit" style="font-weight:bold;"></span></div>

@@ -6,14 +6,16 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="apple-touch-icon" sizes="152x152" href="logo.png">
+	<meta name="apple-mobile-web-app-title" content="Außen">
 	<title>Außensensoren</title>
-	<script type="text/javascript" src="./dygraph-combined.js"></script>
+	<script type="text/javascript" src="./Fremddateien/dygraph-combined.js"></script>
 	<style type="text/css">
 	#graphdiv {
 		position: absolute;
 		left: 10px;
 		right: 10px;
-		top: 50px;
+		top: 80px;
 		bottom: 50px;
 	}
 	#auswahl {
@@ -24,6 +26,10 @@
 		position: absolute;
 		bottom: 10px;
 		right: 80px;
+	}
+	#zoom {
+		position: absolute;
+		top: 30px;
 	}
 	</style>
 </head>
@@ -51,6 +57,10 @@
 	<label for="1" style="color: red;font-weight:bold">Gerätetemperatur 1</label>
 	<input type=checkbox id="3" onClick="change(this)">
 	<label for="3" style="color: red;font-weight:bold">Gerätetemperatur 2</label>
+</span>
+<span id="zoom">
+      <input type="button" value="Letzter Tag" onclick="zoomGraphX(new Date().getTime()-86400000, (new Date().getTime()))">
+      <input type="button" value="Letzte Woche" onclick="zoomGraphX(new Date().getTime()-86400000*7, (new Date().getTime()))">
 </span>
 <span id="link"><a href="./dygraphs_innen.html">Innensensor</a></span>
 <script type="text/javascript">
@@ -97,6 +107,12 @@
         g.setVisibility(el.id, el.checked);
 
       }
+	 function zoomGraphX(minDate, maxDate) {
+        g.updateOptions({
+          dateWindow: [minDate, maxDate]
+        });
+      }
+
 </script>
 </body>
 </html>
