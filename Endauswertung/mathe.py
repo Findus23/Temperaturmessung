@@ -26,6 +26,7 @@ def ausreisser(spalte):
 			diff2 = spalte[i]-spalte[i-1]
 			if ((diff1 < -schwankung) or (diff1 > schwankung)) and ((diff2 < -schwankung) or (diff2 > schwankung)):
 				print("in Spalte " + str(liste.index(spalte)+1) + " Zeile " + str(i+1) + " ist ein Ausreisser (" + str(spalte[i]) + ")")
+				ausreisserliste.append((liste.index(spalte),i))
 	#		else:
 	#			print("Passt:" + str(i),str(diff1),str(diff2))
 		i+= 1
@@ -99,6 +100,7 @@ def datumsfrage(frage):
 offnen("vorbereitet.csv")
 datum_offnen()
 spalten_nummer=0
+ausreisserliste= []
 for spalte in liste:
 	if (spalten_nummer == 9):
 		schwankung=1000
@@ -106,7 +108,7 @@ for spalte in liste:
 		schwankung = 10
 	ausreisser(spalte)
 	spalten_nummer += 1
-
+print(ausreisserliste)
 print("Bitte Datum im Format 'DD.MM.YY HH:MM:SS' eingeben")
 print("Es sollte zwischen " + datetime.strptime(inhalt[1].rstrip(),format).strftime(eingabeformat) + " und " + datetime.strptime(inhalt[-1].rstrip(),format).strftime(eingabeformat) + " liegen")
 von = datumsfrage("von: ")
