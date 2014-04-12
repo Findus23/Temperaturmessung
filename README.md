@@ -7,7 +7,7 @@ Umweltdatenmessung mit dem Raspberry Pi
 #noch zu tun#
 
 * ~~regelmäßiges Backup~~
-* automatische E-Mail
+* ~~automatische E-Mail~~
 * ~~wiederholtes Messen bei Fehlschlag~~
     * fertig
 * Endauswertung verbessern
@@ -15,4 +15,4 @@ Umweltdatenmessung mit dem Raspberry Pi
         * teilweise erledigt
     * benutzerfreundlicher
     * mehr Berechnungen
-* ~~LED-Signallampen~~ss
+* ~~LED-Signallampen~~
