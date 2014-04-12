@@ -6,6 +6,7 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 	<link rel="apple-touch-icon" sizes="152x152" href="logo.png">
 	<meta name="apple-mobile-web-app-title" content="Temperatur">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<!-- "Zum Homebildschirm hinzufügen" Benachrichtigung  -->
 	<link rel="stylesheet" href="./Fremddateien/add2home.css">
 	<script type="application/javascript" src="./Fremddateien/add2home.js"></script>
@@ -44,59 +45,59 @@ var addToHomeConfig = {
 <h1>Aktuell</h1>
 <p><button onclick="laden()">Neuladen</button></p>
 <div class="wert">
-	<div>Datum/Uhrzeit:</div>
+	<div class="label">Datum/Uhrzeit:</div>
 	<div><span id="uhrzeit" style="font-weight:bold;"></span></div>
 </div>
 
 <div class="wert" style="margin-top:30px;">
-	<div>Innentemperatur:</div>
-		<div><span id="innen"></span> °C</div>
+	<div class="label">Innen&shy;temperatur:</div>
+	<div><span id="innen"></span> °C</div>
 	<div id="innen_w" class="bar">&nbsp;</div>
 </div>	
 <div class="wert">
-	<div>Luftqualität:</div>
+	<div class="label">Luft&shy;qualität:</div>
 	<div><span id="qualität"></span></div>
 	<div id="qualität_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
-	<div>Gerätetemperatur 1:</div>
+	<div class="label">Geräte&shy;temperatur 1:</div>
 	<div><span id="ger1"></span> °C</div>
 	<div id="ger1_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
-	<div>Gerätetemperatur 2:</div>
+	<div class="label">Geräte&shy;temperatur 2:</div>
 	<div><span id="ger2"></span> °C</div>
 	<div id="ger2_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
-	<div>Prozessor:</div>
+	<div class="label">Prozessor:</div>
 	<div><span id="prozessor"></span></div>
 	<div id="prozessor_w" class="bar">&nbsp;</div>
 </div>
 
 <div class="wert" style="margin-top:30px;">
-	<div>Außentemperatur:</div>
+	<div class="label">Außen&shy;temperatur:</div>
 	<div><span id="aussen"></span> °C</div>
 	<div id="aussen_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
-	<div>Temperatur <font style="font-size:70%;">(Luftfeuchtesensor)</font>:</div>
+	<div class="label">Temperatur &shy;<font style="font-size:70%;">(Luftfeuchtesensor)</font>:</div>
 	<div><span id="temp_luft"></span> °C</div>
 	<div id="temp_luft_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
-	<div>Bodentemperatur:</div>
+	<div class="label">Boden&shy;temperatur:</div>
 	<div><span id="boden"></span> °C</div>
 	<div id="boden_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
-	<div>Luftfeuchte:</div>
+	<div class="label">Luft&shy;feuchte:</div>
 	<div><span id="feuchte"></span> % rel LF</div>
 	<div id="feuchte_w" class="bar">&nbsp;</div>
 </div>
 
 <div class="wert">
-	<div>Luftdruck:</div>
+	<div class="label">Luft&shy;druck:</div>
 	<div><span id="druck"></span> hPa</div>
 	<div id="druck_w" class="bar">&nbsp;</div>
 </div>
