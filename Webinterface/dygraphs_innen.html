@@ -144,7 +144,7 @@
 		setCibulCalendar('datespan',{onSelect: function(selected) {
 			console.log(selected.begin);
 			console.log(selected.end);
-			zoomGraphX(selected.begin.getTime(), selected.end.getTime())
+			zoomGraphX(selected.begin.getTime(), (selected.end.getTime()+86400000))
 		}});
 	}
 </script>
