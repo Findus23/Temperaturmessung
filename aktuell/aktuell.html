@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+ 
+<head>
+  <meta charset="utf-8" />
+  <title>Aktuelles Wetter</title>
+</head>
+ 
+<body>
+<h1>Aktuell</h1>
+<p><button onclick="laden()">Neuladen</button></p>
+<table border="2px" style="border-collapse:collapse;">
+	<tr>
+		<td>Uhrzeit:</td>
+		<td><span id="uhrzeit"></span></td>
+	</tr>
+	<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+	<tr>
+		<td>Innentemperatur:</td>
+		<td><span id="innen"></span> °C</td>
+	</tr>	
+	<tr>
+		<td>Luftqualität:</td>
+		<td><span id="qualität"></span></td>
+	</tr>
+	<tr>
+		<td>Gerätetemperatur 1:</td>
+		<td><span id="ger1"></span> °C</td>
+	</tr>
+	<tr>
+		<td>Gerätetemperatur 2:</td>
+		<td><span id="ger2"></span> °C</td>
+	</tr>
+	<tr>
+		<td>Prozessor:</td>
+		<td><span id="prozessor"></span></td>
+	</tr>
+	<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+	<tr>
+		<td>Außentemperatur:</td>
+		<td><span id="aussen"></span> °C</td>
+	</tr>
+	<tr>
+		<td>Temperatur (Luftfeuchtesensor):</td>
+		<td><span id="temp_luft"></span> °C</td>
+	</tr>
+	<tr>
+		<td>Bodentemperatur:</td>
+		<td><span id="boden"></span> °C</td>
+	</tr>
+	<tr>
+		<td>Luftfeuchte:</td>
+		<td><span id="feuchte"></span> % rel LF</td>
+	</tr>
+	<tr>
+		<td>Luftdruck:</td>
+		<td><span id="druck"></span> hPa</td>
+	</tr>
+</table>
+<script type="text/javascript" >
+function laden() {
+if (window.XMLHttpRequest)
+{// code for IE7+, Firefox, Chrome, Opera, Safari
+   xmlhttp=new XMLHttpRequest();
+}
+else
+{// code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.open("GET","text_ws.txt",false);
+xmlhttp.send();
+inhalt=xmlhttp.responseText;
+werte=inhalt.split(',');
+document.getElementById('uhrzeit').innerHTML = werte[0]
+document.getElementById('innen').innerHTML = werte[1]
+document.getElementById('ger1').innerHTML = werte[2]
+document.getElementById('boden').innerHTML = werte[3]
+document.getElementById('ger2').innerHTML = werte[4]
+document.getElementById('temp_luft').innerHTML = werte[5]
+document.getElementById('feuchte').innerHTML = werte[6]
+document.getElementById('aussen').innerHTML = werte[7]
+document.getElementById('druck').innerHTML = werte[8]
+document.getElementById('prozessor').innerHTML = werte[9]
+document.getElementById('qualität').innerHTML = werte[10]
+}
+laden();
+window.setInterval(function(){
+  laden();
+}, 5000);
+</script>
+</body>
+</html>

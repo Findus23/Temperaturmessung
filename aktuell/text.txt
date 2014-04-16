@@ -1,0 +1,22 @@
+Uhrzeit:
+test02.03 14:05:25 tester
+Innentemperatur
+24.0 (C)
+Geraetetemp 1
+27.1 (C)
+Bodentemperatur
+18.2 (C)
+Geraetetemp 2
+27.1 (C)
+Temperatur/Luft
+15.6 (C)
+Luftfeuchte
+41.8 % rF
+Aussentemperatur
+15.7 (C)
+Luftdruck
+975.1 (hPa)
+Prozessor
+55.1 (C)
+Luftqualitat
+2078
