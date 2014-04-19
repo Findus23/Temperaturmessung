@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<gadget>
+	<name>Umweltdatenmessung</name>
+	<namespace>Umweltdatenmessung</namespace>
+	<version>1.0</version>
+	<author name="Lukas Winkler" url="https://github.com/Findus23/">
+	</author>
+	<description>Die aktuellen Werte des RPi</description>
+	<copyright>Lukas Winkler</copyright>
+	<info url="https://github.com/Findus23/Umweltdatenmessung"/>
+	<icons>
+		<icon src="logo.png" />
+	</icons>
+    <version value="1.0.0.0" MinPlatformVersion="0.1"></version>
+	 <hosts>
+		<host name="sidebar">
+			<base type="HTML" apiVersion="1.0.0" src="aktuell_bar.html" />
+			<permissions>Full</permissions>
+			<platform minPlatformVersion="1.0" />
+		</host>
+	</hosts>
+</gadget>
