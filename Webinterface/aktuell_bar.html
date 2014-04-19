@@ -104,16 +104,39 @@ var addToHomeConfig = {
 </div>
 
 <script type="text/javascript" >
+var tmp = document.documentMode, e, isIE;
+
+// Try to force this property to be a string. 
+try{document.documentMode = "";}
+catch(e){ };
+
+// If document.documentMode is a number, then it is a read-only property, and so 
+// we have IE 8+.
+// Otherwise, if conditional compilation works, then we have IE before 11.
+// Otherwise, we have a non-IE browser. 
+isIE = typeof document.documentMode == "number" || eval("/*@cc_on!@*/!1");
+
+// Switch back the value to be unobtrusive for non-IE browsers. 
+try{document.documentMode = tmp;}
+catch(e){ };
+
 function laden() {
 if (window.XMLHttpRequest)
 {// code for IE7+, Firefox, Chrome, Opera, Safari
-   xmlhttp=new XMLHttpRequest();
+	xmlhttp=new XMLHttpRequest();
 }
 else
 {// code for IE6, IE5
     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 }
-xmlhttp.open("GET","text_ws.txt",false);
+if(typeof tmp == "number"){
+
+	var lower = 0; 
+	var upper = 100000000;
+	xmlhttp.open("GET","http://sandgrube.no-ip.org/text_ws.txt?"+(Math.floor(Math.random()*(upper-lower))+lower),false); //Da der Internet Explorer sogar diese Abfrage immer cached, wird die URL immer verändert
+} else {
+	xmlhttp.open("GET","text_ws.txt",false);
+}
 xmlhttp.send();
 inhalt=xmlhttp.responseText;
 werte=inhalt.split(',');
