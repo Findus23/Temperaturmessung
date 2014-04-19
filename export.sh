@@ -3,6 +3,9 @@ zufall=0
 PFAD="/var/www/" #Pfad zum Web-Verzeichnis
 r=0 # Backup-Zahl auf Null setzen
 IFS="; " #Spezial-Variable, enthält Trennzeichen zum Trennen von Luftdruck und -temperatur
+re='^[0-9]+$' # Regulärer Ausdruck, ob Variable eine Zahl ist
+pushbullet_api_key=$(cat /home/pi/Temperaturmessung/Fremddateien/pushbullet_settings.txt | head -n 1)
+pushbullet_device=$(cat /home/pi/Temperaturmessung/Fremddateien/pushbullet_settings.txt | tail -n 1)
 gpio mode 13 out # gelb
 gpio mode 12 out # rot
 gpio mode 3 out #grün
@@ -86,7 +89,7 @@ do
 	temp_druck=$1
 	druck=$2
 	qualitat=$(sudo /home/pi/Temperaturmessung/Fremddateien/airsensor -v -o)
-	if [ "$qualitat" = "0" ]
+	if [ "$qualitat" = "0" ] || ! [[ $qualitat =~ $re ]]
 	then
 		qualitat=""
 	fi
@@ -123,6 +126,7 @@ $qualitat" >/home/pi/Temperaturmessung/text.txt.temp
 	then
 		cp /home/pi/Temperaturmessung/dygraph.csv /home/pi/Temperaturmessung/dygraph.csv.bak
 		python /home/pi/Temperaturmessung/Fremddateien/send.py "l.winkler23@me.com" "Backup" "" "/home/pi/Temperaturmessung/dygraph.csv" &
+		/home/pi/Temperaturmessung/Fremddateien/pushbullet_cmd.py $pushbullet_api_key note $pushbullet_device "Backup erfolgreich" "$uhrzeit_display"
 		echo "Backup"
 		r=0
 	fi
