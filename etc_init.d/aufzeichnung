@@ -17,41 +17,63 @@ case "$1" in
 	start)
 		gpio mode 13 out # gelb
 		gpio mode 12 out # rot
-		gpio mode 3 out #grün
+		gpio mode 3 out #grün 
 		if [ -f /home/pi/aufzeichnung.lock ]
 		then
 			echo "Die Aufzeichnung läuft bereits.\nWenn nicht, lösche aufzeichnung.lock im Home-Verzeichnis"
+			gpio write 3 0
+			gpio write 12 1
 			exit 1
 		fi
 		if sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_BMP085_auswertung.py |grep -q I2C 
 		then 
 			echo "Der Luftdruck-Sensor wurde nicht gefunden\nDas Programm wurde daher nicht gestartet"
+			gpio write 3 0
+			gpio write 12 1
 			exit 1
 		fi
 		echo "Aufzeichnung wird gestartet"
 		touch /home/pi/aufzeichnung.lock
 		/home/pi/Temperaturmessung/export.sh > /dev/null 2>> /home/pi/log/aufzeichnung.txt &
+		gpio write 3 1
+		gpio write 12 0
 		;;
 	stop)
+		gpio mode 13 out # gelb
+		gpio mode 12 out # rot
+		gpio mode 3 out #grün
 		echo "Aufzeichnung wird beendet"
 		killall export.sh
 		rm /home/pi/aufzeichnung.lock
+		gpio write 3 0
+		gpio write 12 1
+		gpio write 13 0
 		;;
 	restart)
 		echo "Aufzeichnung wird beendet"
 		killall export.sh
+		gpio write 3 0
+		gpio write 12 1
 		rm /home/pi/aufzeichnung.lock 
 		if sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_BMP085_auswertung.py |grep -q I2C 
 		then 
 			echo "Der Luftdruck-Sensor wurde nicht gefunden\nDas Programm wurde daher nicht gestartet"
+			gpio write 3 0
+			gpio write 12 1
+			gpio write 13 0
 			exit 1
 		fi
 		echo "Aufzeichnung wird gestartet"
 		touch /home/pi/aufzeichnung.lock
 		/home/pi/Temperaturmessung/export.sh > /dev/null 2>> /home/pi/log/aufzeichnung.txt &
+		gpio write 3 1
+		gpio write 12 0
+		gpio write 13 0
 		;;
 	*)
 		echo "Verwendung: /etc/init.d/aufzeichnung {start|stop}"
+		gpio write 3 0
+		gpio write 12 1
 		exit 1
 		;;
 esac

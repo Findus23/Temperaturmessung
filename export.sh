@@ -6,9 +6,9 @@ IFS="; " #Spezial-Variable, enthält Trennzeichen zum Trennen von Luftdruck und 
 gpio mode 13 out # gelb
 gpio mode 12 out # rot
 gpio mode 3 out #grün
-gpio write 13 0 # alle ausschalten
+gpio write 13 0 # nur grün einschalten
 gpio write 12 0
-gpio write 3 0
+gpio write 3 1
 if [ $1 ] # if- und case- Abfrage für Startparameter
 then
 	case "$1" in
@@ -24,7 +24,7 @@ then
 fi
 while true
 do
-			gpio write 3 1
+
 	uhrzeit=$(date +%Y/%m/%d\ %H:%M:%S)
 	uhrzeit_display=$(date +%d.%m\ %H:%M:%S)
 	uhrzeit_lang=$(date +%d.%m.%y\ %H:%M:%S)
@@ -37,26 +37,34 @@ do
 	temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b53835/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Innentemperatur
 	while [ "$temp1" == "-1.250" ] || [ "$temp1" == "85.000" ] || [ "$temp1" == "85.000" ]
 	do
+		gpio write 13 1
 		echo "----Temp1: $temp1"
 		temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277abe1/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+		gpio write 13 0
 	done
 	temp2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Gerätesensor 1
 	while [ "$temp2" == "-1.250" ] || [ "$temp2" == "85.000" ] || [ "$temp2" == "85.000" ]
 	do
+		gpio write 13 1
 		echo "----Temp2: $temp2"
 		temp2=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l)
+		gpio write 13 0
 	done
 	temp3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Außensensor
 	while [ "$temp3" == "-1.250" ] || [ "$temp3" == "85.000" ] || [ "$temp3" == "85.000" ]
 	do
+		gpio write 13 1
 		echo "----Temp3: $temp3"
 		temp3=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b4635f/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
+		gpio write 13 0
 	done
 	temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Gerätesensor 2
 	while [ "$temp3" == "-1.250" ] || [ "$temp4" == "85.000" ] || [ "$temp4" == "85.000" ]
 	do
+		gpio write 13 1
 		echo "----Temp4: $temp4"
 		temp4=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-00080277a5db/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) 
+		gpio write 13 0
 	done
 
 	luft_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT.py 2302 17)	# Rohdaten des Luftfeuchtigkeits-Sensors
@@ -65,25 +73,23 @@ do
 	luft_feucht=$2
 	while [ -z "$luft_roh" ] || [ "$(echo $luft_temp '>' 40 | bc -l)" -eq 1 ] || [ "$(echo $luft_temp '<' -20 | bc -l)" -eq 1 ]
 	do
+		gpio write 13 1
 		echo "----Luft: $luft_roh"
 		luft_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT.py 2302 17)	# Rohdaten des Luftfeuchtigkeits-Sensors
 		set -- $luft_roh
 		luft_temp=$1
 		luft_feucht=$2
+		gpio write 13 0
 	done
 	druck_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_BMP085_auswertung.py) # Rohdaten des Luftdruck-Sensors
 	set -- $druck_roh #Zerlegen mithilfe von IFS (siehe ganz oben)
 	temp_druck=$1
 	druck=$2
-			gpio write 12 1
 	qualitat=$(sudo /home/pi/Temperaturmessung/Fremddateien/airsensor -v -o)
 	if [ "$qualitat" = "0" ]
 	then
 		qualitat=""
 	fi
-			gpio write 12 0
-			gpio write 3 0
-			gpio write 13 1
 	ausgabe=${uhrzeit}\,${temp1}\,${temp2}\,${temp3}\,${temp4}\,${luft_temp}\,${luft_feucht}\,${druck}\,${temp_druck}\,${rasp},${qualitat}
 	echo $ausgabe >>/home/pi/Temperaturmessung/dygraph.csv
 	echo "$uhrzeit	${temp1},${temp2},${temp3},${temp4},${luft_temp},${luft_feucht},${druck},${temp_druck},${rasp},${qualitat}" #Ausgabe des aktuellen Wertes im Terminal
@@ -111,7 +117,6 @@ $qualitat" >/home/pi/Temperaturmessung/text.txt.temp
 	sudo cp /home/pi/Temperaturmessung/text_ws.txt ${PFAD}text_ws.txt
 	mv /home/pi/Temperaturmessung/text.txt.temp /home/pi/Temperaturmessung/text.txt
 	sudo cp /home/pi/Temperaturmessung/dygraph.csv ${PFAD}dygraph.csv
-			gpio write 13 0
 	sleep 8 # kurz warten
 	r=$(($r +1)) # Anzahl der Durchläufe zählen
 	if [ "$r" == "1000" ] # und alle 1000 Durchgänge Sicherung anfertigen
