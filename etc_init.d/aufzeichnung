@@ -34,7 +34,7 @@ case "$1" in
 		fi
 		echo "Aufzeichnung wird gestartet"
 		touch /home/pi/aufzeichnung.lock
-		/home/pi/Temperaturmessung/export.sh > /dev/null 2>> /home/pi/log/aufzeichnung.txt &
+		/home/pi/Temperaturmessung/main.sh > /dev/null 2>> /home/pi/log/aufzeichnung.txt &
 		gpio write 3 1
 		gpio write 12 0
 		;;
@@ -43,7 +43,7 @@ case "$1" in
 		gpio mode 12 out # rot
 		gpio mode 3 out #grün
 		echo "Aufzeichnung wird beendet"
-		killall export.sh
+		killall main.sh
 		rm /home/pi/aufzeichnung.lock
 		gpio write 3 0
 		gpio write 12 1
@@ -51,7 +51,7 @@ case "$1" in
 		;;
 	restart)
 		echo "Aufzeichnung wird beendet"
-		killall export.sh
+		killall main.sh
 		gpio write 3 0
 		gpio write 12 1
 		rm /home/pi/aufzeichnung.lock 
@@ -65,7 +65,7 @@ case "$1" in
 		fi
 		echo "Aufzeichnung wird gestartet"
 		touch /home/pi/aufzeichnung.lock
-		/home/pi/Temperaturmessung/export.sh > /dev/null 2>> /home/pi/log/aufzeichnung.txt &
+		/home/pi/Temperaturmessung/main.sh > /dev/null 2>> /home/pi/log/aufzeichnung.txt &
 		gpio write 3 1
 		gpio write 12 0
 		gpio write 13 0
