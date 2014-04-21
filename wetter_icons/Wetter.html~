@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title></title>
+</head>
+<body>
+<p><img src="Gewitter.svg" alt="Gewitter" width="300px">Gewitter</p>
+<p><img src="Sonne.svg" alt="Sonne" width="300px">Sonne</p>
+<p><img src="leichter_Regen.svg" alt="leichter_Regen" width="300px">leichter_Regen</p>
+<p><img src="Stark_bewölkt_exakt.svg" alt="Stark_bewölkt_exakt" width="300px">Stark_bewölkt_exakt</p>
+<p><img src="Wolke_einzeln.svg" alt="Wolke_einzeln" width="300px">Wolke_einzeln</p>
+<p><img src="Mond.svg" alt="Mond" width="300px">Mond</p>
+<p><img src="Stark_bewölkt.svg" alt="Stark_bewölkt" width="300px">Stark_bewölkt</p>
+<p><img src="Wolke_mit Mond.svg" alt="Wolke_mit Mond" width="300px">Wolke_mit Mond</p>
+<p><img src="schwacher_Schnee.svg" alt="schwacher_Schnee" width="300px">schwacher_Schnee</p>
+<p><img src="starker_Regen.svg" alt="starker_Regen" width="300px">starker_Regen</p>
+<p><img src="Wolke.svg" alt="Wolke" width="300px">Wolke</p>
+<p><img src="Sonne_mit_Wolke_exakt.svg" alt="Sonne_mit_Wolke_exakt" width="300px">Sonne_mit_Wolke_exakt</p>
+<p><img src="starker_Schnee.svg" alt="starker_Schnee" width="300px">starker_Schnee</p>
+<p><img src="Sonne_mit_Wolke.svg" alt="Sonne_mit_Wolke" width="300px">Sonne_mit_Wolke</p>
+
+</body>
+</html>
