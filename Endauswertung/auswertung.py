@@ -108,7 +108,6 @@ for spalte in liste:
 		schwankung = 10
 	ausreisser(spalte)
 	spalten_nummer += 1
-print(ausreisserliste)
 print("Bitte Datum im Format 'DD.MM.YY HH:MM:SS' eingeben")
 print("Es sollte zwischen " + datetime.strptime(inhalt[1].rstrip(),format).strftime(eingabeformat) + " und " + datetime.strptime(inhalt[-1].rstrip(),format).strftime(eingabeformat) + " liegen")
 von = datumsfrage("von: ")
