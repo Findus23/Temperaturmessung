@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Aufzeichung starten
+Name[de]=Aufzeichung starten
+Name[en]=start recording
+Comment=Klimamessung
+Comment[de]=Klimamessung
+Exec=service aufzeichnung start
+Icon=/home/pi/Temperaturmessung/diverses/logo/logo128x128.png
+Terminal=true
+Type=Application
+StartupNotify=false
+Categories=Utility,System,Setting

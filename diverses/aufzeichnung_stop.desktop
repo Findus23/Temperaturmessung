@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Aufzeichnung stopen
+Name[de]=Aufzeichnung stopen
+Name[en]=stop recording
+Comment=Klimamessung
+Comment[de]=Klimamessung
+Exec=service aufzeichnung stop
+Icon=/home/pi/Temperaturmessung/diverses/logo/logo128x128.png
+Terminal=true
+Type=Application
+StartupNotify=false
+Categories=Utility,System,Setting
