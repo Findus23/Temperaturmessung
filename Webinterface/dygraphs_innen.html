@@ -32,6 +32,7 @@
 
 	<meta name="apple-mobile-web-app-title" content="Innen">
 	<title>Innensensoren</title>
+		<link rel="stylesheet" type="text/css" href="./style.css" />
 	<script type="text/javascript" src="./Fremddateien/dygraph-combined.js"></script>
 	<script type="text/javascript" src="./Fremddateien/CibulCalendar.min.js"></script>
 	<style type="text/css">
@@ -82,6 +83,17 @@
 	</style>
 </head>
 <body onload="onload()">
+<!--Beginn Navigationsleiste-->
+<div id="nav">
+<ul>
+	<li><a href="./index.html">Hauptseite</a></li>
+	<li><a href="./aktuell.html">Aktueller Wert</a></li>
+	<li><a href="./dygraphs_außen.html">Diagramm (Außen)</a></li>
+	<li><a href="./dygraphs_innen.html">Diagramm (Innen)</a></li>
+	<li><a href="">Über das Projekt</a></li>
+</ul>
+</div>
+<!--Ende Navigationsleiste-->
 <iframe width="1" scrolling="no" height="1" frameborder="0" src="control.php?aktion=running" seamless="seamless"></iframe>
 <div id="graphdiv"></div>
 <div id="Legende"></div>
@@ -112,7 +124,6 @@
 	<input type="button" value="Letzte Woche" onclick="zoomGraphX(new Date().getTime()-86400000*7, (new Date().getTime()))">
 	<input type="text" id="datespan"/> 
 </span>
-<span id="link"><a href="./dygraphs_außen.html">Außensensor</a></span>
 <script type="text/javascript">
   g = new Dygraph(
     document.getElementById("graphdiv"),

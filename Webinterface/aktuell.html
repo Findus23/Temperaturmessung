@@ -34,15 +34,14 @@
 	<link rel="stylesheet" href="./Fremddateien/add2home.css">
 	<script type="application/javascript" src="./Fremddateien/add2home.js"></script>
 	<script type="text/javascript">
-
 var addToHomeConfig = {
 	touchIcon: true,
 	returningVisitor: true,
 };
-
 	</script>
 
 	<title>Aktuelles Wetter</title>
+	<link rel="stylesheet" type="text/css" href="./style.css" />
 	<style>
 	div.wert {
 		clear: left;
@@ -65,6 +64,17 @@ var addToHomeConfig = {
 </head>
  
 <body onresize="bar()" id="viewport">
+<!--Beginn Navigationsleiste-->
+<div id="nav">
+<ul>
+	<li><a href="./index.html">Hauptseite</a></li>
+	<li><a href="./aktuell.html">Aktueller Wert</a></li>
+	<li><a href="./dygraphs_außen.html">Diagramm (Außen)</a></li>
+	<li><a href="./dygraphs_innen.html">Diagramm (Innen)</a></li>
+	<li><a href="">Über das Projekt</a></li>
+</ul>
+</div>
+<!--Ende Navigationsleiste-->
 <h1>Aktuell</h1>
 <iframe width="1" scrolling="no" height="1" frameborder="0" src="control.php?aktion=running" seamless="seamless"></iframe>
 <p><button onclick="laden()">Neuladen</button></p>
