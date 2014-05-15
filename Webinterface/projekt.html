@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Über das Projekt</title>
+	<link rel="stylesheet" type="text/css" href="./style.css" />
+</head>
+<body>
+
+<!--Beginn Navigationsleiste-->
+<div id="nav">
+<ul>
+	<li><a href="./index.html">Hauptseite</a></li>
+	<li><a href="./aktuell.html">Aktueller Wert</a></li>
+	<li><a href="./dygraphs_außen.html">Diagramm (Außen)</a></li>
+	<li><a href="./dygraphs_innen.html">Diagramm (Innen)</a></li>
+	<li><a href="">Über das Projekt</a></li>
+</ul>
+</div>
+<!--Ende Navigationsleiste-->
+<img src="images/logo.svg" width="13%"  alt="Logo" style="margin-right:2%;margin-top:30px;"></div>
+<div id="text">
+<h1>Über das Projekt</h1>
+
+<p>In meinem Projekt möchte ich mithilfe eines Raspberry Pi Umweltdaten aufzeichnen, speichern und auswerten.</p>
+<p>Zur Aufzeichnung verwende ich einen Temperatursensor, einen Luftdrucksensor, einen Luftfeuchtesensor und einen Luftqualitätssensor. 
+	Die Daten werden abgespeichert und einerseits grafisch mithilfe von Javascript dargestellt und andererseits rechnerisch mit einem von mir geschriebenen Python-Programm ausgewertet.</p>
+
+<h2>Aufzeichnung:</h2>
+<p>Die Sensoren werden regelmäßig von einem Shell-Script (<a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/main.sh">main.sh</a>) ausgelesen.<br />
+Dieses Skript bereitet die Daten auf und speichert sie in eine csv-Datei. Zusätzlich werden Textdateien generiert, welche von der Weboberfläche und dem Display regelmäßig ausgelesen werden. 
+Bei jedem 1000. Aufruf wird die CSV-Datei gesichert, per E-Mail an mich verschickt und ich darüber mit einer Pushbenachrichtigung am iPad benachrichtigt.</p>
+
+<img src="images/display.jpg" width="25%" alt="Bild des Displays">
+<h2>Display:</h2>
+<p>Damit man nicht immer zum Computer laufen muss, um die aktuellen Werte zu erfahren habe ich ein Display an den Raspberry Pi angeschlossen. 
+Ich habe ein <a href="http://www.schnatterente.net/code/raspberrypi/displaytest.py">Beispielprogramm</a> erweitert, damit es statt einen statischen Text anzuzeigen, 
+eine von main.sh generierte Textdatei ausliest und der Inhalt auf mehreren Seiten dargestellt wird. (→ <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/display.py">display.py</a>)</p>
+
+<h2>Webinterface:</h2>
+<p>Zur grafischen Darstellung der Daten habe ich zwei Webseiten erstellt, die auf einem Apache-Webserver am Raspberry Pi liegen. 
+Mithilfe von Javascript und Dygraphs wird ein Diagramm der Daten dargestellt. (<a href="http://findus23.github.io/Umweltdatenmessung/aktuell/dygraphs_außen.html">Beispiel</a>, Vorsicht, lange Ladezeit). 
+Zur Darstellung der aktuellen Werte gibt es <a href="./aktuell.html">eine zweite Seite</a>, die mithilfe von Javascript alle 5 Sekunden die aktuellen Daten nachläd und grafisch darstellt. 
+Beide Seiten können auf mobilen Geräten (iOS, eventuell auch Android) nachdem sie zum Homebildschirm hinzugefügt wurden als Web-Application genutzt werden 
+(im Vollbildmodus, mit eigenem Icon; funktioniert bei statischem Beispiel nicht). 
+Wenn die Aufzeichnung gerade aus irgendeinem Grund nicht laufen soll, wird der Webseitenbesucher benachrichtigt.</p>
+
+
+</div>
+</body>
+</html>
