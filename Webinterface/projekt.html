@@ -14,11 +14,12 @@
 	<li><a href="./aktuell.html">Aktueller Wert</a></li>
 	<li><a href="./dygraphs_außen.html">Diagramm (Außen)</a></li>
 	<li><a href="./dygraphs_innen.html">Diagramm (Innen)</a></li>
-	<li><a href="">Über das Projekt</a></li>
+	<li><a href="./projekt.html" id="aktuell">Über das Projekt</a></li>
+	<li><a href="./links.html">weitere Informationen</a></li>
 </ul>
 </div>
 <!--Ende Navigationsleiste-->
-<img src="images/logo.svg" width="13%"  alt="Logo" style="margin-right:2%;margin-top:30px;"></div>
+<img src="images/logo.svg" width="13%"  alt="Logo" style="margin-right:2%;margin-top:30px;" class="float"></div>
 <div id="text">
 <h1>Über das Projekt</h1>
 
@@ -31,7 +32,7 @@
 Dieses Skript bereitet die Daten auf und speichert sie in eine csv-Datei. Zusätzlich werden Textdateien generiert, welche von der Weboberfläche und dem Display regelmäßig ausgelesen werden. 
 Bei jedem 1000. Aufruf wird die CSV-Datei gesichert, per E-Mail an mich verschickt und ich darüber mit einer Pushbenachrichtigung am iPad benachrichtigt.</p>
 
-<img src="images/display.jpg" width="25%" alt="Bild des Displays">
+<a href="images/display.jpg" title="Vollbild"><img src="images/display.jpg" width="25%" alt="Bild des Displays" class="float"></a>
 <h2>Display:</h2>
 <p>Damit man nicht immer zum Computer laufen muss, um die aktuellen Werte zu erfahren habe ich ein Display an den Raspberry Pi angeschlossen. 
 Ich habe ein <a href="http://www.schnatterente.net/code/raspberrypi/displaytest.py">Beispielprogramm</a> erweitert, damit es statt einen statischen Text anzuzeigen, 
@@ -44,8 +45,30 @@ Zur Darstellung der aktuellen Werte gibt es <a href="./aktuell.html">eine zweite
 Beide Seiten können auf mobilen Geräten (iOS, eventuell auch Android) nachdem sie zum Homebildschirm hinzugefügt wurden als Web-Application genutzt werden 
 (im Vollbildmodus, mit eigenem Icon; funktioniert bei statischem Beispiel nicht). 
 Wenn die Aufzeichnung gerade aus irgendeinem Grund nicht laufen soll, wird der Webseitenbesucher benachrichtigt.</p>
+<a href="images/display.jpg" title="Vollbild"><img src="images/aktuell.png" width="80%" alt="Screenshot von Anzeige der aktuellen Werte"></a>
 
+<h2>Endauswertung:</h2>
+<p>Nachdem Daten aufgezeichnet wurden, kann die fertige CSV-Datei rechnerisch ausgewertet werden. <br/ >
+Zunächst muss sie <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/Endauswertung/vorbereiten.sh">mit einem Shell-Script</a> vorbereitet werden. 
+Danach kann es <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/Endauswertung/auswertung.py">ein von mir geschriebenes Python(3)-Programm</a> auswerten. 
+Hierbei wird die Datei zuerst nach Ausreißern durchsucht und etwaige werden angezeigt. 
+Danach kann man den Zeitraum auswählen, in dem die Messung ausgewertet wird. Danach wird das arithmetische Mittel, Minimum, Maximum und Standardabweichung für jeden Sensor berechnet. 
+(<a href="https://asciinema.org/a/8925">„Video“ des Programms</a>)</p>
+
+<h2>Gnuplot:</h2>
+<p>Ursprünglich habe ich versucht die Diagramme mit <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/Einstellungen.plt">Gnuplot</a> zu generieren. 
+Da die fertigen Bilder jedoch statisch sind und der Raspberry Pi mit zunehmender Datenmenge sehr lange benötigt, habe ich dies aufgegeben. (zu Gunsten von Dyngraphs)</p>
+
+<h2>Autostart:</h2>
+<p>Damit der Start und Stop der Aufzeichnung (und des Displays) einfacher funktioniert habe ich <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/etc_init.d/aufzeichnung">ein 
+init.d-Skript</a> erstellt. Nun kann mit „sudo service aufzeichnung {start/stop/restart} die Aufzeichnung einfach gesteuert werden. Zusätzlich wird die Aufzeichnung beim Hochfahren gestartet 
+und vorm Herunterfahren gestoppt.</p>
+
+<h2>diverses:</h2>
+<p>Zusätzlich zu den wichtigen Teilen habe ich noch ein paar kleinere Funkionen, wie <a href="https://github.com/Findus23/Umweltdatenmessung/tree/master/diverses/gadget">
+ein Windows Vista/7-Desktop-Gadget</a> oder ein (etwas zu buntes) <a href="https://raw.githubusercontent.com/Findus23/Umweltdatenmessung/master/diverses/logo/logo1024x1024.png">Logo</a> für das Projekt.</p>
 
 </div>
+
 </body>
 </html>
