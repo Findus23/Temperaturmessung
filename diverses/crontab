@@ -1,1 +1,1 @@
-0 0 * * * /sbin/shutdown -r +5
+0 0 * * * /home/pi/Temperaturmessung/diverses/mitternacht.sh
