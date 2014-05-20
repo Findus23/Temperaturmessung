@@ -18,7 +18,7 @@ li {
 li a:link, li a:visited {
 	transition: 0.5s;
 	display: inline-block;
-	width:200px;
+	width:250px;
 	font-weight:bold;
 	color:#FFFFFF;
 	background-color:#98bf21;
@@ -28,23 +28,24 @@ li a:link, li a:visited {
 }
 li a:hover,li a:active {
 	background-color:#7A991A !important;
-	width: 220px;
+	width: 270px;
 	color: #FFFFFF !important;
 }
-#aktuell {
+#aktuell { /* momentan besuchte Seite in Navigationsleiste */
 	background-color:#C1F22A;
 	color: black;
 }
 
 /* Textformatierung */
+* {
+	font-family: "Verdana","DejaVu Sans", sans-serif;
+}
 h1 {
 	padding-top: 5px;
 	color: #4B5E10;
-	font-family: "Verdana",sans-serif;
 	text-align: center;
 }
 h2 {
-	font-family: "Verdana",sans-serif;
 	color: #3F4F0D;
 	margin: 20px 
 }
@@ -53,7 +54,10 @@ p {
 	font-family: "Verdana",sans-serif;
 	margin:20px 20px 0 20px;
 }
-#text {
+img {
+	margin: 20px;
+}
+#text { /* div, welches den Text enthält */
 	width: 70%;
 	margin-left: auto;
 	margin-right: auto;
