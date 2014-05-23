@@ -46,6 +46,7 @@ var addToHomeConfig = {
 	div.wert {
 		clear: left;
 		margin-top:10px;
+		margin-left: 10px;
 	}
 	div {
 		float: left;
@@ -54,11 +55,19 @@ var addToHomeConfig = {
 		transition: 2s;
 
 		position:absolute;
-		left:300px;
+		left:310px;
 	}
-	span {
+	span.zahl {
 		position:absolute;
-		left:200px;
+		left:210px;
+	}
+	span.einheit {
+		font-weight: bold;
+		font-style: italic;
+	}
+	p {
+		margin-top: 10px;
+		clear: both;
 	}
 	</style>
 </head>
@@ -78,69 +87,68 @@ var addToHomeConfig = {
 <!--Ende Navigationsleiste-->
 <h1>Aktuell</h1>
 <iframe width="1" scrolling="no" height="1" frameborder="0" src="control.php?aktion=running" seamless="seamless"></iframe>
-<p style="font-size:small;"><a href="./aktuell_einfach.html">einfache tabellarische Darstellung</a><br />
-<button onclick="laden()">Neuladen</button></p>
 <div class="wert">
 	<div class="label">Datum/Uhrzeit:</div>
-	<div><span id="uhrzeit" style="font-weight:bold;"></span></div>
+	<div><span class="zahl" id="uhrzeit" style="font-weight:bold;"></span></div>
 </div>
 
 <div class="wert" style="margin-top:30px;">
 	<div class="label">Innen&shy;temperatur:</div>
-	<div><span id="innen"></span> °C</div>
+	<div><span class="zahl" id="innen"></span></div>
 	<div id="innen_w" class="bar">&nbsp;</div>
 </div>	
 <div class="wert">
 	<div class="label">Luft&shy;qualität:</div>
-	<div><span id="qualität"></span></div>
+	<div><span class="zahl" id="qualität"></span></div>
 	<div id="qualität_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Geräte&shy;temperatur 1:</div>
-	<div><span id="ger1"></span> °C</div>
+	<div><span class="zahl" id="ger1"></span></div>
 	<div id="ger1_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Geräte&shy;temperatur 2:</div>
-	<div><span id="ger2"></span> °C</div>
+	<div><span class="zahl" id="ger2"></span></div>
 	<div id="ger2_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Prozessor:</div>
-	<div><span id="prozessor"></span></div>
+	<div><span class="zahl" id="prozessor"></span></div>
 	<div id="prozessor_w" class="bar">&nbsp;</div>
 </div>
 
 <div class="wert" style="margin-top:30px;">
 	<div class="label">Außen&shy;temperatur:</div>
-	<div><span id="aussen"></span> °C</div>
+	<div><span class="zahl" id="aussen"></span></div>
 	<div id="aussen_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Temperatur &shy;<font style="font-size:70%;">(Luftfeuchtesensor)</font>:</div>
-	<div><span id="temp_luft"></span> °C</div>
+	<div><span class="zahl" id="temp_luft"></span></div>
 	<div id="temp_luft_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Boden&shy;temperatur:</div>
-	<div><span id="boden"></span> °C</div>
+	<div><span class="zahl" id="boden"></span></div>
 	<div id="boden_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Luft&shy;feuchte:</div>
-	<div><span id="feuchte"></span> % rel LF</div>
+	<div><span class="zahl" id="feuchte"></span></div>
 	<div id="feuchte_w" class="bar">&nbsp;</div>
 </div>
 
 <div class="wert">
 	<div class="label">Luft&shy;druck:</div>
-	<div><span id="druck"></span> hPa</div>
+	<div><span class="zahl" id="druck"></span></div>
 	<div id="druck_w" class="bar">&nbsp;</div>
 </div>
-
+<p style="font-size:small;"><a href="./aktuell_einfach.html">einfache tabellarische Darstellung</a><br />
+<button onclick="laden()">manuell neu laden</button></p>
 <script type="text/javascript" >
 var tmp = document.documentMode, e, isIE;
-
+// ----Erkennung des Internetexplorer von http://www.pinlady.net/PluginDetect/IE/ 
 // Try to force this property to be a string. 
 try{document.documentMode = "";}
 catch(e){ };
@@ -154,9 +162,11 @@ isIE = typeof document.documentMode == "number" || eval("/*@cc_on!@*/!1");
 // Switch back the value to be unobtrusive for non-IE browsers. 
 try{document.documentMode = tmp;}
 catch(e){ };
+// ----Ende der IE-Erkennung
 
-function laden() {
-if (window.XMLHttpRequest)
+
+function laden() { //neueste Daten nachladen und Balken bar() ausführen
+if (window.XMLHttpRequest) //Bei IE6 und IE5 ActiveXObject verwenden
 {// code for IE7+, Firefox, Chrome, Opera, Safari
 	xmlhttp=new XMLHttpRequest();
 }
@@ -164,28 +174,31 @@ else
 {// code for IE6, IE5
     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 }
-if(typeof tmp == "number"){
+
+if(typeof tmp == "number"){ //Wenn ein Internet Explorer verwendet wird ...
 
 	var lower = 0; 
 	var upper = 100000000;
-	xmlhttp.open("GET","http://sandgrube.no-ip.org/text_ws.txt?"+(Math.floor(Math.random()*(upper-lower))+lower),false); //Da der Internet Explorer sogar diese Abfrage immer cached, wird die URL immer verändert
+	xmlhttp.open("GET","http://sandgrube.no-ip.org/text_ws.txt?"+(Math.floor(Math.random()*(upper-lower))+lower),false); //...  wird die URL immer verändert, da der Internet Explorer sonst sogar diese Abfrage cached,
 } else {
 	xmlhttp.open("GET","text_ws.txt",false);
 }
 xmlhttp.send();
 inhalt=xmlhttp.responseText;
 werte=inhalt.split(',');
-document.getElementById('uhrzeit').innerHTML = werte[0];
-document.getElementById('innen').innerHTML = werte[1];
-document.getElementById('ger1').innerHTML = werte[2];
-document.getElementById('boden').innerHTML = werte[3];
-document.getElementById('ger2').innerHTML = werte[4];
-document.getElementById('temp_luft').innerHTML = werte[5];
-document.getElementById('feuchte').innerHTML = werte[6];
-document.getElementById('aussen').innerHTML = werte[7];
-document.getElementById('druck').innerHTML = werte[8];
-document.getElementById('prozessor').innerHTML = werte[9];
-document.getElementById('qualität').innerHTML = werte[10];
+var einheiten=["","°C","°C","°C","°C","°C","% rel LF","°C","hPa","°C",""]
+
+document.getElementById('uhrzeit').innerHTML = werte[0] + " <span class='einheit'>" + einheiten[0] + "</span>";
+document.getElementById('innen').innerHTML = werte[1] + " <span class='einheit'>" + einheiten[1] + "</span>";
+document.getElementById('ger1').innerHTML = werte[2] + " <span class='einheit'>" + einheiten[2] + "</span>";
+document.getElementById('boden').innerHTML = werte[3] + " <span class='einheit'>" + einheiten[3] + "</span>";
+document.getElementById('ger2').innerHTML = werte[4] + " <span class='einheit'>" + einheiten[4] + "</span>";
+document.getElementById('temp_luft').innerHTML = werte[5] + " <span class='einheit'>" + einheiten[5] + "</span>";
+document.getElementById('feuchte').innerHTML = werte[6] + " <span class='einheit'>" + einheiten[6] + "</span>";
+document.getElementById('aussen').innerHTML = werte[7] + " <span class='einheit'>" + einheiten[7] + "</span>";
+document.getElementById('druck').innerHTML = werte[8] + " <span class='einheit'>" + einheiten[8] + "</span>";
+document.getElementById('prozessor').innerHTML = werte[9] + " <span class='einheit'>" + einheiten[9] + "</span>";
+document.getElementById('qualität').innerHTML = werte[10] + " <span class='einheit'>" + einheiten[10] + "</span>";
 bar()
 }
 function bar() {
