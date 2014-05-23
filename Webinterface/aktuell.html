@@ -77,7 +77,7 @@ var addToHomeConfig = {
 <div id="nav">
 <ul>
 	<li><a href="./index.html">Hauptseite</a></li>
-	<li><a href="./aktuell.html" id="aktuell">Aktueller Wert</a></li>
+	<li><a href="./aktuell.html" id="aktuell">aktuelle Werte</a></li>
 	<li><a href="./dygraphs_außen.html">Diagramm (Außen)</a></li>
 	<li><a href="./dygraphs_innen.html">Diagramm (Innen)</a></li>
 	<li><a href="./projekt.html">Über das Projekt</a></li>
@@ -147,6 +147,9 @@ var addToHomeConfig = {
 <p style="font-size:small;"><a href="./aktuell_einfach.html">einfache tabellarische Darstellung</a><br />
 <button onclick="laden()">manuell neu laden</button></p>
 <script type="text/javascript" >
+if (window.navigator.standalone) { // Wenn die Seite als Webapp aufgerufen wird, soll die Navigationsleiste verschwinden
+	document.getElementById('nav').style.display = 'none'; 
+}
 var tmp = document.documentMode, e, isIE;
 // ----Erkennung des Internetexplorer von http://www.pinlady.net/PluginDetect/IE/ 
 // Try to force this property to be a string. 
