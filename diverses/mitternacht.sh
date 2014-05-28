@@ -4,7 +4,7 @@ pushbullet_api_key=$(cat /home/pi/Temperaturmessung/Fremddateien/pushbullet_sett
 pushbullet_device=$(cat /home/pi/Temperaturmessung/Fremddateien/pushbullet_settings.txt | tail -n 1)
 cd /home/pi/Temperaturmessung
 sudo -H -u pi git pull origin master >> /home/pi/log/mitternacht.txt 2>&1
-cp -r /home/pi/Temperaturmessung/Webinterface /var/www
+cp -r /home/pi/Temperaturmessung/Webinterface/* /var/www/
 echo "\n\n\n" >> /home/pi/log/mitternacht.txt
 sudo apt-get update >> /home/pi/log/mitternacht.txt
 echo "\n\n\n" >> /home/pi/log/mitternacht.txt
