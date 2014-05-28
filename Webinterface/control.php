@@ -17,9 +17,17 @@ if(isset($_GET["aktion"])) {
 				echo "<script type='text/javascript'>alert('Achtung!\\nDie Aufzeichnung ist gestoppt');</script>";
 			}
 			break;
+		case gnuplot:
+			$datei = fopen("/var/www/gnuplot_erstellen","w");
+			echo fwrite($datei, "Hallo Welt",100);
+			fclose($datei);
 	}
 } else {
 	echo "Parameter wird benötigt";
+ $datei = fopen("/var/www/gnuplot_erstellen","w");
+                        echo fwrite($datei, "Hallo Welt",100);
+                        fclose($datei);
+
 }
 //exec("sudo service aufzeichnung stop",$ausgabe,$fehler);
 //exec("gnuplot /home/pi/Temperaturmessung/Einstellungen.plt");
