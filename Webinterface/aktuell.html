@@ -54,13 +54,13 @@ var addToHomeConfig = {
 	}
 	.bar {
 		transition: 2s;
-
-		position:absolute;
-		left:310px;
+		clear: both;
+		position:relative;
+		margin-top: 20px;
 	}
 	span.zahl {
 		position:absolute;
-		left:210px;
+		left:50%;
 	}
 	span.einheit {
 		font-weight: bold;
@@ -207,7 +207,7 @@ function laden() { //neueste Daten nachladen und Balken bar() ausführen
 function bar_width() {
 	browserbreite=document.body.offsetWidth;
 	for (index = 1; index < ids_w.length; ++index) {
-		breite=(werte[index]-min[index])/(max[index]-min[index]) * (browserbreite-300);
+		breite=(werte[index]-min[index])/(max[index]-min[index]) * (browserbreite);
 		$("#" + ids_w[index] ).css("width", breite +"px");
 	}
 }
