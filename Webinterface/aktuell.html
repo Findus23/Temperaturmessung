@@ -33,6 +33,7 @@
 	<!-- "Zum Homebildschirm hinzufügen" Benachrichtigung  -->
 	<link rel="stylesheet" href="./Fremddateien/add2home.css">
 	<script type="application/javascript" src="./Fremddateien/add2home.js"></script>
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript">
 var addToHomeConfig = {
 	touchIcon: true,
@@ -72,7 +73,7 @@ var addToHomeConfig = {
 	</style>
 </head>
  
-<body onresize="bar()" id="viewport">
+<body onresize="bar_width()" id="viewport">
 <!--Beginn Navigationsleiste-->
 <div id="nav">
 <ul>
@@ -86,67 +87,76 @@ var addToHomeConfig = {
 </div>
 <!--Ende Navigationsleiste-->
 <h1>Aktuell</h1>
-<iframe width="1" scrolling="no" height="1" frameborder="0" src="control.php?aktion=running" seamless="seamless"></iframe>
+<!--<iframe width="1" scrolling="no" height="1" frameborder="0" src="control.php?aktion=running" seamless="seamless">ifames werden nicht unterstützt</iframe>-->
 <div class="wert">
 	<div class="label">Datum/Uhrzeit:</div>
-	<div><span class="zahl" id="uhrzeit" style="font-weight:bold;"></span></div>
+	<div><span class="zahl" id="uhrzeit" style="font-weight:bold;">0</span></div>
 </div>
 
 <div class="wert" style="margin-top:30px;">
 	<div class="label">Innen&shy;temperatur:</div>
-	<div><span class="zahl" id="innen"></span></div>
+	<div><span class="zahl" id="innen">0</span></div>
 	<div id="innen_w" class="bar">&nbsp;</div>
 </div>	
 <div class="wert">
 	<div class="label">Luft&shy;qualität:</div>
-	<div><span class="zahl" id="qualität"></span></div>
+	<div><span class="zahl" id="qualität">0</span></div>
 	<div id="qualität_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Geräte&shy;temperatur 1:</div>
-	<div><span class="zahl" id="ger1"></span></div>
+	<div><span class="zahl" id="ger1">0</span></div>
 	<div id="ger1_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Geräte&shy;temperatur 2:</div>
-	<div><span class="zahl" id="ger2"></span></div>
+	<div><span class="zahl" id="ger2">0</span></div>
 	<div id="ger2_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Prozessor:</div>
-	<div><span class="zahl" id="prozessor"></span></div>
+	<div><span class="zahl" id="prozessor">0</span></div>
 	<div id="prozessor_w" class="bar">&nbsp;</div>
 </div>
 
 <div class="wert" style="margin-top:30px;">
 	<div class="label">Außen&shy;temperatur:</div>
-	<div><span class="zahl" id="aussen"></span></div>
+	<div><span class="zahl" id="aussen">0</span></div>
 	<div id="aussen_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Temperatur &shy;<font style="font-size:70%;">(Luftfeuchtesensor)</font>:</div>
-	<div><span class="zahl" id="temp_luft"></span></div>
+	<div><span class="zahl" id="temp_luft">0</span></div>
 	<div id="temp_luft_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Boden&shy;temperatur:</div>
-	<div><span class="zahl" id="boden"></span></div>
+	<div><span class="zahl" id="boden">0</span></div>
 	<div id="boden_w" class="bar">&nbsp;</div>
 </div>
 <div class="wert">
 	<div class="label">Luft&shy;feuchte:</div>
-	<div><span class="zahl" id="feuchte"></span></div>
+	<div><span class="zahl" id="feuchte">0</span></div>
 	<div id="feuchte_w" class="bar">&nbsp;</div>
 </div>
 
 <div class="wert">
 	<div class="label">Luft&shy;druck:</div>
-	<div><span class="zahl" id="druck"></span></div>
+	<div><span class="zahl" id="druck">0</span></div>
 	<div id="druck_w" class="bar">&nbsp;</div>
 </div>
 <p style="font-size:small;"><a href="./aktuell_einfach.html">einfache tabellarische Darstellung</a><br />
 <button onclick="laden()">manuell neu laden</button></p>
 <script type="text/javascript" >
+//Allgemeine Einstellungen:
+	var einheiten=["","°C","°C","°C","°C","°C","% rel LF","°C","hPa","°C",""];
+	var ids=["uhrzeit","innen","ger1","boden","ger2","temp_luft","feuchte","aussen","druck","prozessor","qualität"];
+	var ids_w=["uhrzeit","innen_w","ger1_w","boden_w","ger2_w","temp_luft_w","feuchte_w","aussen_w","druck_w","prozessor_w","qualität_w"];
+	var min=[0,10,10,-10,10,-10,35,-10,950,30,400];
+	var max=[0,40,40,40,40,40,100,40,1200,60,5000];
+
+
+
 if (window.navigator.standalone) { // Wenn die Seite als Webapp aufgerufen wird, soll die Navigationsleiste verschwinden
 	document.getElementById('nav').style.display = 'none'; 
 }
@@ -169,63 +179,45 @@ catch(e){ };
 
 
 function laden() { //neueste Daten nachladen und Balken bar() ausführen
-if (window.XMLHttpRequest) //Bei IE6 und IE5 ActiveXObject verwenden
-{// code for IE7+, Firefox, Chrome, Opera, Safari
-	xmlhttp=new XMLHttpRequest();
-}
-else
-{// code for IE6, IE5
-    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-}
+	if (window.XMLHttpRequest) //Bei IE6 und IE5 ActiveXObject verwenden
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
 
-if(typeof tmp == "number"){ //Wenn ein Internet Explorer verwendet wird ...
-
-	var lower = 0; 
-	var upper = 100000000;
-	xmlhttp.open("GET","http://sandgrube.no-ip.org/text_ws.txt?"+(Math.floor(Math.random()*(upper-lower))+lower),false); //...  wird die URL immer verändert, da der Internet Explorer sonst sogar diese Abfrage cached,
-} else {
-	xmlhttp.open("GET","text_ws.txt",false);
+	if(typeof tmp == "number"){ //Wenn ein Internet Explorer verwendet wird ...
+		var lower = 0; 
+		var upper = 100000000;
+		xmlhttp.open("GET","http://sandgrube.no-ip.org/text_ws.txt?"+(Math.floor(Math.random()*(upper-lower))+lower),false); //...  wird die URL immer verändert, da der Internet Explorer sonst sogar diese Abfrage cached,
+	} else {
+		xmlhttp.open("GET","text_ws.txt",false);
+	}
+	xmlhttp.send();
+	inhalt=xmlhttp.responseText;
+	werte=inhalt.split(',');
+	for (index = 0; index < ids.length; ++index) {
+		$("#" + ids[index] ).html(werte[index] + " <span class='einheit'>" + einheiten[index] + "</span>");
+	}
+	bar_width();
+	bar_color();
 }
-xmlhttp.send();
-inhalt=xmlhttp.responseText;
-werte=inhalt.split(',');
-var einheiten=["","°C","°C","°C","°C","°C","% rel LF","°C","hPa","°C",""]
-
-document.getElementById('uhrzeit').innerHTML = werte[0] + " <span class='einheit'>" + einheiten[0] + "</span>";
-document.getElementById('innen').innerHTML = werte[1] + " <span class='einheit'>" + einheiten[1] + "</span>";
-document.getElementById('ger1').innerHTML = werte[2] + " <span class='einheit'>" + einheiten[2] + "</span>";
-document.getElementById('boden').innerHTML = werte[3] + " <span class='einheit'>" + einheiten[3] + "</span>";
-document.getElementById('ger2').innerHTML = werte[4] + " <span class='einheit'>" + einheiten[4] + "</span>";
-document.getElementById('temp_luft').innerHTML = werte[5] + " <span class='einheit'>" + einheiten[5] + "</span>";
-document.getElementById('feuchte').innerHTML = werte[6] + " <span class='einheit'>" + einheiten[6] + "</span>";
-document.getElementById('aussen').innerHTML = werte[7] + " <span class='einheit'>" + einheiten[7] + "</span>";
-document.getElementById('druck').innerHTML = werte[8] + " <span class='einheit'>" + einheiten[8] + "</span>";
-document.getElementById('prozessor').innerHTML = werte[9] + " <span class='einheit'>" + einheiten[9] + "</span>";
-document.getElementById('qualität').innerHTML = werte[10] + " <span class='einheit'>" + einheiten[10] + "</span>";
-bar()
+function bar_width() {
+	browserbreite=document.body.offsetWidth;
+	for (index = 1; index < ids_w.length; ++index) {
+		breite=(werte[index]-min[index])/(max[index]-min[index]) * (browserbreite-300);
+		$("#" + ids_w[index] ).css("width", breite +"px");
+	}
 }
-function bar() {
-document.getElementById('innen_w').style.width = (werte[1]-10) / 30 * (document.body.offsetWidth-300) + "px";
-document.getElementById('ger1_w').style.width = (werte[2]-10) / 30 * (document.body.offsetWidth-300)  + "px";
-document.getElementById('boden_w').style.width = (werte[3]+20) / 60 * (document.body.offsetWidth-300)  + "px";
-document.getElementById('ger2_w').style.width = (werte[4]-10) / 30 * (document.body.offsetWidth-300)  + "px";
-document.getElementById('temp_luft_w').style.width = (werte[5]+20) / 60 * (document.body.offsetWidth-300)  + "px";
-document.getElementById('feuchte_w').style.width = (werte[6]-35) / 65 * (document.body.offsetWidth-300) + "px";
-document.getElementById('aussen_w').style.width = (werte[7]+20) / 60 * (document.body.offsetWidth-300) + "px";
-document.getElementById('druck_w').style.width = (werte[8]-950) / 250 * (document.body.offsetWidth-300) + "px";
-document.getElementById('prozessor_w').style.width = (werte[9]-30) / 30 * (document.body.offsetWidth-300) + "px";
-document.getElementById('qualität_w').style.width = werte[10] / 5000 * (document.body.offsetWidth-300) + "px";
-
-document.getElementById('innen_w').style.backgroundColor = "rgb(" + Math.round((werte[1]-10) / 30 * 255) + ",0," + Math.round(255-((werte[1]-10) / 30 * 255)) + ")";
-document.getElementById('ger1_w').style.backgroundColor = "rgb(" + Math.round((werte[2]-10) / 30 * 255) + ",0," + Math.round(255-((werte[2]-10) / 30 * 255)) + ")";
-document.getElementById('boden_w').style.backgroundColor = "rgb(" + Math.round((werte[3]+20) / 60 * 255) + ",0," + Math.round(255-((werte[3]+20) / 60 * 255)) + ")";
-document.getElementById('ger2_w').style.backgroundColor = "rgb(" + Math.round((werte[4]-10) / 30 * 255) + ",0," + Math.round(255-((werte[4]-10) / 30 * 255)) + ")";
-document.getElementById('temp_luft_w').style.backgroundColor = "rgb(" + Math.round((werte[5]+20) / 60 * 255) + ",0," + Math.round(255-((werte[5]+20) / 60 * 255)) + ")";
-document.getElementById('feuchte_w').style.backgroundColor ="rgb(" + Math.round((werte[6]-35) / 65 * 255) + ",0," + Math.round(255-((werte[6]-35) / 65 * 255)) + ")";
-document.getElementById('aussen_w').style.backgroundColor = "rgb(" + Math.round((werte[7]+20) / 60 * 255) + ",0," + Math.round(255-((werte[7]+20) / 60 * 255)) + ")";
-document.getElementById('druck_w').style.backgroundColor = "rgb(" + Math.round((werte[8]-950) / 250 * 255) + ",0," + Math.round(255-((werte[8]-950) / 250 * 255)) + ")";
-document.getElementById('prozessor_w').style.backgroundColor = "rgb(" + Math.round((werte[9]-30) / 30 * 255) + ",0," + Math.round(255-((werte[9]-30) / 30 * 255)) + ")";
-document.getElementById('qualität_w').style.backgroundColor = "rgb(" + Math.round(werte[10] / 5000 * 255) + ",0," + Math.round(255-(werte[10] / 5000 * 255)) + ")";
+function bar_color() {	
+	for (index = 1; index < ids_w.length; ++index) {
+		anteil=(werte[index]-min[index])/(max[index]-min[index]);
+		farbwert=anteil*255;
+		rgb="rgb(" + Math.round(farbwert) + ",0," + Math.round(255-farbwert) + ")" ;
+		$("#" + ids_w[index] ).css("backgroundColor", rgb);
+	}
 }
 
 laden();
