@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<title>Wetter</title>
+		<meta charset="utf-8">
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script type="text/javascript">
+
+function wetter() {
+	boden=$("#boden").val();
+	temp_luft=$("#temp_luft").val();
+	feuchte=$("#feuchte").val();
+	aussen=$("#aussen").val();
+	druck=$("#druck").val();	
+	var monate=[0.6,0.8,4.9,9.3,14.6,17.6,19.5,18.9,14.3,8.9,3.7,0.7]; // http://www.zamg.ac.at/fix/klima/oe71-00/klima2000/klimadaten_oesterreich_1971_frame1.htm
+	jetzt=new Date();
+	dieses_monat=monate[jetzt.getMonth()];
+	nächstes_monat=monate[jetzt.getMonth()+1];
+	mitteltemp=dieses_monat + (jetzt.getDate()/30)*(nächstes_monat-dieses_monat);
+	stunden=jetzt.getMinutes()/60 + jetzt.getHours();
+	temp_schätzung = -5 * Math.cos(stunden * 2 * Math.PI / 24) + mitteltemp;
+	console.log(temp_schätzung);
+	if (jetzt.getHours >= 18 || jetzt.getHours <= 7) {
+		tag="1";
+	} else {
+		tag="0";
+	}
+	bewölkungsgrad=(aussen-temp_schätzung);
+	bewölkungsgrad+=(druck-980)/10;
+	if (bewölkungsgrad >= 7) {
+		bewölkung=0; //sonnig
+	} else if (bewölkungsgrad <=-7) {
+		bewölkung=2; //stark bewölkt
+	} else {
+		bewölkung=1; //leicht bewölkt
+	}
+	console.log("Bewölkung: " + bewölkungsgrad);
+	if (feuchte < 85) {
+		ns=0; // kein Niederschlag
+	} else if (aussen <= -5) {
+		ns=2; // Schnee
+		if (bewölkung==0) {
+			bewölkung=1;
+		}
+	} else if (aussen <= 0) {
+		ns=4; //Schnee-Regen
+	} else if ((jetzt.getMonth()== 6 || jetzt.getMonth()== 7) && (aussen-temp_schätzung) > 0) {
+		ns=1; //Gewitter
+		bewölkung=2;
+	} else {
+		ns=3; //Regen
+		if (bewölkung==0) {
+			bewölkung=1;
+		}
+	}
+	console.log("NS: " + ns);
+	// Zusammenfügen
+	tag+="";
+	bewölkung+="";
+	ns+="";
+	ges = tag + ns + bewölkung;
+	console.log(ges);
+
+	// Zuordnung zu den Dateien
+	switch(ges) {
+		case "012":
+		case "112":
+			file="Gewitter.svg";
+			break;
+		case "100":
+			file="Mond.svg";
+			break;
+		case "042":
+		case "041":
+		case "142":
+		case "141":
+			file="schwacher_Schnee.svg";
+			break;
+		case "000":
+			file="Sonne.svg";
+			break;
+		case "001":
+			file="Sonne_mit_Wolke.svg";
+			break;
+		case "101":
+			file="Wolke_mit Mond.svg";
+			break;
+		case "002":
+		case "102":
+			file="Stark_bewölkt.svg";
+			break;
+		case "022":
+		case "021":
+		case "122":
+		case "121":
+			file="starker_Schnee.svg";
+			break;
+		case "001":
+		case "002":
+		case "101":
+		case "102":
+			file="Wolke_einzeln.svg";
+			break;
+		case "032":
+		case "132":
+			file="starker_Regen.svg";
+			break;
+		case "031":
+		case "131":
+			file="leichter_Regen.svg";
+			break;
+	}
+	file="images/wetter/" + file;
+	console.log(file);
+	$("#icons").attr("src",file );
+}	
+</script>
+
+	</head>
+
+<body>
+boden	<br />	<input type="number" id="boden" /><br />
+temp_luft	<br />	<input type="number" id="temp_luft" /><br />
+feuchte	<br />	<input type="number" id="feuchte" /><br />
+aussen	<br />	<input type="number" id="aussen" /><br />
+druck	<br />	<input type="number" id="druck" /><br />
+<input type="submit" onclick="wetter()" value="Wetter!" /><br />
+<img src="" alt="wettericon" id="icons" width="200px" />
+</body>
+</html>
