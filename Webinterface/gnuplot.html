@@ -1,19 +1,38 @@
 <!DOCTYPE html>
-<html lang="de">
- 
+<html>
 <head>
 	<meta charset="utf-8" />
-	<title>Gnuplot</title>
-	<style>
-		p {
-			text-align: center;
-		}
-	</style>
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+	<title>Über das Projekt</title>
+	<link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
- 
 <body>
-<p><a href="./gnuplot.php">Aktualisieren</a><p>
-<p><img src="./gnuplot/gnuplot.png" alt="Diagram als PNG" /></p>
-<p><img src="./gnuplot/gnuplot.svg" alt="Diagram als SVG" /></p>
+
+<!--Beginn Navigationsleiste-->
+<div id="nav">
+<ul>
+	<li><a href="./index.html">Hauptseite</a></li>
+	<li><a href="./aktuell.html">aktuelle Werte</a></li>
+	<li><a href="./dygraphs_außen.html">Diagramm (Außen)</a></li>
+	<li><a href="./dygraphs_innen.html">Diagramm (Innen)</a></li>
+	<li><a href="./projekt.html">Über das Projekt</a></li>
+	<li><a href="./links.html">weitere Informationen</a></li>
+	<li><a href="./gnuplot.html" id="aktuell">Gnuplot</a></li>
+</ul>
+</div>
+<!--Ende Navigationsleiste-->
+<img src="images/logo.svg" width="13%"  alt="Logo" style="margin-right:2%;margin-top:30px;margin-left:0;" class="float"></div>
+<div id="text">
+<h1>Gnuplot</h1>
+
+<a href="gnuplot/aussen.svg" title="Vollbild"><img src="gnuplot/aussen.svg" width="100%" alt="Gnuplot außen" ></a>
+<a href="gnuplot/innen.svg" title="Vollbild"><img src="gnuplot/innen.svg" width="100%" alt="Gnuplot außen" ></a>
+<a href="gnuplot/luftdruck.svg" title="Vollbild"><img src="gnuplot/luftdruck.svg" width="100%" alt="Gnuplot außen" ></a>
+<a href="gnuplot/luftfeuchte.svg" title="Vollbild"><img src="gnuplot/luftfeuchte.svg" width="100%" alt="Gnuplot außen" ></a>
+<a href="gnuplot/luftqualität.svg" title="Vollbild"><img src="gnuplot/luftqualität.svg" width="100%" alt="Gnuplot außen" ></a>
+<a href="gnuplot/prozessor.svg" title="Vollbild"><img src="gnuplot/prozessor.svg" width="100%" alt="Gnuplot außen" ></a>
+<iframe width="1" scrolling="no" height="1" frameborder="0" src="control.php?aktion=gnuplot" seamless="seamless">ifames werden nicht unterstützt</iframe>
+</div>
+
 </body>
 </html>
