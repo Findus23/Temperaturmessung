@@ -70,7 +70,7 @@ do
 		gpio write 13 0
 	done
 
-	luft_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT.py 2302 17)	# Rohdaten des Luftfeuchtigkeits-Sensors
+	luft_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/AdafruitDHT.py 2302 17)	# Rohdaten des Luftfeuchtigkeits-Sensors
 	set -- $luft_roh
 	luft_temp=$1
 	luft_feucht=$2
@@ -78,7 +78,7 @@ do
 	do
 		gpio write 13 1
 		echo "----Luft: $luft_roh"
-		luft_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_DHT.py 2302 17)	# Rohdaten des Luftfeuchtigkeits-Sensors
+		luft_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/AdafruitDHT.py 2302 17)	# Rohdaten des Luftfeuchtigkeits-Sensors
 		set -- $luft_roh
 		luft_temp=$1
 		luft_feucht=$2
