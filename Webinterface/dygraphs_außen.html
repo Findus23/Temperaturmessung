@@ -32,7 +32,7 @@
 
 	<meta name="apple-mobile-web-app-title" content="Außen">
 	<title>Außensensoren</title>
-		<link rel="stylesheet" type="text/css" href="./style.css" />
+	<link rel="stylesheet" type="text/css" href="./style.css" />
 	<script type="text/javascript" src="./Fremddateien/dygraph-combined.js"></script>
 	<script type="text/javascript" src="./Fremddateien/CibulCalendar.min.js"></script>
 	<style type="text/css">
@@ -110,7 +110,7 @@
 <iframe width="1" scrolling="no" height="1" frameborder="0" src="control.php?aktion=running" seamless="seamless"></iframe>
 <div id="inhalt">
 <div id="graphdiv"></div>
-  <div id="Legende"></div>
+<div id="Legende"></div>
 <span id="auswahl">
 	<input type=checkbox id="7" checked onClick="change(this)">
 	<label for="7" style="color: #00A6A6;font-weight:bold">Außentemperatur</label>
@@ -137,6 +137,13 @@
 	<input type="button" value="Letzter Tag" onclick="zoomGraphX(new Date().getTime()-86400000, (new Date().getTime()))">
 	<input type="button" value="Letzte Woche" onclick="zoomGraphX(new Date().getTime()-86400000*7, (new Date().getTime()))">
 	<input type="text" id="datespan"/> 
+	<select name="data" id="data" size="1" title="anderen Datensatz auswählen" onchange="g.updateOptions({file: (options[selectedIndex].value)})">
+		<option value="dygraph.csv">aktuelle Messung</option>
+		<option value="dygraph_ocg.csv">OCG Finale</option>
+		<option value="dygraph_schule.csv" title="Mai-Juni 2014">Schule</option>
+		<option value="dygraph_gemischt.csv">Testdaten 1</option>
+		<option value="dygraph_lange.csv">Testdaten 2</option>
+	<select>
 </span>
 </div>
 
@@ -145,23 +152,23 @@
 		document.getElementById('nav').style.display = 'none'; 
 		document.getElementById('inhalt').style.height = "100%";
 	}
-	g = new Dygraph(
-    document.getElementById("graphdiv"),
-    "dygraph.csv", // path to CSV file
-    { showRoller: true, //Möglichkeit zum Runden anzeigen
-    	animatedZooms: true,
-    //	 dateWindow: [ Date.parse("2012/09/29 12:00:00"),Date.parse("2013/11/10 12:00:00") ], //Start- und Endzeitraum
-    	labels:  ["Zeit", "Innentemperatur", "Gerätetemperatur 1", "Bodentemperatur", "Gerätetemperatur 2", "Temperatur (Feuchtesensor)", "Luftfeuchtigkeit", "Luftdruck", "Außentemperatur", "Prozessor", "Luftqualität"],
-    	labelsDiv: document.getElementById("Legende"), //Legende in einem bestimmten DIV anzeigen
+g = new Dygraph(
+	document.getElementById("graphdiv"),
+	"dygraph.csv", // path to CSV file
+	showRoller: true, //Möglichkeit zum Runden anzeigen
+		animatedZooms: true,
+//		dateWindow: [ Date.parse("2012/09/29 12:00:00"),Date.parse("2013/11/10 12:00:00") ], //Start- und Endzeitraum
+		labels: ["Zeit", "Innentemperatur", "Gerätetemperatur 1", "Bodentemperatur", "Gerätetemperatur 2", "Temperatur (Feuchtesensor)", "Luftfeuchtigkeit", "Luftdruck", "Außentemperatur", "Prozessor", "Luftqualität"],
+		labelsDiv: document.getElementById("Legende"), //Legende in einem bestimmten DIV anzeigen
 //		'Luftfeuchtigkeit': { //eigene y-Achse für Luftfeuchtigkeit
-//              axis: {	valueRange: [1, 99],
-//	                independentTicks: true
-//              }
-//            },
+//			axis: {	valueRange: [1, 99],
+//			independentTicks: true
+//		}
+//},
 		'Luftqualität': { //eigene y-Achse für Luftdruck
-              axis: { independentTicks: true
-              }
-            },
+			axis: { independentTicks: true
+			}
+		},
 		'Luftdruck': {
 			axis: 'Luftqualität'
 			},
@@ -172,27 +179,24 @@
 		strokeWidth: 3, // Liniendicke
 		rollPeriod: 10,  // Runden standardmäßig auf 10 setzen
 		visibility: [false, false, true, false, false, true, true, true, false, false]
-//        highlightSeriesOpts: {
-//          strokeWidth: 5,
-//          strokeBorderWidth: 1,
+//		highlightSeriesOpts: {
+//			strokeWidth: 5,
+//			strokeBorderWidth: 1,
 //		}
 //		showRangeSelector: true, //Auswahlzeile anzeigen
 //		rangeSelectorHeight: 80
-          
 
+	}			// Optionen
+);
+	function change(el) {
+		g.setVisibility(el.id, el.checked);
+	}
 
-    
-    }          // options
-  );
-	 function change(el) {
-        g.setVisibility(el.id, el.checked);
-
-      }
-	 function zoomGraphX(minDate, maxDate) {
-        g.updateOptions({
-          dateWindow: [minDate, maxDate]
-        });
-      }
+	function zoomGraphX(minDate, maxDate) {
+		g.updateOptions({
+			dateWindow: [minDate, maxDate]
+		});
+	}
 
 	function onload() {
 		setCibulCalendar('datespan',{onSelect: function(selected) {
