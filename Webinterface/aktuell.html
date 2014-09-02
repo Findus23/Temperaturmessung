@@ -73,7 +73,7 @@ var addToHomeConfig = {
 	</style>
 </head>
  
-<body onresize="bar_width()" id="viewport">
+<body onresize="bar_width()" id="viewport"><!-- Wenn die Fenstergröße verändert wird, die Balkenbreite neu berechnen-->
 <!--Beginn Navigationsleiste-->
 <div id="nav">
 <ul>
@@ -89,7 +89,7 @@ var addToHomeConfig = {
 <!--Ende Navigationsleiste-->
 <h1>Aktuell</h1>
 <iframe width="1" scrolling="no" height="1" frameborder="0" src="control.php?aktion=running" seamless="seamless">ifames werden nicht unterstützt</iframe>
-<img src="" alt="Wettericon" id="wettericon" width="300px" style="float:right;z-index: -1;" />
+<img src="" alt="Wettericon" id="wettericon" width="300px" style="float:right;z-index: -1;" /><!-- hier wird per JS der Link zum richtigen Wettericon eingefügt -->
 <div class="wert">
 	<div class="label">Datum/Uhrzeit:</div>
 	<div><span class="zahl" id="uhrzeit" style="font-weight:bold;">0</span></div>
@@ -152,9 +152,9 @@ var addToHomeConfig = {
 <script type="text/javascript" >
 //Allgemeine Einstellungen:
 	var einheiten=["","°C","°C","°C","°C","°C","% rel LF","°C","hPa","°C",""];
-	var ids=["uhrzeit","innen","ger1","boden","ger2","temp_luft","feuchte","aussen","druck","prozessor","qualität"];
-	var ids_w=["uhrzeit","innen_w","ger1_w","boden_w","ger2_w","temp_luft_w","feuchte_w","aussen_w","druck_w","prozessor_w","qualität_w"];
-	var min=[0,10,10,-10,10,-10,35,-10,950,30,400];
+	var ids=["uhrzeit","innen","ger1","boden","ger2","temp_luft","feuchte","aussen","druck","prozessor","qualität"]; //IDs der SPANs, in die die Temperaturen eingesetzt werden
+	var ids_w=["uhrzeit","innen_w","ger1_w","boden_w","ger2_w","temp_luft_w","feuchte_w","aussen_w","druck_w","prozessor_w","qualität_w"]; // IDs der DIVs der Balken
+	var min=[0,10,10,-10,10,-10,35,-10,950,30,400]; // Minima und Maxima für die Balkendarstellung
 	var max=[0,40,40,40,40,40,100,40,1200,60,5000];
 
 
@@ -193,7 +193,7 @@ function laden() { //neueste Daten nachladen und Balken bar() ausführen
 	if(typeof tmp == "number"){ //Wenn ein Internet Explorer verwendet wird ...
 		var lower = 0; 
 		var upper = 100000000;
-		xmlhttp.open("GET","http://sandgrube.no-ip.org/text_ws.txt?"+(Math.floor(Math.random()*(upper-lower))+lower),false); //...  wird die URL immer verändert, da der Internet Explorer sonst sogar diese Abfrage cached,
+		xmlhttp.open("GET","http://sandgrube.no-ip.org/text_ws.txt?"+(Math.floor(Math.random()*(upper-lower))+lower),false); //...  wird die URL immer verändert, da der Internet Explorer sonst sogar diese Abfrage cached
 	} else {
 		xmlhttp.open("GET","text_ws.txt",false);
 	}
@@ -228,15 +228,14 @@ function wettericon() {
 	feuchte=werte[6];
 	aussen=werte[7];
 	druck=werte[8];
-	var monate=[0.6,0.8,4.9,9.3,14.6,17.6,19.5,18.9,14.3,8.9,3.7,0.7]; // http://www.zamg.ac.at/fix/klima/oe71-00/klima2000/klimadaten_oesterreich_1971_frame1.htm
+	var monate=[0.6,0.8,4.9,9.3,14.6,17.6,19.5,18.9,14.3,8.9,3.7,0.7]; // Monatsmitteltemperaturen von http://www.zamg.ac.at/fix/klima/oe71-00/klima2000/klimadaten_oesterreich_1971_frame1.htm
 	jetzt=new Date();
 	dieses_monat=monate[jetzt.getMonth()];
 	nächstes_monat=monate[jetzt.getMonth()+1];
-	mitteltemp=dieses_monat + (jetzt.getDate()/30)*(nächstes_monat-dieses_monat);
-	stunden=jetzt.getMinutes()/60 + jetzt.getHours();
-	temp_schätzung = -5 * Math.cos(stunden * 2 * Math.PI / 24) + mitteltemp;
-	console.log(temp_schätzung);
-	if (jetzt.getHours >= 18 || jetzt.getHours <= 7) {
+	mitteltemp=dieses_monat + (jetzt.getDate()/30)*(nächstes_monat-dieses_monat); //Monatsmittel "vom aktuellen Tag"
+	stunden=jetzt.getMinutes()/60 + jetzt.getHours(); //Stunden in Dezimaldarstellung
+	temp_schätzung = -5 * Math.cos(stunden * 2 * Math.PI / 24) + mitteltemp; // Tagesschwankung als Cosinusfunktion
+	if (jetzt.getHours >= 18 || jetzt.getHours <= 7) { //von 7 bis 18 Uhr Tagessymbole anzeigen
 		tag="1";
 	} else {
 		tag="0";
@@ -250,7 +249,6 @@ function wettericon() {
 	} else {
 		bewölkung=1; //leicht bewölkt
 	}
-	console.log("Bewölkung: " + bewölkungsgrad);
 	if (feuchte < 85) {
 		ns=0; // kein Niederschlag
 	} else if (aussen <= -5) {
@@ -269,13 +267,11 @@ function wettericon() {
 			bewölkung=1;
 		}
 	}
-	console.log("NS: " + ns);
 	// Zusammenfügen
 	tag+="";
 	bewölkung+="";
 	ns+="";
 	ges = tag + ns + bewölkung;
-	console.log(ges);
 
 	// Zuordnung zu den Dateien
 	switch(ges) {
@@ -331,7 +327,18 @@ function wettericon() {
 	$("#wettericon").attr("src",file );
 }	
 
-
+function debug() {
+	console.log("Luftfeuchte: " + feuchte);
+	console.log("Temperatur: " + aussen);
+	console.log("Druck: " + druck);
+	console.log("Jetzt: " + jetzt);
+	console.log("mitteltemp: " + mitteltemp);
+	console.log("temp_schätzung: " + temp_schätzung);
+	console.log("bewölkungsgrad1: " + (aussen-temp_schätzung));
+	console.log("bewölkungsgrad2: " + ((druck-980)/10));
+	console.log("bewölkungsgrad: " + bewölkungsgrad);
+	console.log("ges" + ges);
+}
 
 laden();
 window.setInterval(function(){
