@@ -148,7 +148,7 @@ var addToHomeConfig = {
 	<div id="druck_w" class="bar">&nbsp;</div>
 </div>
 <p style="font-size:small;"><a href="./aktuell_einfach.html">einfache tabellarische Darstellung</a><br />
-<button onclick="laden()">manuell neu laden</button></p>
+<button onclick="laden()">manuell neu laden</button></p><a href="#" onclick="debug(); alert("Bitte die Entwickler-Console öffnen (Werte mit debug() anzeigen)") style="position: absolute;right: 10px;">debug</a>
 <script type="text/javascript" >
 //Allgemeine Einstellungen:
 	var einheiten=["","°C","°C","°C","°C","°C","% rel LF","°C","hPa","°C",""];
@@ -323,7 +323,6 @@ function wettericon() {
 			break;
 	}
 	file="images/wetter/" + file;
-	console.log(file);
 	$("#wettericon").attr("src",file );
 }	
 
@@ -337,7 +336,8 @@ function debug() {
 	console.log("bewölkungsgrad1: " + (aussen-temp_schätzung));
 	console.log("bewölkungsgrad2: " + ((druck-980)/10));
 	console.log("bewölkungsgrad: " + bewölkungsgrad);
-	console.log("ges" + ges);
+	console.log("ges: " + ges);
+	console.log("Datei: " + file);
 }
 
 laden();
