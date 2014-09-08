@@ -117,6 +117,7 @@ $rasp
 $qualitat" >/home/pi/Temperaturmessung/text.txt.temp
 
 	echo "$uhrzeit_lang,${temp1_r},${temp2_r},${temp3_r},${temp4_r},${luft_temp_r},${luft_feucht_r},${temp_druck_r},${druck_r},${rasp},${qualitat}" >/home/pi/Temperaturmessung/text_ws.txt # Daten für Webseite
+	/home/pi/Temperaturmessung/diverses/wunderground.py $temp1 $temp2 $temp3 $temp4 $luft_temp $luft_feucht $temp_druck $druck $rasp $qualitat >> /home/pi/wunderground.log &
 	sudo cp /home/pi/Temperaturmessung/text_ws.txt ${PFAD}text_ws.txt
 	mv /home/pi/Temperaturmessung/text.txt.temp /home/pi/Temperaturmessung/text.txt
 	sudo cp /home/pi/Temperaturmessung/dygraph.csv ${PFAD}dygraph.csv
