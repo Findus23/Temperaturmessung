@@ -155,7 +155,7 @@
 g = new Dygraph(
 	document.getElementById("graphdiv"),
 	"dygraph.csv", // path to CSV file
-	showRoller: true, //Möglichkeit zum Runden anzeigen
+	{ showRoller: true, //Möglichkeit zum Runden anzeigen
 		animatedZooms: true,
 //		dateWindow: [ Date.parse("2012/09/29 12:00:00"),Date.parse("2013/11/10 12:00:00") ], //Start- und Endzeitraum
 		labels: ["Zeit", "Innentemperatur", "Gerätetemperatur 1", "Bodentemperatur", "Gerätetemperatur 2", "Temperatur (Feuchtesensor)", "Luftfeuchtigkeit", "Luftdruck", "Außentemperatur", "Prozessor", "Luftqualität"],
