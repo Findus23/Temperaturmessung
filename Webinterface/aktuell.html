@@ -31,15 +31,14 @@
 	<meta name="apple-mobile-web-app-title" content="Temperatur">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<!-- "Zum Homebildschirm hinzufügen" Benachrichtigung  -->
-	<link rel="stylesheet" href="./Fremddateien/add2home.css">
-	<script type="application/javascript" src="./Fremddateien/add2home.js"></script>
+	<link rel="stylesheet" href="./Fremddateien/addtohomescreen.css">
+	<script type="application/javascript" src="./Fremddateien/addtohomescreen.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-	<script type="text/javascript">
-var addToHomeConfig = {
-	touchIcon: true,
-	returningVisitor: true,
-};
-	</script>
+<script>
+addToHomescreen({
+	skipFirstVisit: true
+});
+</script>
 
 	<title>Aktuelles Wetter</title>
 	<link rel="stylesheet" type="text/css" href="./style.css" />
