@@ -4,7 +4,7 @@ import math
 from datetime import datetime # aus dem Modul datetime Datentyp datetime (Datum und Zeit) importieren
 bis_roh = "2014/02/01 22:1:00"
 
-namen = ["Innentemperatur", "Gerätetemperatur 1", "Außentemperatur", "Gerätetemperatur 2", "Temperatur (Luft)", "Luftfeuchtigkeit", "Luftdruck\t", "Temperatur (Druck)", "Prozessor\t","Qualität\t"]
+namen = ["Innentemperatur", "Gerätetemperatur 1", "Außentemperatur", "Gerätetemperatur 2", "Temperatur (Luft)", "Luftfeuchtigkeit", "Luftdruck\t", "Temperatur (Druck)", "Prozessor\t", "Qualität\t"]
 format = "%Y/%m/%d %H:%M:%S"
 eingabeformat = "%d.%m.%y %H:%M:%S"
 von_roh = "2014/02/01 18:12:42"
@@ -12,24 +12,24 @@ von_roh = "2014/02/01 18:12:42"
 
 def offnen(datei):
 	with open(datei) as filein:
-		reader =csv.reader(filein, quoting=csv.QUOTE_NONNUMERIC)
+		reader = csv.reader(filein, quoting = csv.QUOTE_NONNUMERIC)
 		global liste # Liste außerhalb von Funtion nutzen
 		liste = list(zip(*reader)) # = [temp1,temp2,temp3,temp4,luft_temp,luft_feucht,druck,temp_druck,rasp]
 
 def ausreisser(spalte):
-	zeilenanzahl = len(spalte) -1
+	zeilenanzahl = len(spalte) - 1
 	i = 0
-	
+
 	while i < zeilenanzahl:
-		if (spalte[i] != "") and (spalte[i+1] != "") and (spalte[i-1] != ""):
-			diff1 = spalte[i]-spalte[i+1]
-			diff2 = spalte[i]-spalte[i-1]
+		if (spalte[i] != "") and (spalte[i + 1] != "") and (spalte[i - 1] != ""):
+			diff1 = spalte[i] - spalte[i + 1]
+			diff2 = spalte[i] - spalte[i - 1]
 			if ((diff1 < -schwankung) or (diff1 > schwankung)) and ((diff2 < -schwankung) or (diff2 > schwankung)):
-				print("in Spalte " + str(liste.index(spalte)+1) + " Zeile " + str(i+1) + " ist ein Ausreisser (" + str(spalte[i]) + ")")
-				ausreisserliste.append((liste.index(spalte),i))
-	#		else:
-	#			print("Passt:" + str(i),str(diff1),str(diff2))
-		i+= 1
+				print("in Spalte " + str(liste.index(spalte) + 1) + " Zeile " + str(i + 1) + " ist ein Ausreisser (" + str(spalte[i]) + ")")
+				ausreisserliste.append((liste.index(spalte), i))
+	# 		else:
+	# 			print("Passt:" + str(i),str(diff1),str(diff2))
+		i += 1
 
 def mittelwert(spalte):
 	summe = 0
@@ -42,7 +42,7 @@ def mittelwert(spalte):
 	return mittelwert
 
 def minmax(spalte):
-	mini = spalte[0] #Minimum auf ersten Wert setzen
+	mini = spalte[0] # Minimum auf ersten Wert setzen
 	maxi = spalte[0]
 	for wert in spalte:
 		if wert != "":
@@ -50,9 +50,9 @@ def minmax(spalte):
 				mini = wert
 			if wert > maxi:
 				maxi = wert
-	return (mini,maxi)
+	return (mini, maxi)
 
-def standardabweichung(spalte,mw):
+def standardabweichung(spalte, mw):
 	n = 0
 	summe = 0
 	for wert in spalte:
@@ -68,7 +68,7 @@ def datum_offnen():
 	global inhalt
 	inhalt = datei.readlines()
 	datei.close()
-def datumsauswahl(von,bis):
+def datumsauswahl(von, bis):
 
 	start_gefunden = False
 	stop_gefunden = False
@@ -85,7 +85,7 @@ def datumsauswahl(von,bis):
 			print("Entweder ist der Endzeitpunkt vor dem Startzeitpunkt oder die beiden liegen zu nahe an den Grenzwerten.")
 			exit(1)
 	print("Der Messwert geht von Zeile " + str(start) + " bis Zeile " + str(stop) + " und über folgenden Zeitraum: " + str(bis - von))
-	return start,stop
+	return start, stop
 
 def datumsfrage(frage):
 	while True:
@@ -99,20 +99,20 @@ def datumsfrage(frage):
 
 offnen("vorbereitet.csv")
 datum_offnen()
-spalten_nummer=0
-ausreisserliste= []
+spalten_nummer = 0
+ausreisserliste = []
 for spalte in liste:
 	if (spalten_nummer == 9):
-		schwankung=1000
+		schwankung = 1000
 	else:
 		schwankung = 10
 	ausreisser(spalte)
 	spalten_nummer += 1
 print("Bitte Datum im Format 'DD.MM.YY HH:MM:SS' eingeben")
-print("Es sollte zwischen " + datetime.strptime(inhalt[1].rstrip(),format).strftime(eingabeformat) + " und " + datetime.strptime(inhalt[-1].rstrip(),format).strftime(eingabeformat) + " liegen")
+print("Es sollte zwischen " + datetime.strptime(inhalt[1].rstrip(), format).strftime(eingabeformat) + " und " + datetime.strptime(inhalt[-1].rstrip(), format).strftime(eingabeformat) + " liegen")
 von = datumsfrage("von: ")
 bis = datumsfrage("bis: ")
-startstop = datumsauswahl(von,bis)
+startstop = datumsauswahl(von, bis)
 von = startstop[0]
 bis = startstop[1]
 liste_auswahl = []
@@ -123,10 +123,10 @@ liste = liste_auswahl
 print("------Mittelwerte------")
 mittelwerte = [] # leere Liste erstellen
 for spalte in liste:
-	mw = mittelwert(spalte) #jeden MW ausrechnen ...
+	mw = mittelwert(spalte) # jeden MW ausrechnen ...
 	mittelwerte.append(mw) # ... und an die Liste anhängen
-mittelausgabe = zip(namen,mittelwerte) # in Tupel umwandeln [(Innentemperatur, 25), (Außentemperatur,8)]
-for name,mittelwert in mittelausgabe:
+mittelausgabe = zip(namen, mittelwerte) # in Tupel umwandeln [(Innentemperatur, 25), (Außentemperatur,8)]
+for name, mittelwert in mittelausgabe:
 	print(name + ":\t%0.2f" % mittelwert) # jedes Tupel ausgeben
 
 print("------Minimum-Maximum------")
@@ -138,14 +138,14 @@ for spalte in liste:
 	maxi = minumax[1]
 	minima.append(mini)
 	maxima.append(maxi)
-minmaxausgabe = zip(namen,minima,maxima)
-for name,minimum,maximum in minmaxausgabe:
+minmaxausgabe = zip(namen, minima, maxima)
+for name, minimum, maximum in minmaxausgabe:
 	print(name + ":\t" + str(minimum) + "\t" + str(maximum))
 print("------Standardabweichung------")
-standardabweichungen=[]
+standardabweichungen = []
 for spalte in liste:
-	abweichung = standardabweichung(spalte,mittelwerte[liste.index(spalte)]) #Mittelwert über Stelle in Liste herausfinden
+	abweichung = standardabweichung(spalte, mittelwerte[liste.index(spalte)]) # Mittelwert über Stelle in Liste herausfinden
 	standardabweichungen.append(abweichung)
-stabausgabe = zip(namen,standardabweichungen)
-for name,abweichung in stabausgabe:
+stabausgabe = zip(namen, standardabweichungen)
+for name, abweichung in stabausgabe:
 	print(name + ":\t%0.2f" % abweichung)

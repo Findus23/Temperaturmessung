@@ -1,8 +1,7 @@
 #!/bin/bash
-zufall=0
 PFAD="/var/www/" #Pfad zum Web-Verzeichnis
 r=0 # Backup-Zahl auf Null setzen
-IFS="; " #Spezial-Variable, enthält Trennzeichen zum Trennen von Luftdruck und -temperatur
+IFS="; " #Spezial-Variable - enthält Trennzeichen zum Trennen von Luftdruck und -temperatur
 re='^[0-9]+$' # Regulärer Ausdruck, ob Variable eine Zahl ist
 pushbullet_api_key=$(cat /home/pi/Temperaturmessung/Fremddateien/pushbullet_settings.txt | head -n 1)
 pushbullet_device=$(cat /home/pi/Temperaturmessung/Fremddateien/pushbullet_settings.txt | tail -n 1)
@@ -17,7 +16,7 @@ then
 	case "$1" in
 		"-d")rm /home/pi/Temperaturmessung/dygraph.csv
 			;;
-		"-h") echo -e "-d 	csv-Datei leeren \nfür weitere Informationen siehe http://lukaswiki.onpw.de/rasp oder https://github.com/Findus23/Temperaturmessung"
+		"-h") echo -e "-d 	csv-Datei leeren \nfür weitere Informationen siehe http://winkler.kremszeile.at/ oder https://github.com/Findus23/Umweltdatenmessung"
 			exit 1
 			;;
 		*) echo "unbekannter Parameter - Für Hilfe -h"
@@ -27,16 +26,10 @@ then
 fi
 while true
 do
-
-	uhrzeit=$(date +%Y/%m/%d\ %H:%M:%S)
-	uhrzeit_display=$(date +%d.%m\ %H:%M:%S)
-	uhrzeit_lang=$(date +%d.%m.%y\ %H:%M:%S)
-	#zufall=$(($zufall + $((RANDOM % 10)) - 5)) # a um eine zufällige Zahl zwischen -5 und 5 ändern
-	##a=a+[Zufallszahl von 0-32767] modulo 10 (um eine Zahl von 0-10 zu bekommen) -5 (-> -5 bis 5)
-	#zufall=$a
-	#load=$(cut -c 1,2,3,4 /proc/loadavg) # Load messen
+	uhrzeit=$(date +%Y/%m/%d\ %H:%M:%S) # z.B.: 2014/10/05 11:00:00 (für csv-Datei)
+	uhrzeit_display=$(date +%d.%m\ %H:%M:%S) # z.B.: 05.10 11:00:00 (für Display)
+	uhrzeit_lang=$(date +%d.%m.%y\ %H:%M:%S) # z.B.: 05.10.2014 11:00:00 (für Webinterface)
 	rasp=$(/opt/vc/bin/vcgencmd measure_temp | cut -c 6,7,8,9) #Betriebstemberatur messen
-	#cpu=$(sensors |grep Core\ 0 |cut -c 18,19,20,21) #CPU-Temperatur, lm-sensors muss installiert sein, bei jedem PC anders
 	temp1=$(echo "scale=3; $(grep 't=' /sys/bus/w1/devices/w1_bus_master1/10-000802b53835/w1_slave | awk -F 't=' '{print $2}') / 1000" | bc -l) #Innentemperatur
 	while [ "$temp1" == "-1.250" ] || [ "$temp1" == "85.000" ] || [ "$temp1" == "85.000" ]
 	do
@@ -71,7 +64,7 @@ do
 	done
 
 	luft_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/AdafruitDHT.py 2302 17)	# Rohdaten des Luftfeuchtigkeits-Sensors
-	set -- $luft_roh
+	set -- $luft_roh #Zerlegen mithilfe von IFS (siehe ganz oben)
 	luft_temp=$1
 	luft_feucht=$2
 	while [ -z "$luft_roh" ] || [ "$(echo $luft_temp '>' 40 | bc -l)" -eq 1 ] || [ "$(echo $luft_temp '<' -20 | bc -l)" -eq 1 ]
@@ -85,7 +78,7 @@ do
 		gpio write 13 0
 	done
 	druck_roh=$(sudo python /home/pi/Temperaturmessung/Fremddateien/Adafruit_BMP085_auswertung.py) # Rohdaten des Luftdruck-Sensors
-	set -- $druck_roh #Zerlegen mithilfe von IFS (siehe ganz oben)
+	set -- $druck_roh 
 	temp_druck=$1
 	druck=$2
 	qualitat=$(sudo /home/pi/Temperaturmessung/Fremddateien/airsensor -v -o)
@@ -114,7 +107,7 @@ $luft_feucht_r
 $temp_druck_r
 $druck_r
 $rasp
-$qualitat" >/home/pi/Temperaturmessung/text.txt.temp
+$qualitat" >/home/pi/Temperaturmessung/text.txt.temp #zuerst in temporäre Datei schreiben und dann verschieben, um kurzzeitig leere Datei zu vermeiden
 
 	echo "$uhrzeit_lang,${temp1_r},${temp2_r},${temp3_r},${temp4_r},${luft_temp_r},${luft_feucht_r},${temp_druck_r},${druck_r},${rasp},${qualitat}" >/home/pi/Temperaturmessung/text_ws.txt # Daten für Webseite
 	/home/pi/Temperaturmessung/diverses/wunderground.py $temp1 $temp2 $temp3 $temp4 $luft_temp $luft_feucht $temp_druck $druck $rasp $qualitat >> /home/pi/wunderground.log &
