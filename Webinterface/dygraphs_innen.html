@@ -37,34 +37,6 @@
 	<script type="text/javascript" src="./Fremddateien/dygraph-combined.js"></script>
 	<script type="text/javascript" src="./Fremddateien/CibulCalendar.min.js"></script>
 	<style type="text/css">
-	#graphdiv {
-		position: absolute;
-		left: 10px;
-		right: 10px;
-		top: 80px;
-		bottom: 50px;
-	}
-	#legende {
-		position: absolute;
-		top: 0px;
-	}
-	#auswahl {
-		position: absolute;
-		bottom: 10px;
-	}
-	#link {
-		position: absolute;
-		bottom: 10px;
-		right: 80px;
-	}
-	#zoom {
-		position: relative;
-	}
-	#inhalt {
-		position: absolute;
-		width: 100%;
-		height: 90%;
-	}
 	#nav {
 		margin-bottom: 5px !important;
 	}
@@ -109,10 +81,23 @@
 </div>
 <!--Ende Navigationsleiste-->
 <iframe width="1" scrolling="no" height="1" frameborder="0" src="control.php?aktion=running" seamless="seamless"></iframe>
-<div id="inhalt">
-<div id="graphdiv"></div>
+<div id="inhalt_diagramm">
+<div id="zoom">
+	<input type="button" value="Letzter Tag" onclick="zoomGraphX(new Date().getTime()-86400000, (new Date().getTime()))">
+	<input type="button" value="Letzte Woche" onclick="zoomGraphX(new Date().getTime()-86400000*7, (new Date().getTime()))">
+	<input type="text" id="datespan"/> 
+	<select name="data" id="data" size="1" title="anderen Datensatz auswählen" onchange="g.updateOptions({file: (options[selectedIndex].value)})">
+		<option value="dygraph.csv" title="momentan laufende Messung">aktuelle Messung</option>
+		<option value="dygraph8A.csv">Schulbegin 8A</option>
+		<option value="dygraph_ocg.csv" title="Messung wärend des Finales bei der OCG">OCG Finale</option>
+		<option value="dygraph_schule.csv" title="Mai-Juni 2014">Schule</option>
+		<option value="dygraph_gemischt.csv">Testdaten 1</option>
+		<option value="dygraph_lange.csv">Testdaten 2</option>
+	<select>
+</div>
 <div id="Legende"></div>
-<span id="auswahl">
+<div id="graphdiv"></div>
+<div id="auswahl">
 	<input type=checkbox id="7" onClick="change(this)">
 	<label for="7" style="color: #00A6A6;font-weight:bold">Außentemperatur</label>
 	<input type=checkbox id="6" onClick="change(this)">
@@ -133,26 +118,12 @@
 	<label for="1" style="color: red;font-weight:bold">Gerätetemperatur 1</label>
 	<input type=checkbox id="3" checked onClick="change(this)">
 	<label for="3" style="color: red;font-weight:bold">Gerätetemperatur 2</label>
-</span>
-<span id="zoom">
-	<input type="button" value="Letzter Tag" onclick="zoomGraphX(new Date().getTime()-86400000, (new Date().getTime()))">
-	<input type="button" value="Letzte Woche" onclick="zoomGraphX(new Date().getTime()-86400000*7, (new Date().getTime()))">
-	<input type="text" id="datespan"/> 
-	<select name="data" id="data" size="1" title="anderen Datensatz auswählen" onchange="g.updateOptions({file: (options[selectedIndex].value)})">
-		<option value="dygraph.csv" title="momentan laufende Messung">aktuelle Messung</option>
-		<option value="dygraph8A.csv">Schulbegin 8A</option>
-		<option value="dygraph_ocg.csv" title="Messung wärend des Finales bei der OCG">OCG Finale</option>
-		<option value="dygraph_schule.csv" title="Mai-Juni 2014">Schule</option>
-		<option value="dygraph_gemischt.csv">Testdaten 1</option>
-		<option value="dygraph_lange.csv">Testdaten 2</option>
-	<select>
-</span>
+</div>
 </div>
 
 <script type="text/javascript">
 	if (window.navigator.standalone) { // Wenn die Seite als Webapp aufgerufen wird, soll die Navigationsleiste verschwinden
-		document.getElementById('nav').style.display = 'none'; 
-		document.getElementById('inhalt').style.height = "100%";
+		document.getElementById('nav').style.display = 'none';
 	}
 g = new Dygraph(
 	document.getElementById("graphdiv"),
@@ -180,7 +151,8 @@ g = new Dygraph(
 		colors: [ "#D4AE0B", "red", "#0000FF", "red", "#00A6A6", "#00FF00", "black", "#00A6A6", "orange", "#00E7FF" ],
 		strokeWidth: 3, // Liniendicke
 		rollPeriod: 10,  // Runden standardmäßig auf 10 setzen
-		visibility: [true, true, false, true, false, false, false, false, true, false]
+		visibility: [true, true, false, true, false, false, false, false, true, false],
+		legend: "always"
 //		highlightSeriesOpts: {
 //			strokeWidth: 5,
 //			strokeBorderWidth: 1,
