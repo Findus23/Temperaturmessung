@@ -25,6 +25,8 @@
 <div id="text">
 <h1>Über das Projekt</h1>
 
+<p id="vwa-note">Dieser Text hier ist inzwischen leicht veraltet.<br>Aktuellere und ausführichere Informationen findet man in meiner VWA:<br><br><a href="https://github.com/Findus23/VWA/blob/master/main.pdf?raw=true" target="_blank">Link zum aktuellen Zwischenstand</a></p>
+
 <p>In meinem Projekt möchte ich mithilfe eines Raspberry Pi Umweltdaten aufzeichnen, speichern und auswerten.</p>
 <p>Zur Aufzeichnung verwende ich einen Temperatursensor, einen Luftdrucksensor, einen Luftfeuchtesensor und einen Luftqualitätssensor. 
 	Die Daten werden abgespeichert und einerseits grafisch mithilfe von Javascript dargestellt und andererseits rechnerisch mit einem von mir geschriebenen Python-Programm ausgewertet.</p>
@@ -36,16 +38,15 @@ Bei jedem 1000. Aufruf wird die CSV-Datei gesichert, per E-Mail an mich verschic
 
 <a href="images/display.jpg" title="Vollbild"><img src="images/display.jpg" width="25%" alt="Bild des Displays" class="float"></a>
 <h2>Display:</h2>
-<p>Damit man nicht immer zum Computer laufen muss, um die aktuellen Werte zu erfahren habe ich ein Display an den Raspberry Pi angeschlossen. 
-Ich habe ein <a href="http://www.schnatterente.net/code/raspberrypi/displaytest.py">Beispielprogramm</a> erweitert, damit es statt einen statischen Text anzuzeigen, 
-eine von main.sh generierte Textdatei ausliest und der Inhalt auf mehreren Seiten dargestellt wird. (→ <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/display.py">display.py</a>)</p>
+<p>Damit man nicht immer zum Computer laufen muss, um die aktuellen Werte zu erfahren, habe ich ein Display an den Raspberry Pi angeschlossen. 
+Ich habe ein <a href="http://www.schnatterente.net/code/raspberrypi/displaytest.py">Beispielprogramm</a> erweitert, damit es eine von main.sh generierte Textdatei ausliest und der Inhalt auf mehreren Seiten dargestellt wird. (→ <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/display.py">display.py</a>)</p>
 
 <h2>Webinterface:</h2>
 <p>Zur grafischen Darstellung der Daten habe ich zwei Webseiten erstellt, die auf einem Apache-Webserver am Raspberry Pi liegen. 
-Mithilfe von Javascript und Dygraphs wird ein Diagramm der Daten dargestellt. (<a href="http://findus23.github.io/Umweltdatenmessung/aktuell/dygraphs_außen.html">Beispiel</a>, Vorsicht, lange Ladezeit). 
+Mithilfe von Javascript und Dygraphs wird <a href="./dygraphs_außen.html">ein Diagramm</a> der Daten dargestellt.
 Zur Darstellung der aktuellen Werte gibt es <a href="./aktuell.html">eine zweite Seite</a>, die mithilfe von Javascript alle 5 Sekunden die aktuellen Daten nachläd und grafisch darstellt. 
 Beide Seiten können auf mobilen Geräten (iOS, eventuell auch Android) nachdem sie zum Homebildschirm hinzugefügt wurden als Web-Application genutzt werden 
-(im Vollbildmodus, mit eigenem Icon; funktioniert bei statischem Beispiel nicht). 
+(im Vollbildmodus, eigenes Icon am Homebildschirm). 
 Wenn die Aufzeichnung gerade aus irgendeinem Grund nicht laufen soll, wird der Webseitenbesucher benachrichtigt.</p>
 <a href="images/aktuell.png" title="Vollbild"><img src="images/aktuell.png" width="80%" alt="Screenshot von Anzeige der aktuellen Werte"></a>
 
@@ -53,13 +54,13 @@ Wenn die Aufzeichnung gerade aus irgendeinem Grund nicht laufen soll, wird der W
 <p>Nachdem Daten aufgezeichnet wurden, kann die fertige CSV-Datei rechnerisch ausgewertet werden. <br/ >
 Zunächst muss sie <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/Endauswertung/vorbereiten.sh">mit einem Shell-Script</a> vorbereitet werden. 
 Danach kann es <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/Endauswertung/auswertung.py">ein von mir geschriebenes Python(3)-Programm</a> auswerten. 
-Hierbei wird die Datei zuerst nach Ausreißern durchsucht und etwaige werden angezeigt. 
+Hierbei wird die Datei zuerst nach Ausreißern durchsucht, welche anschließend angezeigt werden.
 Danach kann man den Zeitraum auswählen, in dem die Messung ausgewertet wird. Danach wird das arithmetische Mittel, Minimum, Maximum und Standardabweichung für jeden Sensor berechnet. 
 (<a href="https://asciinema.org/a/8925">„Video“ des Programms</a>)</p>
 
 <h2>Gnuplot:</h2>
-<p>Ursprünglich habe ich versucht die Diagramme mit <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/Einstellungen.plt">Gnuplot</a> zu generieren. 
-Da die fertigen Bilder jedoch statisch sind und der Raspberry Pi mit zunehmender Datenmenge sehr lange benötigt, habe ich dies aufgegeben. (zu Gunsten von Dyngraphs)</p>
+<p>Ursprünglich habe ich versucht die Diagramme mit Gnuplot</a> zu generieren. 
+Da die fertigen Bilder jedoch statisch sind und der Raspberry Pi mit zunehmender Datenmenge sehr lange für die Erstellung benötigt, habe ich dies aufgegeben. (zu Gunsten von Dyngraphs)</p>
 
 <h2>Autostart:</h2>
 <p>Damit der Start und Stop der Aufzeichnung (und des Displays) einfacher funktioniert habe ich <a href="https://github.com/Findus23/Umweltdatenmessung/blob/master/etc_init.d/aufzeichnung">ein 
@@ -69,6 +70,15 @@ und vorm Herunterfahren gestoppt.</p>
 <h2>diverses:</h2>
 <p>Zusätzlich zu den wichtigen Teilen habe ich noch ein paar kleinere Funkionen, wie <a href="https://github.com/Findus23/Umweltdatenmessung/tree/master/diverses/gadget">
 ein Windows Vista/7-Desktop-Gadget</a> oder ein (etwas zu buntes) <a href="https://raw.githubusercontent.com/Findus23/Umweltdatenmessung/master/diverses/logo/logo1024x1024.png">Logo</a> für das Projekt.</p>
+
+<h2>Präsentationen</h2>
+<p>Während ich am Projekt arbeitete, hatte ich mehrmals die Möglichkeit es anderen vorzustellen. So konnte ich zum Beispiel am 23. April 2014 bei den <a href="http://www.edudays.at/index.php/programm2014">EDU|days</a> den Raspberry Pi – Anfänger/innen Workshop von meinem Klassenvorstand MMag. Rene Schwarzinger begleiten und dort den aktuellen Zwischenstand präsentieren.</p>
+<p>Nach dem Workshop sprach mich Dr. Johann Stockinger an und fragte mich, ob ich beim <a href="http://www.ocg.at/de/computer-creative-wettbewerb">computer creative wettbewerb</a> teilnehmen möchte. Noch in dieser Woche habe ich diesen kurzen Text über mein Projekt 30 geschrieben und eingereicht.</p>
+<p>Ein Monat später erfuhr ich, dass ich <a href="http://blog.ocg.at/2014/05/ccw14-finale/">im Finale</a> bin 31 und daher am 17. Juni 2014 mein Projekt vor einer Jury präsentieren darf. Nach einem langen Tag mit vielen Präsentationen erfuhr ich am Nachmittag: Ich habe den <a href="http://blog.ocg.at/2014/06/ccw14-final/">ersten Preis in der Sekundarstufe II</a> erreicht. Anschließend schrieb ich im Sommer einen Artikel für <a href="http://www.ocg.at/sites/ocg.at/files/medien/pdfs/OCG-Journal1403.pdf">das OCG Journal</a> (Seite 33).</p>
+<p>Am 6. Oktober 2014 hatte ich die Möglichkeit mein Projekt der Arbeitsgruppe <i>Bildung, Wissenschaft und Forschung</i> am <a href="http://www.internetoffensive.at/3-ikt-konvent">3. IKT-Konvent</a> präsentieren.</p>
+
+
+<a href="images/gesamt.png" title="Vollbild"><img src="images/gesamt.png" width="80%%" alt="komplette Wetterstation" style="margin-right:auto;margin-left:auto;display:block"></a>
 
 </div>
 

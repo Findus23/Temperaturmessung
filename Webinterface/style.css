@@ -100,8 +100,25 @@ float: right;
 }
 #zoom {
 	margin-bottom:10px;
+	z-index: 1;
 }
 #zoom,#Legende,#auswahl {
 	margin-left:10px;
 	margin-right:10px;
+}
+
+/* Über das Projekt */
+#vwa-note {
+	text-align: center;
+	background-color: #E0FFE0;
+	-webkit-box-shadow: 3px 3px 10px 0px rgba(0,0,0,0.5); 
+	-moz-box-shadow: 3px 3px 10px 0px rgba(0,0,0,0.5); 
+	box-shadow: 3px 3px 10px 0px rgba(0,0,0,0.5);
+	padding: 10px;
+}
+
+#vwa-note a:link, #vwa-note a:visited, #vwa-note a:hover, #vwa-note a:active {
+	color: blue;
+	font-weight: bold;
+	text-decoration: none;
 }
