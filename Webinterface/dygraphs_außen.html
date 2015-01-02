@@ -121,7 +121,11 @@
 </div>
 <script type="text/javascript">
 	if (window.navigator.standalone) { // Wenn die Seite als Webapp aufgerufen wird, soll die Navigationsleiste verschwinden
-		document.getElementById('nav').style.display = 'none'; 
+		document.getElementById('nav').style.display = 'none';
+		document.getElementById('auswahl').style.fontSize = "85%";
+		var showlegend="onmouseover"
+	} else {
+		var showlegend="always"
 	}
 g = new Dygraph(
 	document.getElementById("graphdiv"),
@@ -150,7 +154,7 @@ g = new Dygraph(
 		strokeWidth: 3, // Liniendicke
 		rollPeriod: 10,  // Runden standardmäßig auf 10 setzen
 		visibility: [false, false, true, false, false, true, true, true, false, false],
-		legend: "always"
+		legend: showlegend
 //		highlightSeriesOpts: {
 //			strokeWidth: 5,
 //			strokeBorderWidth: 1,
